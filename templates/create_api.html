@@ -1,0 +1,134 @@
+{% extends "blank.html" %}
+
+{% block title %}
+create new api
+{% endblock %}
+
+{% block content %}
+    <h1>添加新的api</h1>
+    <table class="table table-striped" id="common_table" width="100%" cellspacing="0">
+
+        <tr>
+            <td>api名称:</td>
+            <td><input type="text" class="form-control"/></td>
+            <td>url:</td>
+            <td><input type="text" class="form-control"/></td>
+            <td>方法:</td>
+            <td><input type="text" class="form-control" /></td>
+        </tr>
+    </table>
+    <div id="headers_toolbar">
+            <button id="add_header" class="btn btn-primary">添加headers</button>
+            <button id="delete_header" class="btn btn-danger">删除headers</button>
+     </div>
+
+    <table id="headers_table" data-toggle="table" data-toolbar="#headers_toolbar" data-height="400"  class="table table-hover" style="margin-top: -40px;">
+        <thead>
+        <tr>
+            <th class="bs-checkbox " style="width: 36px; " data-field="state"><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
+            <th style="" data-field="key"><div class="th-inner ">key</div><div class="fht-cell"></div></th>
+            <th style="" data-field="value"><div class="th-inner ">value</div><div class="fht-cell"></div></th>
+            <th style="" data-field="require"><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <hr style="height: 10px;"/>
+    <div id="parameters_toolbar">
+            <button id="add_parameters" class="btn btn-primary">添加parameters</button>
+            <button id="delete_parameters" class="btn btn-danger">删除parameters</button>
+     </div>
+
+    <table id="parameters_table" data-toggle="table" data-toolbar="#parameters_toolbar" data-height="400"  class="table table-hover" style="margin-top: -40px;">
+        <thead>
+        <tr>
+            <th class="bs-checkbox " style="width: 36px; " data-field="state"><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
+            <th style="" data-field="key"><div class="th-inner ">key</div><div class="fht-cell"></div></th>
+            <th style="" data-field="value"><div class="th-inner ">value</div><div class="fht-cell"></div></th>
+            <th style="" data-field="require"><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <hr style="height: 10px;"/>
+    <table class="table table-striped" width="100%" cellspacing="0">
+        <tr>
+            <td colspan="6">
+                <button type="button" class="btn btn-info">添加api</button>
+            </td>
+        </tr>
+
+    </table>
+{% endblock %}
+
+{% block own_js %}
+
+    <script>
+    var $headers_table = $('#headers_table'),
+        $parameters_table = $('#parameters_table'),
+        $add_header = $('#add_header'),
+        $delete_header = $('#delete_header'),
+        $add_parameters = $('#add_parameters'),
+        $delete_parameters = $('#delete_parameters');
+
+    $(function () {
+        var header_id = 0;
+        $add_header.click(function () {
+            header_id++;
+            $headers_table.bootstrapTable('insertRow', {
+                index: 1,
+                row: {
+                    state: '<input data-index="0" name="btSelectItem" type="checkbox" id='+header_id+'>',
+                    key: '<input type="text" class="form-control">',
+                    value: '<input type="text" class="form-control">',
+                    require: ""
+                }
+            });
+        });
+
+        $delete_header.click(function(){
+            var ids = $.map($headers_table.bootstrapTable('getSelections'), function (row) {
+                return row.state;
+            });
+            $headers_table.bootstrapTable('remove', {
+                field: 'state',
+                values: ids
+            });
+
+        });
+    });
+
+    $(function () {
+        var parameter_id = 0;
+        $add_parameters.click(function () {
+            parameter_id++;
+            $parameters_table.bootstrapTable('insertRow', {
+                index: 1,
+                row: {
+                    state: '<input data-index="0" name="btSelectItem" type="checkbox" id='+parameter_id+'>',
+                    key: '<input type="text" class="form-control">',
+                    value: '<input type="text" class="form-control">',
+                    require: ""
+                }
+            });
+        });
+        $delete_parameters.click(function(){
+
+            var ids = $.map($parameters_table.bootstrapTable('getSelections'), function (row) {
+                return row.state;
+            });
+            $parameters_table.bootstrapTable('remove', {
+                field: 'state',
+                values: ids
+            });
+        });
+    });
+
+
+</script>
+{% endblock %}
