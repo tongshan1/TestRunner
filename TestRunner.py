@@ -19,9 +19,14 @@ def api():
     return render_template("create_api.html")
 
 
-@app.route("/doc")
+@app.route("/timer")
+def timer():
+    return render_template("timer.html")
+
+
+@app.route("/api/doc")
 def show_swagger():
-    return render_template("swagger.html", tag_data=generate_code())
+    return render_template("api_doc.html", tag_data=generate_code())
 
 if __name__ == '__main__':
     app.run()
