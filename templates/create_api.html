@@ -13,12 +13,25 @@ create new api
     <table class="table table-striped" id="common_table" width="100%" cellspacing="0">
 
         <tr>
-            <td>api名称:</td>
-            <td><input type="text" class="form-control"/></td>
-            <td>url:</td>
-            <td><input type="text" class="form-control"/></td>
-            <td>方法:</td>
-            <td><input type="text" class="form-control" /></td>
+            <td>api名称: <input type="text" class="form-control" style="width: 200px"/></td>
+            <td>url: <input type="text" class="form-control" style="width: 400px"/></td>
+            <td>方法:
+                <div class="dropdown">
+                    <button id="dLabel" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id='text'>选择方法</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li>GET</li>
+                        <li>POST</li>
+                        <li>PUT</li>
+                        <li>DELETE</li>
+                        <li>PATCH</li>
+                        <li>HEAD</li>
+                        <li>OPTIONS</li>
+                    </ul>
+                </div>
+            </td>
         </tr>
     </table>
     <div id="headers_toolbar">
@@ -132,6 +145,11 @@ create new api
             });
         });
     });
+
+    $('.dropdown-menu').on('click', function(e) {
+	var $target = $(e.target);
+	$target.is('li') && $('#text').text($target.text())
+    })
 
 
 </script>

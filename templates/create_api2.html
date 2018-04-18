@@ -1,0 +1,108 @@
+{% extends "blank.html" %}
+
+{% block title %}
+create new api
+{% endblock %}
+
+{% block navigation %}
+    添加新接口
+{% endblock %}
+
+{% block content %}
+    <h1>添加新的接口</h1>
+    <table class="table table-striped" id="request_table" width="100%" cellspacing="0" data-toggle="table" data-toolbar="#headers_toolbar" data-height="800">
+        <tr>
+            <td>api名称: <input type="text" class="form-control" style="width: 200px"/></td>
+            <td>url: <input type="text" class="form-control" style="width: 400px"/></td>
+            <td>方法:
+                <div class="dropdown">
+                    <button id="dLabel" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id='text'>选择方法</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li>GET</li>
+                        <li>POST</li>
+                        <li>PUT</li>
+                        <li>DELETE</li>
+                        <li>PATCH</li>
+                        <li>HEAD</li>
+                        <li>OPTIONS</li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <button id="add_header" class="btn btn-primary"  >添加headers</button>
+                <button id="delete_header" class="btn btn-danger">删除headers</button>
+            </td>
+
+        </tr>
+        <tr >
+            <th ><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
+            <th ><div class="th-inner ">key</div><div class="fht-cell"></div></th>
+            <th ><div class="th-inner ">value</div><div class="fht-cell"></div></th>
+            <th ><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+        </tr>
+
+        <tr id="parameter_row">
+            <td colspan="4">
+                <button id="add_parameters" class="btn btn-primary" >添加parameters</button>
+                <button id="delete_parameters" class="btn btn-danger">删除parameters</button>
+            </td>
+
+        </tr>
+
+        <tr>
+            <th class="bs-checkbox " style="width: 36px; " data-field="state"><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
+            <th style="" data-field="key"><div class="th-inner ">key</div><div class="fht-cell"></div></th>
+            <th style="" data-field="value"><div class="th-inner ">value</div><div class="fht-cell"></div></th>
+            <th style="" data-field="require"><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+        </tr>
+
+
+    </table>
+
+
+
+{% endblock %}
+
+{% block own_js %}
+
+    <script>
+
+    var add_header = $("#add_header");
+    var delete_header = $("#delete_header");
+    var table = $("#request_table");
+
+
+    $(add_header).click(function(){
+
+        var header_row = $("#parameter_row");
+        alert(header_row.id);
+{#        var row = table.insertRow(header_row);#}
+{#        var cell1 = row.insertCell(0);#}
+{#        var cell2 = row.insertCell(1);#}
+{#        var cell3 = row.insertCell(2);#}
+{#        var cell4 = row.insertCell(3);#}
+{#        cell1.innerHTML = '<input data-index="0" name="btSelectItem" type="checkbox" class="select_row" >';#}
+{#        cell2.innerHTML = '<input type="text" class="form-control">';#}
+{#        cell3.innerHTML = '<input type="text" class="form-control">';#}
+{#        cell4.innerHTML = "NEW CELL2";#}
+    });
+
+    $(delete_header).click(function () {
+
+        var select_rows = $(".select_row:checked");
+
+        select_rows.each(function(){
+            var index = this.parentElement.parentElement.rowIndex;
+            alert(index)
+        })
+
+    })
+
+
+</script>
+{% endblock %}

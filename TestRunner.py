@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from src.common.generate_code import generate_code
 
 app = Flask(__name__)
@@ -14,9 +14,12 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/api")
+@app.route("/api", methods=['GET', 'POST'])
 def api():
-    return render_template("create_api.html")
+    if request.method == "GET":
+        return render_template("create_api2.html")
+    else:
+        return redirect("/api/doc")
 
 
 @app.route("/timer")
