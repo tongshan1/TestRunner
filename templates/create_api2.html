@@ -10,7 +10,8 @@ create new api
 
 {% block content %}
     <h1>添加新的接口</h1>
-    <table class="table table-striped" id="request_table" width="100%" cellspacing="0" data-toggle="table" data-toolbar="#headers_toolbar" data-height="800">
+    <table class="table table-striped" id="request_table" width="100%" cellspacing="0" >
+    <form>
         <tr>
             <td>api名称: <input type="text" class="form-control" style="width: 200px"/></td>
             <td>url: <input type="text" class="form-control" style="width: 400px"/></td>
@@ -40,10 +41,10 @@ create new api
 
         </tr>
         <tr >
-            <th ><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
-            <th ><div class="th-inner ">key</div><div class="fht-cell"></div></th>
-            <th ><div class="th-inner ">value</div><div class="fht-cell"></div></th>
-            <th ><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+            <th ><input name="btSelectAll" type="checkbox"></th>
+            <th >key</th>
+            <th >value</th>
+            <th >require</th>
         </tr>
 
         <tr id="parameter_row">
@@ -55,15 +56,20 @@ create new api
         </tr>
 
         <tr>
-            <th class="bs-checkbox " style="width: 36px; " data-field="state"><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
-            <th style="" data-field="key"><div class="th-inner ">key</div><div class="fht-cell"></div></th>
-            <th style="" data-field="value"><div class="th-inner ">value</div><div class="fht-cell"></div></th>
-            <th style="" data-field="require"><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+            <th ><input name="btSelectAll" type="checkbox"></th>
+            <th >key</th>
+            <th >value</th>
+            <th >require</th>
         </tr>
 
+{#        <tr>#}
+{#            <td colspan="4">#}
+{#                <button id="add_api" class="btn btn-primary" type="submit">保存</button>#}
+{#            </td>#}
+{#        </tr>#}
 
+    </form>
     </table>
-
 
 
 {% endblock %}
@@ -74,34 +80,61 @@ create new api
 
     var add_header = $("#add_header");
     var delete_header = $("#delete_header");
-    var table = $("#request_table");
+    var add_parameters = $("#add_parameters");
+    var delete_parameters = $("#delete_parameters");
+    var table = document.getElementById("request_table");
 
 
     $(add_header).click(function(){
 
-        var header_row = $("#parameter_row");
-        alert(header_row.id);
-{#        var row = table.insertRow(header_row);#}
-{#        var cell1 = row.insertCell(0);#}
-{#        var cell2 = row.insertCell(1);#}
-{#        var cell3 = row.insertCell(2);#}
-{#        var cell4 = row.insertCell(3);#}
-{#        cell1.innerHTML = '<input data-index="0" name="btSelectItem" type="checkbox" class="select_row" >';#}
-{#        cell2.innerHTML = '<input type="text" class="form-control">';#}
-{#        cell3.innerHTML = '<input type="text" class="form-control">';#}
-{#        cell4.innerHTML = "NEW CELL2";#}
+        var header_row_index = document.getElementById("parameter_row").rowIndex;
+        var row = table.insertRow(header_row_index);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = '<input data-index="0" name="btSelectItem" type="checkbox" class="select_header" >';
+        cell2.innerHTML = '<input type="text" class="form-control">';
+        cell3.innerHTML = '<input type="text" class="form-control">';
+        cell4.innerHTML = "NEW CELL2";
     });
 
     $(delete_header).click(function () {
 
-        var select_rows = $(".select_row:checked");
+        var select_rows = $(".select_header:checked");
 
         select_rows.each(function(){
-            var index = this.parentElement.parentElement.rowIndex;
-            alert(index)
+            var index = $(this).parent().parent().index();
+
+            table.deleteRow(index);
         })
 
-    })
+    });
+
+    $(add_parameters).click(function(){
+        var header_row_index = document.getElementById("parameter_row").rowIndex;
+        var row = table.insertRow(header_row_index+2);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = '<input data-index="0" name="btSelectItem" type="checkbox" class="select_parameter" >';
+        cell2.innerHTML = '<input type="text" class="form-control">';
+        cell3.innerHTML = '<input type="text" class="form-control">';
+        cell4.innerHTML = "NEW CELL2";
+
+    });
+
+    $(delete_parameters).click(function(){
+
+        var select_rows = $(".select_parameter:checked");
+
+        select_rows.each(function(){
+            var index = $(this).parent().parent().index();
+
+            table.deleteRow(index);
+        })
+    });
 
 
 </script>
