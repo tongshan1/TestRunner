@@ -14,6 +14,14 @@ migrate = Migrate(app, db)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 
+def make_shell_context():
+    return dict(app=app, db=db)
+
+
+manager.add_command('shell', Shell(make_context=make_shell_context))
+manager.add_command('db', MigrateCommand)
+
+
 def init():
     pass
 

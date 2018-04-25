@@ -21,6 +21,12 @@ def create_app(config_name):
     module.Base.db = db
     module.Base.query = db.session.query_property()
 
+    from src.main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    from src.app.api import api as api_blueprint
+    app.register_blueprint(api_blueprint)
+
     return app
 
 

@@ -10,15 +10,15 @@ create new api
 
 {% block content %}
     <h1>添加新的接口</h1>
-    <table class="table table-striped" id="common_table" width="100%" cellspacing="0">
-
+    <table class="table table-striped" id="request_table" width="100%" cellspacing="0" >
         <tr>
-            <td>api名称: <input type="text" class="form-control" style="width: 200px"/></td>
-            <td>url: <input type="text" class="form-control" style="width: 400px"/></td>
+            <td>api名称: <input id="interface_name" type="text" class="form-control" style="width: 200px"/></td>
+            <td>所属项目: <input id="interface_project" type="text" class="form-control" style="width: 200px"/> </td>
+            <td>url: <input id="interface_url" type="text" class="form-control" style="width: 400px"/></td>
             <td>方法:
                 <div class="dropdown">
-                    <button id="dLabel" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span id='text'>选择方法</span>
+                    <button id="dLabel" name="interface_method" type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id='interface_method'>选择方法</span>
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -33,123 +33,174 @@ create new api
                 </div>
             </td>
         </tr>
-    </table>
-    <div id="headers_toolbar">
-            <button id="add_header" class="btn btn-primary">添加headers</button>
-            <button id="delete_header" class="btn btn-danger">删除headers</button>
-     </div>
-
-    <table id="headers_table" data-toggle="table" data-toolbar="#headers_toolbar" data-height="400"  class="table table-hover" style="margin-top: -40px;">
-        <thead>
         <tr>
-            <th class="bs-checkbox " style="width: 36px; " data-field="state"><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
-            <th style="" data-field="key"><div class="th-inner ">key</div><div class="fht-cell"></div></th>
-            <th style="" data-field="value"><div class="th-inner ">value</div><div class="fht-cell"></div></th>
-            <th style="" data-field="require"><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+            <td colspan="4">
+                <button id="add_header" class="btn btn-primary"  >添加headers</button>
+                <button id="delete_header" class="btn btn-danger">删除headers</button>
+            </td>
+
         </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>
-
-    <hr style="height: 10px;"/>
-    <div id="parameters_toolbar">
-            <button id="add_parameters" class="btn btn-primary">添加parameters</button>
-            <button id="delete_parameters" class="btn btn-danger">删除parameters</button>
-     </div>
-
-    <table id="parameters_table" data-toggle="table" data-toolbar="#parameters_toolbar" data-height="400"  class="table table-hover" style="margin-top: -40px;">
-        <thead>
-        <tr>
-            <th class="bs-checkbox " style="width: 36px; " data-field="state"><div class="th-inner "><input name="btSelectAll" type="checkbox"></div><div class="fht-cell" style="width: 36px;"></div></th>
-            <th style="" data-field="key"><div class="th-inner ">key</div><div class="fht-cell"></div></th>
-            <th style="" data-field="value"><div class="th-inner ">value</div><div class="fht-cell"></div></th>
-            <th style="" data-field="require"><div class="th-inner ">require</div><div class="fht-cell"></div></th>
+        <tr >
+            <th ><input name="btSelectAll" type="checkbox"></th>
+            <th >key</th>
+            <th >value</th>
+            <th >require</th>
         </tr>
-        </thead>
-        <tbody>
 
-        </tbody>
-    </table>
-    <hr style="height: 10px;"/>
-    <table class="table table-striped" width="100%" cellspacing="0">
+        <tr id="parameter_row">
+            <td colspan="4">
+                <button id="add_parameters" class="btn btn-primary" >添加parameters</button>
+                <button id="delete_parameters" class="btn btn-danger">删除parameters</button>
+            </td>
+
+        </tr>
+
         <tr>
-            <td colspan="6">
-                <button type="button" class="btn btn-info">添加api</button>
+            <th ><input name="btSelectAll" type="checkbox"></th>
+            <th >key</th>
+            <th >value</th>
+            <th >require</th>
+        </tr>
+
+        <tr id="response_row">
+            <th colspan="4">
+                添加response
+            </th>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+                <textarea name="interface_response" class="form-control" rows="5">response...</textarea>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td colspan="4">
+                <button id="add_interface" class="btn btn-primary" type="submit">保存</button>
+                <button id="test_interface" class="btn btn-primary" type="submit">测试</button>
             </td>
         </tr>
 
     </table>
+
+
 {% endblock %}
 
 {% block own_js %}
 
     <script>
-    var $headers_table = $('#headers_table'),
-        $parameters_table = $('#parameters_table'),
-        $add_header = $('#add_header'),
-        $delete_header = $('#delete_header'),
-        $add_parameters = $('#add_parameters'),
-        $delete_parameters = $('#delete_parameters');
 
-    $(function () {
-        var header_id = 0;
-        $add_header.click(function () {
-            header_id++;
-            $headers_table.bootstrapTable('insertRow', {
-                index: 1,
-                row: {
-                    state: '<input data-index="0" name="btSelectItem" type="checkbox" id='+header_id+'>',
-                    key: '<input type="text" class="form-control">',
-                    value: '<input type="text" class="form-control">',
-                    require: ""
-                }
-            });
-        });
+    var add_header = $("#add_header");
+    var delete_header = $("#delete_header");
+    var add_parameters = $("#add_parameters");
+    var delete_parameters = $("#delete_parameters");
+    var add_interface= $("#add_interface");
+    var table = document.getElementById("request_table");
 
-        $delete_header.click(function(){
-            var ids = $.map($headers_table.bootstrapTable('getSelections'), function (row) {
-                return row.state;
-            });
-            $headers_table.bootstrapTable('remove', {
-                field: 'state',
-                values: ids
-            });
-
-        });
-    });
-
-    $(function () {
-        var parameter_id = 0;
-        $add_parameters.click(function () {
-            parameter_id++;
-            $parameters_table.bootstrapTable('insertRow', {
-                index: 1,
-                row: {
-                    state: '<input data-index="0" name="btSelectItem" type="checkbox" id='+parameter_id+'>',
-                    key: '<input type="text" class="form-control">',
-                    value: '<input type="text" class="form-control">',
-                    require: ""
-                }
-            });
-        });
-        $delete_parameters.click(function(){
-
-            var ids = $.map($parameters_table.bootstrapTable('getSelections'), function (row) {
-                return row.state;
-            });
-            $parameters_table.bootstrapTable('remove', {
-                field: 'state',
-                values: ids
-            });
-        });
-    });
-
+    // https://jsfiddle.net/La5tnaqo/
     $('.dropdown-menu').on('click', function(e) {
 	var $target = $(e.target);
-	$target.is('li') && $('#text').text($target.text())
+	$target.is('li') && $('#interface_method').text($target.text())
+})
+
+
+    $(add_header).click(function(){
+
+        var header_row_index = document.getElementById("parameter_row").rowIndex;
+        var row = table.insertRow(header_row_index);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = '<input data-index="0" name="btSelectItem" type="checkbox" class="select_header" >';
+        cell2.innerHTML = '<input type="text" class="form-control header_key">';
+        cell3.innerHTML = '<input type="text" class="form-control header_value">';
+        cell4.innerHTML = '<input type="checkbox" class="header_require">';
+    });
+
+    $(delete_header).click(function () {
+
+        var select_rows = $(".select_header:checked");
+
+        select_rows.each(function(){
+            var index = $(this).parent().parent().index();
+
+            table.deleteRow(index);
+        })
+
+    });
+
+    $(add_parameters).click(function(){
+        var header_row_index = document.getElementById("parameter_row").rowIndex;
+        var row = table.insertRow(header_row_index+2);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = '<input data-index="0" name="btSelectItem" type="checkbox" class="select_parameter" >';
+        cell2.innerHTML = '<input type="text" class="form-control param_key">';
+        cell3.innerHTML = '<input type="text" class="form-control param_value">';
+        cell4.innerHTML = '<input type="checkbox" class="param_require">'
+
+    });
+
+    $(delete_parameters).click(function(){
+
+        var select_rows = $(".select_parameter:checked");
+
+        select_rows.each(function(){
+            var index = $(this).parent().parent().index();
+
+            table.deleteRow(index);
+        })
+    });
+
+
+    $(add_interface).click(function(){
+        var interface_name = $("#interface_name").val();
+        var interface_project = $("#interface_project").val();
+        var interface_url = $("#interface_url").val();
+        var interface_method = $("#interface_method").text();
+
+        var headers = {};
+        var head_key = $(".header_key");
+
+        var params = {};
+        var param_key = $(".param_key");
+
+        $(head_key).each(function(){
+            headers[head_key.val()]= $(this).parent().next("td").children(".header_value").val()
+
+        });
+
+        $(param_key).each(function(){
+            params[param_key.val()]= $(this).parent().next("td").children(".param_value").val()
+
+        });
+
+        $.ajax({
+            url: "/api",
+            type: "post",
+            data : {
+                "interface_name":interface_name,
+                "interface_project": interface_project,
+                "interface_url": interface_url,
+                "interface_method":"interface_method",
+                "headers": "headers",
+                "params": params,
+            },
+            success: function(data){
+                alert(data)
+            }
+
+        });
+
+
+
+
     })
+
 
 
 </script>
