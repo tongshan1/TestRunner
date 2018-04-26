@@ -4,7 +4,7 @@ from src.app.api import api
 from src.app.handler import register
 
 
-@register(api, "/api", methods=["GET"])
+@register(api, "/api", methods=["POST"])
 def api_add():
-    # data = request.form
-    return render_template("index.html")
+    data = request.form.get("interface_name")
+    return data

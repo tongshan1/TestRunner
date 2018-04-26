@@ -14,12 +14,9 @@ def index():
     return render_template("index.html")
 
 
-# @main.route("/api", methods=['GET', 'POST'])
-# def api():
-#     if request.method == "GET":
-#         return render_template("create_api.html")
-#     else:
-#         return redirect("/api/doc")
+@main.route("/api.html", methods=['GET'])
+def api():
+    return render_template("create_api.html")
 
 
 @main.route("/timer")

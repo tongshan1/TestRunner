@@ -27,8 +27,7 @@ def init():
 
 
 with app.app_context():
-    init()
-    # cache.clear()
+    db.create_all()
 
 if __name__ == '__main__':
     manager.run()

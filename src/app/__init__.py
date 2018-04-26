@@ -17,11 +17,11 @@ def create_app(config_name):
     config[config_name].init_app(app)
     db.init_app(app)
 
-    import src.module as module
-    module.Base.db = db
-    module.Base.query = db.session.query_property()
+    import src.module
+    src.module.Base.db = db
+    src.module.Base.query = db.session.query_property()
 
-    from src.main import main as main_blueprint
+    from src.app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     from src.app.api import api as api_blueprint

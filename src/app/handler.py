@@ -14,4 +14,6 @@ def register(bp, *params, **kwargs):
         @bp.route(*params, **kwargs)
         @wraps(func)
         def method(*args, **kwargs):
-            pass
+            return func(*args, **kwargs)
+        return method
+    return decorator
