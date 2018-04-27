@@ -105,6 +105,6 @@ ENV/
 .idea
 
 
-
-*/request
+*/config.py
+*/request/*
 
