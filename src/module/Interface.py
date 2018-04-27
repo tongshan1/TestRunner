@@ -3,10 +3,10 @@ __author__ = 'sara'
 
 from sqlalchemy import BigInteger, Column, Integer, String, BOOLEAN, DateTime
 from sqlalchemy.dialects.postgresql.json import JSON
-from . import Base
+from app import db
 
 
-class Interface(Base):
+class Interface(db.Model):
 
     __tablename__ = 'Interface'
 
@@ -33,4 +33,4 @@ class Interface(Base):
         kwargs["create_time"] = create_time
         kwargs["last_time"] = last_time
 
-        super(Interface, self).__init__(**kwargs)
+        super().__init__(**kwargs)

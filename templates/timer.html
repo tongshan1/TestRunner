@@ -1,15 +1,140 @@
 {% extends "blank.html" %}
 
 {% block title %}
-    定时任务
+    timer
 {% endblock %}
 
 
 {% block navigation %}
-    Timer
+    定时任务
 {% endblock %}
 
 {% block content %}
 
-    这里写timer的内容
+<div class="card mb-3">
+    <div class="card-header">
+      <i class="fa fa-table"></i> 定时任务列表 </div>
+    <div class="card-body">
+      <div style="margin-bottom: 20px;">
+        <!-- 新增 -->
+        <button id="timer_add" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        新增
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>任务名称</th>
+              <th>任务目的</th>
+              <th>上次执行</th>
+              <th>下次执行</th>
+              <th>结果</th>
+              <th>操作</th>
+              <th>自动\手动</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>uat取消订单</td>
+              <td>取消uat测试未取消订单</td>
+              <td>2018-04-28 12:00:00</td>
+              <td>2018-04-29 12:00:00</td>
+              <td>成功,查看log</td>
+              <td><button id="timer_modify" class="btn btn-primary">编辑</button>&nbsp;&nbsp;<button id="timer_false" class="btn btn-primary">关闭</button>
+              &nbsp;&nbsp;<button id="timer_false" class="btn btn-primary">查看用例</button></td>
+              <td>test test</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+
+<!-- 弹框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document" style="left:20%;max-width:2000px;">
+    <div class="modal-content" style="width:1000px;" >
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">新增定时任务</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body" >
+          <!-- 表单 -->
+          <form class="form-horizontal">
+              <div class="left" style="width:50%;float:left;">
+                   <div class="form-group">
+                    <label for="inputTaskName" class="col-sm control-label">任务名称</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskName" placeholder="任务名称">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">任务类型</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="任务类型">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">所属项目</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="所属项目">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">所属模块</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="所属模块">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">用例名称</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="用例名称">
+                    </div>
+                  </div>
+              </div>
+              <div class="right" style="width:50%;float:right;">
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">任务目的</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="任务目的">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">上次执行时间</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="上次执行时间">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">下次执行时间</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="下次执行时间">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">任务结果</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="任务结果">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTaskType" class="col-sm control-label">是否可用</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTaskType" placeholder="是否可用">
+                    </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary">新增</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

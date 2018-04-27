@@ -24,8 +24,13 @@ def timer():
     return render_template("timer.html")
 
 
-# @main.route("/api/doc")
-# def show_swagger():
-#     return render_template("api_doc.html", tag_data=generate_code())
+@main.route("/projects")
+def projects():
+    return render_template("projects.html")
+
+
+@main.route("/modules")
+def modules():
+    return render_template("modules.html")
 
 

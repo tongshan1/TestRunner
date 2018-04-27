@@ -1,0 +1,112 @@
+{% extends "blank.html" %}
+
+{% block title %}
+    modules
+{% endblock %}
+
+
+{% block navigation %}
+    模块管理
+{% endblock %}
+
+{% block content %}
+
+<div class="card mb-3">
+    <div class="card-header">
+      <i class="fa fa-table"></i> 模块管理列表 </div>
+    <div class="card-body">
+      <div style="margin-bottom: 20px;>
+        <!-- 新增 -->
+        <button id="modules_add" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        新增
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>模块名称</th>
+              <th>项目名称</th>
+              <th>测试人员</th>
+              <th>开发人员</th>
+              <th>模块版本</th>
+              <th>模块简介</th>
+              <th>是否可用</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>春心荡漾</td>
+              <th>APP</th>
+              <td>gcc</td>
+              <td>slf</td>
+              <td>春心荡漾v1</td>
+              <td>促销活动</td>
+              <td><button id="modules_modify" class="btn btn-primary">编辑</button>&nbsp;&nbsp;<button id="modules_false" class="btn btn-primary">关闭</button></td>
+              <td>test test</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+
+<!-- 弹框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document" style="left:20%;max-width:2000px;">
+    <div class="modal-content" style="width:1000px;" >
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">新增模块</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body" >
+          <!-- 表单 -->
+          <form class="form-horizontal">
+               <div class="form-group">
+                <label for="inputTaskName" class="col-sm control-label">模块名称</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTaskName" placeholder="任务名称">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputTaskType" class="col-sm control-label">所属项目</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTaskType" placeholder="任务类型">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputTaskType" class="col-sm control-label">测试人员</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTaskType" placeholder="所属项目">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputTaskType" class="col-sm control-label">开发人员</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTaskType" placeholder="所属模块">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputTaskType" class="col-sm control-label">模块版本</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTaskType" placeholder="用例名称">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputTaskType" class="col-sm control-label">是否可用</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="inputTaskType" placeholder="任务目的">
+                </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary">新增</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
