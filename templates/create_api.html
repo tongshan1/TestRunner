@@ -159,44 +159,45 @@ create new api
 
     $(add_interface).click(function(){
         var interface_name = $("#interface_name").val();
-        var interface_project = $("#interface_project").val();
+        var module_id = $("#interface_project").val();
         var interface_url = $("#interface_url").val();
         var interface_method = $("#interface_method").text();
 
-        var headers = {};
+        var headers = new Object();
         var head_key = $(".header_key");
 
-        var params = {};
+        var params = new Object();
         var param_key = $(".param_key");
 
         $(head_key).each(function(){
             headers[head_key.val()]= $(this).parent().next("td").children(".header_value").val()
 
         });
+        headers = JSON.stringify(headers);
 
         $(param_key).each(function(){
             params[param_key.val()]= $(this).parent().next("td").children(".param_value").val()
 
         });
+        params = JSON.stringify(params);
+
 
         $.ajax({
             url: "/api",
             type: "post",
             data : {
                 "interface_name":interface_name,
-                "interface_project": interface_project,
+                "module_id": 1,
                 "interface_url": interface_url,
-                "interface_method":"interface_method",
-                "headers": "headers",
-                "params": params,
+                "interface_method":interface_method,
+                "interface_header": headers,
+                "interface_body": params
             },
             success: function(data){
                 alert(data)
             }
 
         });
-
-
 
 
     })
