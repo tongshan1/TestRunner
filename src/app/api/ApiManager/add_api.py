@@ -25,7 +25,10 @@ def api_add():
     return "1"
 
 
-@request(api, "/api/run", methods=["POST"])
+@register(api, "/api/run", methods=["POST"])
 def api_run():
-    url = request.form.get("url")
+    interface_url = request.form.get("interface_url")
+    interface_method = request.form.get("interface_method")
+    interface_header = request.form.get("interface_header")
+    interface_body = request.form.get("interface_body")
 
