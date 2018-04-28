@@ -103,6 +103,7 @@ ENV/
 .mypy_cache/
 
 .idea
+.DS_Store
 
 /src/config.py
 /src/app/api/ApiManager/request/*
