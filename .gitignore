@@ -104,7 +104,6 @@ ENV/
 
 .idea
 
-
-*/config.py
-*/request/*
+/src/config.py
+/src/app/api/ApiManager/request/*
 
