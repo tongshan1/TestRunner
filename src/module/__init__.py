@@ -8,3 +8,4 @@ from . import Scheduledtask
 from . import Testcase
 from . import Testcase_testgroup
 from . import Testcasegroup
+from . import User
