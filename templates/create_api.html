@@ -70,7 +70,7 @@ create new api
 
         <tr>
             <td colspan="4">
-                <textarea name="interface_response" class="form-control" rows="5">response...</textarea>
+                <textarea name="interface_response" id="interface_response" class="form-control" rows="5">response...</textarea>
             </td>
         </tr>
 
@@ -88,6 +88,7 @@ create new api
 {% endblock %}
 
 {% block own_js %}
+    <script src="/static/js/test_runner/api.js"></script>
 
     <script>
 
@@ -96,6 +97,8 @@ create new api
     var add_parameters = $("#add_parameters");
     var delete_parameters = $("#delete_parameters");
     var add_interface= $("#add_interface");
+    var test_interface = $("#test_interface");
+    var interface_response = $("#interface_response");
     var table = document.getElementById("request_table");
 
     // https://jsfiddle.net/La5tnaqo/
@@ -156,7 +159,6 @@ create new api
         })
     });
 
-
     $(add_interface).click(function(){
         var interface_name = $("#interface_name").val();
         var module_id = $("#interface_project").val();
@@ -200,7 +202,38 @@ create new api
         });
 
 
-    })
+    });
+
+    $(test_interface).click(function(){
+
+        var interface_name = $("#interface_name").val();
+        var module_id = $("#interface_project").val();
+        var interface_url = $("#interface_url").val();
+        var interface_method = $("#interface_method").text();
+
+        var headers = new Object();
+        var head_key = $(".header_key");
+
+        var params = new Object();
+        var param_key = $(".param_key");
+
+        $(head_key).each(function(){
+            headers[head_key.val()]= $(this).parent().next("td").children(".header_value").val()
+
+        });
+        headers = JSON.stringify(headers);
+
+        $(param_key).each(function(){
+            params[param_key.val()]= $(this).parent().next("td").children(".param_value").val()
+
+        });
+        params = JSON.stringify(params);
+
+        var response = $.api_request(interface_url, interface_method, headers, params);
+
+
+        interface_response.val(response);
+    });
 
 
 

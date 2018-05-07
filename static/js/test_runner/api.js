@@ -5,10 +5,12 @@ $(document).ready(function(){
 
     $.api_request = function(url, method, header, param){
 
+        var response;
 
         $.ajax({
             url: "/api/run",
             method: "POST",
+            async: false,
             data: {
                 "interface_url": url,
                 "interface_method": method,
@@ -16,10 +18,14 @@ $(document).ready(function(){
                 "interface_body": param
             },
             success: function(data){
-                alert("request success")
+                alert(data);
+                response =  data;
             }
 
         });
+
+        return response
+
     };
 
     $.api_add = function(){

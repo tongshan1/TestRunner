@@ -7,7 +7,7 @@ from app import db
 
 class Interface(db.Model):
 
-    __tablename__ = 'Interface'
+    __tablename__ = 'autotest_Interface'
 
     id = Column(BigInteger, primary_key=True)
     interface_name = Column(String(200), nullable=False, index=True)

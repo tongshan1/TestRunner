@@ -92,7 +92,7 @@ def get_extra():
             continue
         rv = (co.co_filename, f.f_lineno, co.co_name)
         break
-    module = os.path.splitext(rv[0].split('/src/')[1])[0]
+    module = os.path.splitext(rv[0].split('/src/')[0])[0]
 
     return dict(mobi_module=module, mobi_lineno=rv[1])
 
