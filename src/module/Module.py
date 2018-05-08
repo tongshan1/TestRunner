@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql.json import JSON
 from app import db
 
 
-class Moudule(db.Model):
+class Module(db.Model):
 
     __tablename__ = 'autotest_module'
 

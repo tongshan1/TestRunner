@@ -2,3 +2,5 @@ Flask==0.12.2
 Flask-SQLAlchemy==2.3.2
 flask-script==2.0.6
 Flask-Migrate==1.8.0
+Flask-WTF==0.14
+WTForms==2.1

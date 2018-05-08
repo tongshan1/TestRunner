@@ -4,6 +4,6 @@ api = Blueprint('api', __name__)
 
 
 from . import ApiManager
-from . import ModuelManager
+from . import ModuleManager
 from . import ProjectManager
 from . import Timer
