@@ -2,8 +2,10 @@
 from . import main
 from app.api.ProjectManager.project import get_all_project
 from app.api.ModuleManager.module import get_all_module
+from app.api.TestCaseGroupManager.test_case_group import get_all_testc_case_group
 from app.form.project_form import ProjectFrom
 from app.form.module_form import ModuleFrom
+from app.form.testcase_group_form import TestCaseGroupForm
 
 from flask import Flask, render_template, request, redirect
 
@@ -39,5 +41,11 @@ def project():
 def module():
     modules = get_all_module()
     return render_template("modules.html", modules=modules, form=ModuleFrom())
+
+
+@main.route("/testcase_group.html")
+def testcase_group():
+    testcase_groups = get_all_testc_case_group()
+    return render_template("test_cases.html", testcase_groups=testcase_groups, form=TestCaseGroupForm())
 
 

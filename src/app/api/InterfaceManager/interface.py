@@ -9,7 +9,7 @@ from .request.request import api_request
 
 
 @register(api, "/api", methods=["POST"])
-def api_add():
+def interface_add():
 
     data = request.form
     # interface_name = request.form.get("interface_name")
@@ -26,7 +26,7 @@ def api_add():
 
 
 @register(api, "/api/run", methods=["POST"])
-def api_run():
+def interface_request():
     interface_url = request.form.get("interface_url")
     interface_method = request.form.get("interface_method")
     interface_header = request.form.get("interface_header")
