@@ -14,11 +14,16 @@ add new interface
     <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12">
-			<form class="form-search">
+
+
+			<div class="form-group">
 				<div class="btn-group">
-					 <button class="btn">选择方法</button> <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+					 <button id="dLabel" style="width: 100px" name="interface_method" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id='interface_method'>GET</span>
+                        <span class="caret"></span>
+                    </button>
+					
 					<ul class="dropdown-menu" aria-labelledby="dLabel">
-                        <li>GET</li>
                         <li>POST</li>
                         <li>PUT</li>
                         <li>DELETE</li>
@@ -26,8 +31,21 @@ add new interface
                         <li>HEAD</li>
                         <li>OPTIONS</li>
                     </ul>
-				</div><input class="input-medium search-query" type="text" /><button class="btn" type="submit">查找</button><button class="btn" type="submit">查找</button>
-			</form>
+
+					<div class="input-group">
+						&nbsp;
+						<input class="form-control" type="text" style="width: 400px" />
+
+						<div class="btn-group">
+							&nbsp;
+						<button class="btn btn-outline btn-primary" type="submit">SEND</button>
+						<button class="btn btn-outline btn-success" type="submit">SAVE</button>
+					</div>
+					</div>
+
+				</div>
+
+			</div>
 			<div class="tabbable tabs-below" id="tabs-857406">
 				<ul class="nav nav-tabs">
 					<li class="active">
@@ -53,5 +71,15 @@ add new interface
 		</div>
 	</div>
 </div>
+
+{% endblock %}
+
+{% block own_js %}
+
+	<script>
+	$('.dropdown-menu').on('click', function(e) {
+	var $target = $(e.target);
+	$target.is('li') && $('#interface_method').text($target.text())});
+	</script>
 
 {% endblock %}
