@@ -11,4 +11,47 @@ add new interface
 {% block content %}
     <h1>添加新的接口</h1>
 
+    <div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<form class="form-search">
+				<div class="btn-group">
+					 <button class="btn">选择方法</button> <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+					<ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li>GET</li>
+                        <li>POST</li>
+                        <li>PUT</li>
+                        <li>DELETE</li>
+                        <li>PATCH</li>
+                        <li>HEAD</li>
+                        <li>OPTIONS</li>
+                    </ul>
+				</div><input class="input-medium search-query" type="text" /><button class="btn" type="submit">查找</button><button class="btn" type="submit">查找</button>
+			</form>
+			<div class="tabbable tabs-below" id="tabs-857406">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#panel-95714" data-toggle="tab">第一部分</a>
+					</li>
+					<li>
+						<a href="#panel-660949" data-toggle="tab">第二部分</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="panel-95714">
+						<p>
+							第一部分内容.
+						</p>
+					</div>
+					<div class="tab-pane" id="panel-660949">
+						<p>
+							第二部分内容.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endblock %}

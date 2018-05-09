@@ -23,7 +23,7 @@ def index():
 
 @main.route("/api.html", methods=['GET'])
 def api():
-    return render_template("create_api.html")
+    return render_template("add_interface.html")
 
 
 @main.route("/timer.html")
