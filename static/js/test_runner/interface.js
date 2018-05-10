@@ -18,7 +18,6 @@ $(document).ready(function(){
                 "interface_body": param
             },
             success: function(data){
-                alert(data);
                 response =  data;
             }
 
@@ -62,7 +61,7 @@ $(document).ready(function(){
         });
         urlencoded_data = JSON.stringify(urlencoded_data);
 
-        var json_data = $("#jsoneditor").text();
+        var json_data = $(".ace_text-layer").text();
         json_data = JSON.stringify(json_data);
 
         return {
@@ -97,7 +96,7 @@ $(document).ready(function(){
         key.val("Content-type");
         value.val(type);
 
-    }
+    };
 
 
 });

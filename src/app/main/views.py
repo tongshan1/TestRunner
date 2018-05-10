@@ -49,4 +49,9 @@ def testcase_group():
     testcase_groups = get_all_testc_case_group()
     return render_template("test_cases.html", testcase_groups=testcase_groups, form=TestCaseGroupForm())
 
+@main.route("/test_case_detail.html")
+def testcase_detail_group():
+
+    return render_template("test_case_details.html")
+
 

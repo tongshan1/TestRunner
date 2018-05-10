@@ -4,7 +4,6 @@ from app import db
 from module.Interface import Interface
 from app.api import api
 from app.handler import register
-from app.logger import debug
 from .request.request import api_request
 
 

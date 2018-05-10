@@ -12,15 +12,15 @@
 {% block content %}
 
 <div class="card mb-3">
-    <div class="card-header">
-      <i class="fa fa-table"></i> 用例管理列表 </div>
+    <h1>用例管理</h1>
     <div class="card-body">
-      <div style="margin-bottom: 20px;">
+      <div>
         <!-- 新增 -->
-        <button id="project_add" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-        新增
-        </button>
+          <button id="case_add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增用例</button>
+          <button id="case_run" type="button" class="btn btn-success ">运行用例</button>
+          <button id="case_dete" type="button" class="btn btn-danger ">删除用例</button>
       </div>
+    <hr>
       <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
@@ -29,6 +29,7 @@
               <th>所属某块</th>
               <th>用例简介</th>
               <th>是否可用</th>
+
 {#              <th>上次结果</th>#}
               <th>操作</th>
             </tr>
@@ -40,7 +41,17 @@
               <td>{{ test_case_group.module_id }}</td>
               <td>{{ test_case_group.testcase_desc }}</td>
               <td>{{ test_case_group.is_active }}</td>
-              <td><button id="project_modify" class="btn btn-primary">编辑</button>&nbsp;&nbsp;<button id="project_false" class="btn btn-primary">关闭</button></td>
+              <td>
+                    <a id="project_modify" class="btn btn-primary" href="/test_case_detail.html">
+                        <span class="fa fa-pencil-square-o  fa-fw"></span>
+                    </a>
+                    <button id="project_false" class="btn btn-success">
+                        <span class="fa fa-toggle-right fa-fw"></span>
+                    </button>
+                    <button id="project_false" class="btn btn-danger">
+                        <span class="fa fa-times-circle fa-fw"></span>
+                    </button>
+              </td>
             </tr>
           {% endfor %}
           </tbody>
@@ -53,8 +64,8 @@
 
 <!-- 弹框 -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-  <div class="modal-dialog" role="document" style="left:20%;max-width:2000px;">
-    <div class="modal-content" style="width:1000px;" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" >
       <form role="form", action="/testcase_group", method="post">
       <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">新增项目</h4>
