@@ -89,7 +89,7 @@ create new api
 {% endblock %}
 
 {% block own_js %}
-    <script src="/static/js/test_runner/api.js"></script>
+    <script src="/static/js/test_runner/interface.js"></script>
 
     <script>
 
@@ -162,7 +162,7 @@ create new api
 
     $(add_interface).click(function(){
         var interface_name = $("#interface_name").val();
-        var module_id = $("#interface_project").val();
+        var interface_project = $("#interface_project").val();
         var interface_url = $("#interface_url").val();
         var interface_method = $("#interface_method").text();
 
@@ -173,7 +173,7 @@ create new api
         var param_key = $(".param_key");
 
         $(head_key).each(function(){
-            headers[head_key.val()]= $(this).parent().next("td").children(".header_value").val()
+
 
         });
         headers = JSON.stringify(headers);

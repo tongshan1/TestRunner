@@ -4,6 +4,10 @@
 add new interface
 {% endblock %}
 
+{% block own_css %}
+<link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
+{% endblock %}
+
 {% block navigation %}
     添加新接口
 {% endblock %}
@@ -15,7 +19,14 @@ add new interface
 	<div class="row-fluid">
 		<div class="span12">
 
-
+            <div class="form-inline">
+                <label class="control-label">接口名称:</label>
+                <input type="text" class="form-control" id="interface_name" name="interface_name"placeholder="接口名称" style="width: 500px">
+                &nbsp;&nbsp;
+                <label class="control-label">所属某块：</label>
+                <input type="text" class="form-control" id="interface_project" name="interface_project"placeholder="所属某块" style="width: 500px">
+            </div>
+            <br/>
 			<div class="form-group">
 				<div class="btn-group">
 					 <button id="dLabel" style="width: 100px" name="interface_method" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,12 +45,12 @@ add new interface
 
 					<div class="input-group">
 						&nbsp;
-						<input class="form-control" type="text" style="width: 500px" placeholder="输入url"/>
+						<input class="form-control" type="text" style="width: 500px" placeholder="输入url" id="interface_url"/>
 
 						<div class="btn-group">
 							&nbsp;
-						<button class="btn btn-outline btn-primary" type="button" style="width: 100px">SEND</button>
-						<button class="btn btn-outline btn-success" type="button" style="width: 100px">SAVE</button>
+						<button class="btn btn-outline btn-primary" type="button" style="width: 100px" id="test_interface">SEND</button>
+						<button class="btn btn-outline btn-success" type="button" style="width: 100px" id="add_interface">SAVE</button>
 					</div>
 					</div>
 
@@ -60,71 +71,81 @@ add new interface
 				</ul>
 				<div class="tab-content" style="height: 500px">
 					<div class="tab-pane active" id="panel-95714">
-						<table class="table table-hover">
-                            <thead >
+						<table class="table table-hover" id="header_table">
+                            <thead>
                             <tr class="info">
+                                <th style="width: 50px">required</th>
                                 <th>key</th>
                                 <th>value</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>1</td>
-                                <td>1</td>
+                                <td><input type="checkbox" class="require_header_table" checked></td>
+                                <td><input type="text" class="form-control key_header_table"></td>
+                                <td><input type="text" class="form-control value_header_table"></td>
                             </tr>
                             </tbody>
                         </table>
+                        <button class="btn btn-primary" id="add_headers">添加</button>
 					</div>
 					<div class="tab-pane" id="panel-660949">
 						<p>
                         <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
                         <ul class="nav nav-tabs">
 
-                            <li class="active"><a contenteditable="true" data-toggle="tab" href="#panel-288214">
+                            <li class="active body_type" id="form_data_select"><a contenteditable="true" data-toggle="tab" href="#panel-288214">
                                 form-data
                             </a></li>
-                            <li><a contenteditable="true" data-toggle="tab" href="#panel-173037">
+                            <li class="body_type" id="urlencoded_data_select"><a contenteditable="true" data-toggle="tab" href="#panel-173037">
                                 x-www-form-urlencoded
                             </a></li>
-                             <li><a contenteditable="true" data-toggle="tab" href="#panel-173036">
+                             <li class="body_type" id="JSON_data_select"><a contenteditable="true" data-toggle="tab" href="#panel-173036">
                                  JSON(application/json)
                              </a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" contenteditable="true" id="panel-288214">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="form_data">
                                     <thead >
-                                    <tr class="info">
+                                    <tr class="warning">
+                                        <th style="width: 50px">required</th>
                                         <th>key</th>
                                         <th>value</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>1</td>
+                                        <td><input type="checkbox" class="require_form_data" checked></td>
+                                        <td><input type="text" class="form-control key_form_data"></td>
+                                        <td><input type="text" class="form-control value_form_data"></td>
                                     </tr>
                                     </tbody>
                                 </table>
+                                <button class="btn btn-primary" id="add_form_data">添加</button>
                             </div>
                             <div class="tab-pane" contenteditable="true" id="panel-173037">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="urlencoded_data">
                                     <thead >
-                                    <tr class="info">
+                                    <tr class="success">
+                                        <th style="width: 50px">required</th>
                                         <th>key</th>
                                         <th>value</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>1</td>
+                                        <td><input type="checkbox" class="require_urlencoded_data" checked></td>
+                                        <td><input type="text" class="form-control key_urlencoded_data"></td>
+                                        <td><input type="text" class="form-control value_urlencoded_data"></td>
                                     </tr>
                                     </tbody>
                                 </table>
+                                <button class="btn btn-primary" id="add_urlencoded_data">添加</button>
                             </div>
                             <div class="tab-pane" contenteditable="true" id="panel-173036">
-                                <textarea class="form-control" style="height: 470px"></textarea>
+
+                                <div id="jsoneditor" style="height: 450px"></div>
                             </div>
                         </div>
                     </div>
@@ -132,12 +153,10 @@ add new interface
 						</p>
 					</div>
                     <div class="tab-pane" id="panel-660948">
-						<p>
-							<textarea class="form-control" style="height: 470px"></textarea>
-						</p>
-					</div>
-				</div>
-			</div>
+						test
+                    </div>
+                </div>
+            </div>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -157,10 +176,70 @@ add new interface
 
 {% block own_js %}
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
+    <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
+    <script src="/static/js/test_runner/interface.js"></script>
+
+    <script>
+    // create the editor
+    var container = document.getElementById('jsoneditor');
+    var options = {
+        modes: ['text', 'code', 'tree', 'form', 'view'],
+        mode: 'code',
+        ace: ace
+    };
+    var editor = new JSONEditor(container, options);
+</script>
+
+
 	<script>
+
+
 	$('.dropdown-menu').on('click', function(e) {
 	var $target = $(e.target);
 	$target.is('li') && $('#interface_method').text($target.text())});
+
+    $("#add_form_data").click(function(){
+        $.table_add_tr("form_data");
+    });
+
+    $("#add_urlencoded_data").click(function(){
+        $.table_add_tr("urlencoded_data");
+    });
+
+    $("#add_headers").click(function(){
+        $.table_add_tr("header_table");
+    });
+
+    $("#form_data_select").click(function(){
+
+        $.set_header_type("application/form-data")
+    });
+
+    $("#urlencoded_data_select").click(function(){
+
+        $.set_header_type("application/x-www-form-urlencoded")
+    });
+
+    $("#JSON_data_select").click(function(){
+
+        $.set_header_type("application/json")
+    });
+
+    $("#test_interface").click(function(){
+        var api_data = $.get_api_data();
+        var data_type = $(".active.body_type").text();
+        if (data_type="form-data"){
+
+        }
+        if (data_type="x-www-form-urlencoded"){
+
+        }
+        if (data_type="x-www-form-urlencoded"){
+
+        }
+    });
+
 	</script>
 
 {% endblock %}
