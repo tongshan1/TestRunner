@@ -34,12 +34,12 @@ add new interface
 
 					<div class="input-group">
 						&nbsp;
-						<input class="form-control" type="text" style="width: 400px" />
+						<input class="form-control" type="text" style="width: 500px" placeholder="输入url"/>
 
 						<div class="btn-group">
 							&nbsp;
-						<button class="btn btn-outline btn-primary" type="submit">SEND</button>
-						<button class="btn btn-outline btn-success" type="submit">SAVE</button>
+						<button class="btn btn-outline btn-primary" type="button" style="width: 100px">SEND</button>
+						<button class="btn btn-outline btn-success" type="button" style="width: 100px">SAVE</button>
 					</div>
 					</div>
 
@@ -49,25 +49,106 @@ add new interface
 			<div class="tabbable tabs-below" id="tabs-857406">
 				<ul class="nav nav-tabs">
 					<li class="active">
-						<a href="#panel-95714" data-toggle="tab">第一部分</a>
+						<a href="#panel-95714" data-toggle="tab">Headers</a>
 					</li>
 					<li>
-						<a href="#panel-660949" data-toggle="tab">第二部分</a>
+						<a href="#panel-660949" data-toggle="tab">Body</a>
+					</li>
+                    <li>
+						<a href="#panel-660948" data-toggle="tab">Tests</a>
 					</li>
 				</ul>
-				<div class="tab-content">
+				<div class="tab-content" style="height: 500px">
 					<div class="tab-pane active" id="panel-95714">
-						<p>
-							第一部分内容.
-						</p>
+						<table class="table table-hover">
+                            <thead >
+                            <tr class="info">
+                                <th>key</th>
+                                <th>value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1</td>
+                            </tr>
+                            </tbody>
+                        </table>
 					</div>
 					<div class="tab-pane" id="panel-660949">
 						<p>
-							第二部分内容.
+                        <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
+                        <ul class="nav nav-tabs">
+
+                            <li class="active"><a contenteditable="true" data-toggle="tab" href="#panel-288214">
+                                form-data
+                            </a></li>
+                            <li><a contenteditable="true" data-toggle="tab" href="#panel-173037">
+                                x-www-form-urlencoded
+                            </a></li>
+                             <li><a contenteditable="true" data-toggle="tab" href="#panel-173036">
+                                 JSON(application/json)
+                             </a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" contenteditable="true" id="panel-288214">
+                                <table class="table table-hover">
+                                    <thead >
+                                    <tr class="info">
+                                        <th>key</th>
+                                        <th>value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>1</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" contenteditable="true" id="panel-173037">
+                                <table class="table table-hover">
+                                    <thead >
+                                    <tr class="info">
+                                        <th>key</th>
+                                        <th>value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>1</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" contenteditable="true" id="panel-173036">
+                                <textarea class="form-control" style="height: 470px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+						</p>
+					</div>
+                    <div class="tab-pane" id="panel-660948">
+						<p>
+							<textarea class="form-control" style="height: 470px"></textarea>
 						</p>
 					</div>
 				</div>
 			</div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Response
+                </div>
+                <div class="panel-body" style="height: 300px">
+                   response
+                </div>
+
+            </div>
+
 		</div>
 	</div>
 </div>
