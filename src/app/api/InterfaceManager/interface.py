@@ -6,6 +6,8 @@ from app.api import api
 from app.handler import register
 from .request.request import api_request
 
+import json
+
 import logging
 
 
@@ -31,7 +33,9 @@ def interface_request():
     interface_url = request.form.get("interface_url")
     interface_method = request.form.get("interface_method")
     interface_header = eval(request.form.get("interface_header"))
-    interface_body = eval(request.form.get("interface_body"))
+    interface_body = json.loads(eval(request.form.get("interface_body")))
+
+    print(type(interface_body))
 
     response = api_request.request(interface_method, interface_url, headers=interface_header, json=interface_body)
 
