@@ -6,6 +6,7 @@ from app.api.TestCaseGroupManager.test_case_group import get_all_testc_case_grou
 from app.form.project_form import ProjectFrom
 from app.form.module_form import ModuleFrom
 from app.form.testcase_group_form import TestCaseGroupForm
+from flask_wtf.csrf import generate_csrf
 
 from flask import Flask, render_template, request, redirect
 
@@ -21,10 +22,9 @@ def index():
     return render_template("index.html")
 
 
-
 @main.route("/api.html", methods=['GET'])
 def api():
-    return render_template("add_interface.html")
+    return render_template("add_interface.html", csrf_token=generate_csrf())
 
 
 @main.route("/timer.html")

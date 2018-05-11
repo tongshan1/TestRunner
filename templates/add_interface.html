@@ -25,6 +25,7 @@ add new interface
                 &nbsp;&nbsp;
                 <label class="control-label">所属某块：</label>
                 <input type="text" class="form-control" id="interface_project" name="interface_project" placeholder="所属某块" style="width: 30%">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token" />
             </div>
             <br/>
 			<div class="form-group">
@@ -35,6 +36,7 @@ add new interface
                     </button>
 					
 					<ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li>GET</li>
                         <li>POST</li>
                         <li>PUT</li>
                         <li>DELETE</li>
@@ -195,10 +197,6 @@ add new interface
         ace: ace
     };
     var editor = new JSONEditor(container, options);
-</script>
-
-
-	<script>
 
 
 	$('.dropdown-menu').on('click', function(e) {
@@ -245,31 +243,44 @@ add new interface
         if (data_type =="form-data"){
 
 			var data1 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
-
             data1 = JSON.parse(data1);
-
             var editor1 = new JSONEditor(container, options, data1);
-
-{#			$("#interface_response").text(data1)#}
-
         }
         if (data_type=="x-www-form-urlencoded"){
 			var data2 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
-
             data2 = JSON.parse(data2);
-
             var editor2 = new JSONEditor(container, options, data2);
-{#			$("#interface_response").text(data2)#}
         }
         if (data_type=="JSON(application/json)"){
 
-            var data3 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["json_data"]);
-
-{#            $("#interface_response").text(data3);#}
+            var data3 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
 
             data3 = JSON.parse(data3);
+            var editor2 = new JSONEditor(container, options, data3);
 
-            var editor = new JSONEditor(container, options, data3);
+        }
+    });
+
+    $("#add_interface").click(function(){
+        var api_data = $.get_api_data();
+        var data_type = $.trim($(".active.body_type").text());
+
+
+        if (data_type =="form-data"){
+
+			var data1 = $.api_save(api_data["interface_name"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+            alert(data1)
+        }
+        if (data_type=="x-www-form-urlencoded"){
+			var data2 = $.api_save(api_data["interface_name"],api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+            alert(data2)
+        }
+        if (data_type=="JSON(application/json)"){
+
+
+            var data3 = $.api_save(api_data["interface_name"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+{##}
+{#            alert(data3)#}
 
         }
     });

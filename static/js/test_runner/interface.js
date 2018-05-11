@@ -27,6 +27,34 @@ $(document).ready(function(){
 
     };
 
+    $.api_save = function(interface_name, url, method, header, param){
+
+        var response;
+        var csrf_token = $("#csrf_token").val();
+
+        $.ajax({
+            url: "/api",
+            method: "POST",
+            async: false,
+            data: {
+                "csrf_token": csrf_token,
+                "interface_name": interface_name,
+                "interface_url": url,
+                "interface_method": method,
+                "interface_header": header,
+                "interface_body": param,
+                "is_active": true
+            },
+            success: function(data){
+                response =  data;
+            }
+
+        });
+
+        return response
+
+    };
+
     $.get_api_data = function(){
 
         var interface_name = $("#interface_name").val();
@@ -61,8 +89,6 @@ $(document).ready(function(){
         });
         urlencoded_data = JSON.stringify(urlencoded_data);
 
-        var json_data = $(".ace_text-layer").text();
-        json_data = JSON.stringify(json_data);
 
         return {
             "interface_name": interface_name,
@@ -71,8 +97,7 @@ $(document).ready(function(){
             "interface_method":interface_method,
             "headers":headers,
             "form_data":form_data,
-            "urlencoded_data":urlencoded_data,
-            "json_data":json_data
+            "urlencoded_data":urlencoded_data
 
         }
     };
