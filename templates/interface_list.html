@@ -5,6 +5,75 @@ interface list
 {% endblock %}
 
 {% block  content%}
+    <h1>接口列表</h1>
+    <div style="margin-bottom: 20px;">
+    <div>
+        <a id="interface_add" type="button" class="btn btn-primary " href="/api.html">新增接口</a>
+        <a id="interface_add" type="button" class="btn btn-info " src="#">批量导入</a>
+    </div>
+    <div>&nbsp;&nbsp;</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+           <h4>auth</h4>
+        </div>
+        <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover" id="dataTable" width="95%" cellspacing="0">
+          <thead>
+            <tr>
+              <th><input type="checkbox"></th>
+              <th>接口名称</th>
+              <th>接口URL</th>
+              <th>接口方法</th>
+              <th>接口header</th>
+              <th>接口body</th>
+              <th>是否可用</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for interface in interfaces %}
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>{{ interface.interface_name }}</td>
+              <th>{{ interface.interface_url }}</th>
+              <td>{{ interface.interface_method }}</td>
+              <td>{{ interface.interface_header }}</td>
+              <td>{{ interface.interface_body }}</td>
+              <td>{{ interface.is_active }}</td>
+              <td><a id="modules_modify" class="btn btn-primary" href="/api/{{ interface.id }}">编辑</a>&nbsp;&nbsp;<button id="modules_false" class="btn btn-primary">关闭</button></td>
+
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-primary"> 新增</a>
+            <a class="btn btn-danger"> 删除</a>
+        </div>
+    </div>
 
 
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+{% endblock %}
+
+
+{% block own_js %}
+
+    <script src="/static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/static/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="/static/vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <script>
+
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            responsive: true
+        });
+    });
+
+    </script>
 {% endblock %}

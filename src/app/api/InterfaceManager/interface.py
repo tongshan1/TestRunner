@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import request, redirect
 
 from app import db
 from module.Interface import Interface
@@ -7,7 +7,10 @@ from app.handler import register
 from .request.request import api_request
 from app.form.interface_form import InterfaceFrom
 
-import json
+
+def get_all_interface():
+    interfaces = Interface.query.all()
+    return interfaces
 
 
 @register(api, "/api", methods=["POST"])
@@ -26,11 +29,17 @@ def interface_add():
         )
         db.session.add(interface)
         db.session.commit()
-        return "1"
+        return redirect("/interface_list.html")
     else:
         print(interface_form.errors)
 
     return "2"
+
+
+@register(api, "/api/<api_id>")
+def interface_edit(api_id):
+    print(api_id)
+    return redirect("/")
 
 
 @register(api, "/api/run", methods=["POST"])
