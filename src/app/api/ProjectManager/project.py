@@ -5,7 +5,6 @@ from module.Project import Project
 from app.api import api
 from app.form.project_form import ProjectFrom
 from app.handler import register
-from app.logger import debug
 
 import logging
 

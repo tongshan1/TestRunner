@@ -104,6 +104,6 @@ ENV/
 .idea
 .DS_Store
 
+/src/migrations/*
 /src/config.py
-/src/app/api/ApiManager/request/*
 

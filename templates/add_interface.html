@@ -235,25 +235,44 @@ add new interface
     $("#test_interface").click(function(){
         var api_data = $.get_api_data();
         var data_type = $.trim($(".active.body_type").text());
+        var container = document.getElementById('interface_response');
+
+        container.innerHTML = "";
+        var options = {
+                mode: 'view'
+        };
 
         if (data_type =="form-data"){
 
-			var data1 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"])
+			var data1 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
 
-			$("#interface_response").text(data1)
+            data1 = JSON.parse(data1);
+
+            var editor1 = new JSONEditor(container, options, data1);
+
+{#			$("#interface_response").text(data1)#}
 
         }
         if (data_type=="x-www-form-urlencoded"){
-			var data2 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"])
-			$("#interface_response").text(data2)
+			var data2 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+
+            data2 = JSON.parse(data2);
+
+            var editor2 = new JSONEditor(container, options, data2);
+{#			$("#interface_response").text(data2)#}
         }
         if (data_type=="JSON(application/json)"){
 
-			alert(api_data["json_data"]);
+            var data3 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["json_data"]);
+
+{#            $("#interface_response").text(data3);#}
+
+            data3 = JSON.parse(data3);
+
+            var editor = new JSONEditor(container, options, data3);
 
         }
     });
-
 
 
 	</script>

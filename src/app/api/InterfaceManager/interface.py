@@ -6,6 +6,8 @@ from app.api import api
 from app.handler import register
 from .request.request import api_request
 
+import logging
+
 
 @register(api, "/api", methods=["POST"])
 def interface_add():
@@ -28,10 +30,10 @@ def interface_add():
 def interface_request():
     interface_url = request.form.get("interface_url")
     interface_method = request.form.get("interface_method")
-    interface_header = request.form.get("interface_header")
-    interface_body = request.form.get("interface_body")
+    interface_header = eval(request.form.get("interface_header"))
+    interface_body = eval(request.form.get("interface_body"))
 
-    response = api_request.request(interface_method, interface_url)
+    response = api_request.request(interface_method, interface_url, headers=interface_header, json=interface_body)
 
     return response
 
