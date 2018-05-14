@@ -39,13 +39,6 @@ def interface_list():
 def timer():
     return render_template("timer.html")
 
-
-@main.route("/projects.html")
-def project():
-    projects = get_all_project()
-    return render_template("projects.html", projects=projects, form=ProjectFrom())
-
-
 @main.route("/modules.html")
 def module():
     modules = get_all_module()
