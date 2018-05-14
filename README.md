@@ -26,4 +26,7 @@ deactivate
 cp src/app/config.py.example src/app/config.py
 source venv/bin/activate
 cd src && python manage.py db upgrade && cd ..
+python src/manage.py runserver
+
+# open http://127.0.0.1:5000/ in your browser
 ```
