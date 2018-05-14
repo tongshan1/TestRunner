@@ -101,6 +101,7 @@ ENV/
 .idea
 .DS_Store
 
-/src/migrations/*
 /src/config.py
-
+/src/celerybeat-schedule
+/src/celerybeat.pid
+/src/jobs/schedule.py

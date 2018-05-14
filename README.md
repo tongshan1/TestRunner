@@ -24,6 +24,7 @@ deactivate
 
 ```
 cp src/app/config.py.example src/app/config.py
+cp src/jobs/schedule.py.example src/jobs/schedule.py
 source venv/bin/activate
 cd src && python manage.py db upgrade && cd ..
 python src/manage.py runserver
@@ -32,6 +33,9 @@ python src/manage.py runserver
 
 ## start celery worker
 cd src && celery -A jobs worker
+
+## start celery schedule
+cd src &&  celery -A jobs beat
 ```
 
 

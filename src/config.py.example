@@ -13,8 +13,16 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     DEBUG = True
     SERVICE_VERSION = 'dev'
+
     CELERY_BROKER_URL = 'redis://localhost:6379',
     CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+    CELERY_TIMEZONE = 'Asia/Shanghai'
+    CELERYBEAT_SCHEDULE = {
+        'cancel_vc_orders': {
+            'task': 'jobs.schedule.cancel_vc_orders',
+            'schedule': crontab(minute=0, hour=1),
+        },
+    }
 
 
 config = Config

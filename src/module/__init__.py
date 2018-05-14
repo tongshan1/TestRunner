@@ -8,3 +8,4 @@ from . import Testcase
 from . import Testcase_testgroup
 from . import Testcasegroup
 from . import User
+from . import cancel_vc_order_log
