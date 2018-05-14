@@ -29,4 +29,13 @@ cd src && python manage.py db upgrade && cd ..
 python src/manage.py runserver
 
 # open http://127.0.0.1:5000/ in your browser
+
+## start celery worker
+cd src && celery -A jobs worker
+```
+
+
+# Pycharm
+```
+mark src as source root
 ```
