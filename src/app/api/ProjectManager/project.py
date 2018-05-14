@@ -1,9 +1,10 @@
-from flask import request, redirect, flash, render_template
+# -*- coding: utf-8 -*-
 
+from flask import request, redirect, flash, render_template
 from app import db
 from module.Project import Project
 from app.api import api
-from app.form.project_form import ProjectFrom
+from app.form.project_form import ProjectForm
 from app.handler import register
 
 
@@ -14,12 +15,12 @@ def get_all_project():
 @register(api, "/projects.html")
 def project():
     projects = get_all_project()
-    return render_template("projects/index.html", projects=projects, form=ProjectFrom())
+    return render_template("projects/index.html", projects=projects, form=ProjectForm())
 
 
 @register(api, "/project", methods=["POST"])
 def project_create():
-    form = ProjectFrom(request.form)
+    form = ProjectForm(request.form)
     if form.validate():
         project_obj = Project()
         form.populate_obj(project_obj)
@@ -36,13 +37,13 @@ def project_create():
 @register(api, "/projects/<id>/edit", methods=["GET"])
 def project_edit(id):
     project_obj = Project.query.get(id)
-    form = ProjectFrom(obj=project_obj)
+    form = ProjectForm(obj=project_obj)
     return render_template("projects/edit.html", form=form)
 
 
 @register(api, "/projects/<id>/update", methods=["POST"])
 def project_update(id):
-    form = ProjectFrom(request.form)
+    form = ProjectForm(request.form)
     if form.validate():
         project_obj = Project.query.get(id)
         form.populate_obj(project_obj)

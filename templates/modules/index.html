@@ -1,0 +1,71 @@
+{% extends "blank.html" %}
+
+{% block title %}
+    modules
+{% endblock %}
+
+{% block page_header %}
+    模块管理
+{% endblock %}
+
+{% block content %}
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div style="margin-bottom: 20px;">
+                <!-- 新增 -->
+                <a class="btn btn-primary" href="{{ url_for('api.module_new') }}">新增模块</a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    模块列表
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>模块名称</th>
+                                <th>项目名称</th>
+                                <th>测试人员</th>
+                                <th>开发人员</th>
+                                <th>模块版本</th>
+                                <th>模块简介</th>
+                                <th>是否可用</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for module in modules %}
+                                <tr>
+                                    <td>{{ module.module_name }}</td>
+                                    <td>{{ module.project }}</td>
+                                    <td>{{ module.module_testers }}</td>
+                                    <td>{{ module.module_developer }}</td>
+                                    <td>{{ module.module_version }}</td>
+                                    <td>{{ module.module_desc }}</td>
+                                    <td>{{ module.is_active }}</td>
+                                    <td>
+                                        <a href="{{ url_for('api.module_edit', id=module.id) }}" class="btn btn-primary">编辑</a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block own_js %}
+    <script>
+        $(document).ready(function () {
+        });
+    </script>
+{% endblock %}

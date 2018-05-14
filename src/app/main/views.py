@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import main
-from app.api.ProjectManager.project import get_all_project
-from app.api.ModuleManager.module import get_all_module
 from app.api.TestCaseGroupManager.test_case_group import get_all_testc_case_group
 from app.api.InterfaceManager.interface import get_all_interface
-from app.form.project_form import ProjectFrom
-from app.form.module_form import ModuleFrom
 from app.form.testcase_group_form import TestCaseGroupForm
 from flask_wtf.csrf import generate_csrf
 
@@ -38,11 +34,6 @@ def interface_list():
 @main.route("/timer.html")
 def timer():
     return render_template("timer.html")
-
-@main.route("/modules.html")
-def module():
-    modules = get_all_module()
-    return render_template("modules.html", modules=modules, form=ModuleFrom())
 
 
 @main.route("/testcase_group.html")

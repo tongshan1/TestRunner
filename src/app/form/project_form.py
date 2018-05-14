@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from wtforms_alchemy import ModelForm
 from module.Project import Project
 
 
-class ProjectFrom(ModelForm):
+class ProjectForm(ModelForm):
     class Meta:
         model = Project
         exclude = ['datachange_createtime', 'datachange_lasttime']

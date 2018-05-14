@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from . import Interface
-from . import Module
 from . import Project
 from . import Report
 from . import Scheduledtask
