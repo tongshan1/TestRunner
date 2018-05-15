@@ -1,4 +1,5 @@
 import os
+from celery.schedules import crontab
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 
