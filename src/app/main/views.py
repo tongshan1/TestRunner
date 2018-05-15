@@ -26,7 +26,6 @@ def api():
 
 @main.route("/interface_list.html")
 def interface_list():
-
     interfaces = get_all_interface()
     return render_template("interface_list.html", interfaces=interfaces)
 
@@ -44,7 +43,4 @@ def testcase_group():
 
 @main.route("/test_case_detail.html")
 def testcase_detail_group():
-
     return render_template("test_case_details.html")
-
-
