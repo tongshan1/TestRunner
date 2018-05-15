@@ -1,0 +1,28 @@
+import os
+
+ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+
+
+class Config:
+    SECRET_KEY = 'SJT'
+
+    # 连接数据库的地址(使用pymysql拓展),'mysql+pymysql://username:password@serve/database'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:12312345@localhost:3306/testauo'
+    TEMPLATES_AUTO_RELOAD = True
+    EXPLAIN_TEMPLATE_LOADING = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    DEBUG = True
+    SERVICE_VERSION = 'dev'
+
+    CELERY_BROKER_URL = 'redis://localhost:6379',
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+    CELERY_TIMEZONE = 'Asia/Shanghai'
+    CELERYBEAT_SCHEDULE = {
+        'cancel_vc_orders': {
+            'task': 'jobs.schedule.cancel_vc_orders',
+            'schedule': crontab(minute=0, hour=1),
+        },
+    }
+
+
+config = Config

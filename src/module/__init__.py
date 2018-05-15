@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from . import Interface
-from . import Module
 from . import Project
 from . import Report
 from . import Scheduledtask
@@ -9,3 +8,4 @@ from . import Testcase
 from . import Testcase_testgroup
 from . import Testcasegroup
 from . import User
+from . import cancel_vc_order_log

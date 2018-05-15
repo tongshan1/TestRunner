@@ -6,7 +6,6 @@ from app import db
 
 
 class Project(db.Model):
-
     __tablename__ = 'autotest_project'
 
     id = Column(BigInteger, primary_key=True)
@@ -19,15 +18,5 @@ class Project(db.Model):
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())
 
-    def __init__(self, project_name, project_testers, project_developer, project_version, project_desc,
-                 is_active=True, datachange_createtime=None, datachange_lasttime=None, **kwargs):
-        kwargs["project_name"] = project_name
-        kwargs["project_testers"] = project_testers
-        kwargs["project_developer"] = project_developer
-        kwargs["project_version"] = project_version
-        kwargs["project_desc"] = project_desc
-        kwargs["is_active"] = is_active
-        kwargs["datachange_createtime"] = datachange_createtime
-        kwargs["datachange_lasttime"] = datachange_lasttime
-
-        super().__init__(**kwargs)
+    def __repr__(self):
+        return self.project_name

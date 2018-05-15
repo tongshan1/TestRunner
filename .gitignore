@@ -71,9 +71,6 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
-
 # celery beat schedule file
 celerybeat-schedule
 
@@ -104,6 +101,7 @@ ENV/
 .idea
 .DS_Store
 
-/src/migrations/*
 /src/config.py
-
+/src/celerybeat-schedule
+/src/celerybeat.pid
+/src/jobs/schedule.py
