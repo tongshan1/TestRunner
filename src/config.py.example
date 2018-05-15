@@ -27,6 +27,10 @@ class Config:
         },
     }
 
+    COMPRESSOR_DEBUG = False
+    COMPRESSOR_OUTPUT_DIR = './static/dist'
+    COMPRESSOR_STATIC_PREFIX = '/static/dist'
+
 
 config = Config
 JSON_COLUMN = JSON
