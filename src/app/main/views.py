@@ -21,13 +21,13 @@ def index():
 
 @main.route("/api.html", methods=['GET'])
 def api():
-    return render_template("add_interface.html", csrf_token=generate_csrf())
+    return render_template("interface/new.html", csrf_token=generate_csrf())
 
 
 @main.route("/interface_list.html")
 def interface_list():
     interfaces = get_all_interface()
-    return render_template("interface_list.html", interfaces=interfaces)
+    return render_template("interface/list.html", interfaces=interfaces)
 
 
 @main.route("/timer.html")
@@ -38,9 +38,5 @@ def timer():
 @main.route("/testcase_group.html")
 def testcase_group():
     testcase_groups = get_all_testc_case_group()
-    return render_template("test_cases.html", testcase_groups=testcase_groups, form=TestCaseGroupForm())
+    return render_template("test_cases/test_cases.html", testcase_groups=testcase_groups, form=TestCaseGroupForm())
 
-
-@main.route("/test_case_detail.html")
-def testcase_detail_group():
-    return render_template("test_case_details.html")

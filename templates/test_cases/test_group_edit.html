@@ -4,6 +4,10 @@
 编辑用例
 {% endblock %}
 
+{% block page_header %}
+编辑用例
+{% endblock %}
+
 
 {% block content %}
     <h1>编辑用例集</h1>
@@ -14,16 +18,16 @@
             <div class="panel-body">
                 <div class="form-inline">
                     <label for="inputTaskType" class="control-label">用例名称:</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="{{ testcase_group.testcase_group_name }}">
                     <label for="inputTaskType" class="control-label">所属模块:</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="{{ testcase_group.module_id }}">
                 </div>
                 <div>&nbsp;&nbsp;</div>
                 <div class="form-inline">
                     <label for="inputTaskType" class="control-label">用例类型:</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="{{ testcase_group.testcase_type }}">
                     <label for="inputTaskType" class="control-label">用例简介:</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" value="{{ testcase_group.testcase_desc }}">
                 </div>
             </div>
 
@@ -47,18 +51,20 @@
                 </tr>
                 </thead>
                 <tbody>
+                {% for testcase in tescases %}
                 <tr>
                     <td><input type="checkbox"></td>
-                    <td>登录</td>
-                    <td>/auth/mobile</td>
-                    <td>{"token":"1111"}</td>
-                    <td>{"mobile":18912940592}</td>
-                    <td>{"ret":1}</td>
+                    <td>{{ testcase.testcase_name }}</td>
+                    <td>{{ testcase.interface_url }}</td>
+                    <td>{{ testcase.testcase_header }}</td>
+                    <td>{{ testcase.testcase_body }}</td>
+                    <td>{{ testcase.testcase_response }}</td>
                     <td>
                         <button class="btn btn-primary">编辑</button>
                         <button class="btn btn-danger">删除</button>
                     </td>
                 </tr>
+                {% endfor %}
                 </tbody>
 
             </table>

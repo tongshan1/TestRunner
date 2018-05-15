@@ -7,4 +7,3 @@ from . import ModuleManager
 from . import ProjectManager
 from . import TestCaseGroupManager
 from . import Timer
-from . import LogManager

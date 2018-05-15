@@ -8,12 +8,11 @@ add new interface
 <link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
 {% endblock %}
 
-{% block navigation %}
+{% block page_header %}
     添加新接口
 {% endblock %}
 
 {% block content %}
-    <h1>添加新的接口</h1>
 
     <div class="container-fluid">
 	<div class="row-fluid">
@@ -34,7 +33,7 @@ add new interface
                         <span id='interface_method'>GET</span>
                         <span class="caret"></span>
                     </button>
-					
+
 					<ul class="dropdown-menu" aria-labelledby="dLabel">
                         <li>GET</li>
                         <li>POST</li>

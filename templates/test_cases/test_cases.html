@@ -5,14 +5,13 @@
 {% endblock %}
 
 
-{% block navigation %}
+{% block page_header %}
     用例管理
 {% endblock %}
 
 {% block content %}
 
 <div class="card mb-3">
-    <h1>用例管理</h1>
     <div class="card-body">
       <div>
         <!-- 新增 -->
@@ -42,7 +41,7 @@
               <td>{{ test_case_group.testcase_desc }}</td>
               <td>{{ test_case_group.is_active }}</td>
               <td>
-                    <a id="project_modify" class="btn btn-primary" href="/test_case_detail.html">
+                    <a id="project_modify" class="btn btn-primary" href="/testcase_group/{{ test_case_group.id }}/test_group_edit.html">
                         <span class="fa fa-pencil-square-o  fa-fw"></span>
                     </a>
                     <button id="project_false" class="btn btn-success">

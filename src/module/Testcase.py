@@ -12,6 +12,7 @@ class TestInterfacecase(db.Model):
     id = Column(BigInteger, primary_key=True)
     interface_url = Column(String(255), nullable=False)
     testcase_name = Column(String(200), nullable=False)
+    testcase_method = Column(String(200), nullable=False)
     testcase_header = Column(JSON, nullable=False)
     testcase_body = Column(JSON, nullable=False)
     testcase_response = Column(JSON, nullable=False)
@@ -19,10 +20,11 @@ class TestInterfacecase(db.Model):
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())
 
-    def __init__(self, interface_url, testcase_name, testcase_header, testcase_body, testcase_response,
+    def __init__(self, interface_url, testcase_name, testcase_method, testcase_header, testcase_body, testcase_response,
                  is_active=True, datachange_createtime=None, datachange_lasttime=None, **kwargs):
         kwargs["interface_url"] = interface_url
         kwargs["testcase_name"] = testcase_name
+        kwargs["testcase_method"] = testcase_method
         kwargs["testcase_header"] = testcase_header
         kwargs["testcase_body"] = testcase_body
         kwargs["testcase_response"] = testcase_response

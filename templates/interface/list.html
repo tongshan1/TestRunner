@@ -4,8 +4,11 @@
 interface list
 {% endblock %}
 
+{% block page_header %}
+    接口列表
+{% endblock %}
+
 {% block  content%}
-    <h1>接口列表</h1>
     <div style="margin-bottom: 20px;">
     <div>
         <a id="interface_add" type="button" class="btn btn-primary " href="/api.html">新增接口</a>
