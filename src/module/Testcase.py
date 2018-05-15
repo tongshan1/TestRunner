@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import BigInteger, Column, Integer, String, BOOLEAN, DateTime, func
-from sqlalchemy.dialects.postgresql.json import JSON
+from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, func
+from config import JSON_COLUMN as JSON
 from app import db
 
 
 class TestInterfacecase(db.Model):
-
     __tablename__ = 'autotest_interface_testcase'
 
     id = Column(BigInteger, primary_key=True)
@@ -34,7 +33,6 @@ class TestInterfacecase(db.Model):
 
 
 class TestUIcase(db.Model):
-
     __tablename__ = 'autotest_UI_testcase'
 
     id = Column(BigInteger, primary_key=True)
@@ -51,4 +49,3 @@ class TestUIcase(db.Model):
         kwargs["datachange_lasttime"] = datachange_lasttime
 
         super().__init__(**kwargs)
-

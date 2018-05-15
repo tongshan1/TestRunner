@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import BigInteger, Column, Integer, String, BOOLEAN, DateTime, func
-from sqlalchemy.dialects.postgresql.json import JSON
+from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, func
+from config import JSON_COLUMN as JSON
 from app import db
 
 
 class Interface(db.Model):
-
     __tablename__ = 'autotest_Interface'
 
     id = Column(BigInteger, primary_key=True)

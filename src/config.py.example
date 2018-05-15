@@ -1,5 +1,7 @@
 import os
 from celery.schedules import crontab
+from sqlalchemy.dialects.postgresql.json import JSON
+# from sqlalchemy.dialects.mysql.json import JSON
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 
@@ -27,3 +29,4 @@ class Config:
 
 
 config = Config
+JSON_COLUMN = JSON
