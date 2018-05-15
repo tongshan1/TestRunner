@@ -5,6 +5,7 @@ from config import config, ROOT_PATH
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from celery import Celery
+from jac.contrib.flask import JAC
 
 db = SQLAlchemy()
 
@@ -15,6 +16,7 @@ def create_app():
     app.config.from_object(config)
 
     db.init_app(app)
+    JAC(app)
 
     from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)

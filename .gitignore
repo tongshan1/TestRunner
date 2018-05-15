@@ -105,3 +105,4 @@ ENV/
 /src/celerybeat-schedule
 /src/celerybeat.pid
 /src/jobs/schedule.py
+/src/static/dist/
