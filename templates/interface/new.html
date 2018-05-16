@@ -287,17 +287,14 @@
 
             if (data_type == "form-data") {
 
-                var data1 = $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
-                alert(data1)
+                $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                var data2 = $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
-                alert(data2)
+                $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-
-                var data3 = $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
                 {##}
                 {#            alert(data3)#}
 

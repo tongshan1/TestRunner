@@ -29,13 +29,11 @@ $(document).ready(function(){
 
     $.api_save = function(interface_name,module_id,  url, method, header, param){
 
-        var response;
         var csrf_token = $("#csrf_token").val();
 
         $.ajax({
             url: "/interface",
             method: "POST",
-            async: false,
             data: {
                 "csrf_token": csrf_token,
                 "interface_name": interface_name,
@@ -47,12 +45,15 @@ $(document).ready(function(){
                 "is_active": true
             },
             success: function(data){
-                response =  data;
+                if (data.ret == 1){
+                    alert("添加成功");
+                }else{
+                    alert("添加失败");
+                }
             }
 
         });
 
-        return response
 
     };
 
