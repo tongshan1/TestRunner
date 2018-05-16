@@ -110,3 +110,4 @@ ENV/
 /runner.sock
 /uwsgi.ini
 /uwsgi.pid
+/fabfile.py

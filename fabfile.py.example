@@ -1,0 +1,109 @@
+# -*- coding: utf-8 -*-
+from fabric.api import env, run
+
+env.user = 'deploy'
+env.hosts = ['139.162.88.31']
+env.port = '22'
+env.git_clone = "git@github.com:angelfan/TestRunner.git"
+env.base_dir = "/home/deploy"
+env.app_name = "TestRunner"
+env.domain_path = "{base_dir}/{app_name}".format(base_dir=env.base_dir, app_name=env.app_name)
+env.current_path = "{domain_path}/current".format(domain_path=env.domain_path)
+env.releases_path = "{domain_path}/releases".format(domain_path=env.domain_path)
+env.shared_path = "{domain_path}/shared".format(domain_path=env.domain_path)
+env.venv_path = "{shared_path}/venv".format(shared_path=env.shared_path)
+env.uwsgi_pid = "{shared_path}/uwsgi.pid".format(shared_path=env.shared_path)
+env.uwsgi_file = "{shared_path}/uwsgi.ini".format(shared_path=env.shared_path)
+env.release_size = 5
+
+
+def releases():
+    """拉releases"""
+    env.releases = sorted(run('ls -x %(releases_path)s' % {'releases_path': env.releases_path}).split())
+    if len(env.releases) >= 1:
+        env.current_revision = env.releases[-1]
+        env.current_release = "%(releases_path)s/%(current_revision)s" % {'releases_path': env.releases_path,
+                                                                          'current_revision': env.current_revision}
+    if len(env.releases) > 1:
+        env.previous_revision = env.releases[-2]
+        env.previous_release = "%(releases_path)s/%(previous_revision)s" % {'releases_path': env.releases_path,
+                                                                            'previous_revision': env.previous_revision}
+
+
+def checkout():
+    """拉代码"""
+    from time import time
+    env.current_release = "%(releases_path)s/%(time).0f" % {'releases_path': env.releases_path, 'time': time()}
+    run("cd %(releases_path)s; git clone -q -o deploy --depth 1 %(git_clone)s %(current_release)s" % {
+        'releases_path': env.releases_path, 'git_clone': env.git_clone, 'current_release': env.current_release})
+
+
+def symlink():
+    """软连接相关文件"""
+    if not env.current_release:
+        releases()
+    run("ln -nfs %(current_release)s/static %(shared_path)s/static" % {'shared_path': env.shared_path,
+                                                                       'current_release': env.current_release})
+    run("ln -nfs %(shared_path)s/config.py %(current_release)s/src/config.py" % {'shared_path': env.shared_path,
+                                                                                 'current_release': env.current_release})
+
+    run("ln -nfs %(current_release)s %(current_path)s" % {'current_release': env.current_release,
+                                                          'current_path': env.current_path})
+
+
+def cleanup():
+    """清除老的releases"""
+    if not env.releases:
+        releases()
+    if len(env.releases) > env.release_size:
+        directories = env.releases
+        directories.reverse()
+        del directories[:5]
+        env.directories = ' '.join(
+            ["%(releases_path)s/%(release)s" % {'releases_path': env.releases_path, 'release': release} for release in
+             directories])
+        run("rm -rf %(directories)s" % {'directories': env.directories})
+
+
+def update_venv():
+    """更新包"""
+    run("""
+        cd {current_path} &&
+        source {venv}/bin/activate  &&
+        pip install -r requirements.txt
+        """.format(current_path=env.current_release, venv=env.venv_path))
+
+
+def db_upgrade():
+    """migrate资料"""
+    run("""
+        cd {current_path}/src &&
+        source {venv}/bin/activate  &&
+        {venv}/bin/python manage.py db upgrade
+        """.format(current_path=env.current_release, venv=env.venv_path))
+
+
+def start_app():
+    """重启app"""
+    run("""
+        cd {current_path} &&
+        {venv}/bin/uwsgi --ini {uwsgi_file}
+        """.format(current_path=env.current_release, venv=env.venv_path, uwsgi_file=env.uwsgi_file))
+
+
+def reload_app():
+    """重启app"""
+    run("""
+        cd {current_path} &&
+        {venv}/bin/uwsgi --reload {uwsgi_pid}
+        """.format(current_path=env.current_release, venv=env.venv_path, uwsgi_pid=env.uwsgi_pid))
+
+
+def deploy():
+    releases()
+    checkout()
+    symlink()
+    update_venv()
+    db_upgrade()
+    reload_app()  #初次运行用 start_app()
+    cleanup()

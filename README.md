@@ -73,6 +73,20 @@ server {
 ```
 
 
+## deploy
+```bash
+fab deploy
+
+# 部署目录
+../shared 文件夹内如大致如下
+fab deploy 前
+config.py uwsgi.ini venv
+
+fab deploy 后
+config.py  static  uwsgi.ini  uwsgi.log  uwsgi.pid  uwsgi.sock  venv
+```
+
+
 ## Pycharm
 ```
 mark src as source root
