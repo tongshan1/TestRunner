@@ -1,4 +1,5 @@
 import os
+from celery.schedules import crontab
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 
@@ -23,6 +24,10 @@ class Config:
             'schedule': crontab(minute=0, hour=1),
         },
     }
+
+    COMPRESSOR_DEBUG = False
+    COMPRESSOR_OUTPUT_DIR = './static/dist'
+    COMPRESSOR_STATIC_PREFIX = '/static/dist'
 
 
 config = Config

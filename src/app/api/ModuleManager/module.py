@@ -10,8 +10,10 @@ from app.handler import register
 
 @register(api, "/modules.html", methods=["GET"])
 def module_list():
-    modules = Module.query.all()
-    return render_template("modules/index.html", modules=modules)
+    page = request.args.get('page', 1, type=int)
+    pagination = Module.query.paginate(page, error_out=False)
+    modules = pagination.items
+    return render_template("modules/index.html", pagination=pagination, modules=modules)
 
 
 @register(api, "/modules/new", methods=["GET"])

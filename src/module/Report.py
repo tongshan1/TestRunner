@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import BigInteger, Column, Integer, String, BOOLEAN, DateTime, func, Text
-from sqlalchemy.dialects.postgresql.json import JSON
+from sqlalchemy import BigInteger, Column, BOOLEAN, DateTime, func, Text
 from app import db
 
 
 class Report(db.Model):
-
     __tablename__ = 'autotest_report'
 
     id = Column(BigInteger, primary_key=True)
