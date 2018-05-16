@@ -107,3 +107,6 @@ ENV/
 /src/celerybeat.pid
 /src/jobs/schedule.py
 /static/dist/
+/runner.sock
+/uwsgi.ini
+/uwsgi.pid
