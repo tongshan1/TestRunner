@@ -14,6 +14,7 @@ env.shared_path = "{domain_path}/shared".format(domain_path=env.domain_path)
 env.venv_path = "{shared_path}/venv".format(shared_path=env.shared_path)
 env.uwsgi_pid = "{shared_path}/uwsgi.pid".format(shared_path=env.shared_path)
 env.uwsgi_file = "{shared_path}/uwsgi.ini".format(shared_path=env.shared_path)
+env.branch = 'develop'
 env.release_size = 5
 
 
@@ -34,8 +35,9 @@ def checkout():
     """拉代码"""
     from time import time
     env.current_release = "%(releases_path)s/%(time).0f" % {'releases_path': env.releases_path, 'time': time()}
-    run("cd %(releases_path)s; git clone -q -o deploy --depth 1 %(git_clone)s %(current_release)s" % {
-        'releases_path': env.releases_path, 'git_clone': env.git_clone, 'current_release': env.current_release})
+    run("cd %(releases_path)s; git clone -q -o deploy -b %(branch)s --depth 1 %(git_clone)s %(current_release)s" % {
+        'releases_path': env.releases_path, 'branch': env.branch, 'git_clone': env.git_clone,
+        'current_release': env.current_release, })
 
 
 def symlink():
@@ -105,5 +107,5 @@ def deploy():
     symlink()
     update_venv()
     db_upgrade()
-    reload_app()  #初次运行用 start_app()
+    reload_app()  # 初次运行用 start_app()
     cleanup()
