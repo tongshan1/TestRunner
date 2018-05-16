@@ -14,7 +14,7 @@ env.shared_path = "{domain_path}/shared".format(domain_path=env.domain_path)
 env.venv_path = "{shared_path}/venv".format(shared_path=env.shared_path)
 env.uwsgi_pid = "{shared_path}/uwsgi.pid".format(shared_path=env.shared_path)
 env.uwsgi_file = "{shared_path}/uwsgi.ini".format(shared_path=env.shared_path)
-env.branch = 'develop'
+env.branch = 'master'
 env.release_size = 5
 
 
@@ -48,6 +48,9 @@ def symlink():
                                                                        'current_release': env.current_release})
     run("ln -nfs %(shared_path)s/config.py %(current_release)s/src/config.py" % {'shared_path': env.shared_path,
                                                                                  'current_release': env.current_release})
+
+    run("ln -nfs %(shared_path)s/setting.py %(current_release)s/src/setting.py" % {'shared_path': env.shared_path,
+                                                                                   'current_release': env.current_release})
 
     run("ln -nfs %(current_release)s %(current_path)s" % {'current_release': env.current_release,
                                                           'current_path': env.current_path})
@@ -101,11 +104,21 @@ def reload_app():
         """.format(current_path=env.current_release, venv=env.venv_path, uwsgi_pid=env.uwsgi_pid))
 
 
+def compress_static():
+    """migrate资料"""
+    run("""
+       cd {current_path}/src &&
+       source {venv}/bin/activate  &&
+       {venv}/bin/python -m jac.contrib.flask app:create_app
+       """.format(current_path=env.current_release, venv=env.venv_path))
+
+
 def deploy():
     releases()
     checkout()
+    reload_app()  # 初次运行用 start_app()
     symlink()
     update_venv()
     db_upgrade()
-    reload_app()  # 初次运行用 start_app()
+    compress_static()
     cleanup()

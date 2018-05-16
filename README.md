@@ -74,6 +74,9 @@ server {
 
 
 ## deploy
+
+install node
+npm install -g less
 ```bash
 fab deploy
 
