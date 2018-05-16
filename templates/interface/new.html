@@ -1,11 +1,11 @@
 {% extends "blank.html" %}
 
 {% block title %}
-add new interface
+    add new interface
 {% endblock %}
 
 {% block own_css %}
-<link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
+    <link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
 {% endblock %}
 
 {% block page_header %}
@@ -15,169 +15,188 @@ add new interface
 {% block content %}
 
     <div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span12">
+        <div class="row-fluid">
+            <div class="span12">
 
-            <div class="form-inline">
-                <label class="control-label">接口名称:</label>
-                <input type="text" class="form-control" id="interface_name" name="interface_name" placeholder="接口名称" style="width: 30%">
-                &nbsp;&nbsp;
-                <label class="control-label">所属某块：</label>
-                <input type="text" class="form-control" id="interface_project" name="interface_project" placeholder="所属某块" style="width: 30%">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token" />
-            </div>
-            <br/>
-			<div class="form-group">
-				<div class="btn-group">
-					 <button id="dLabel" style="width: 100px" name="interface_method" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span id='interface_method'>GET</span>
-                        <span class="caret"></span>
-                    </button>
+                <div class="form-inline">
+                    <label class="control-label">接口名称:</label>
+                    <input type="text" class="form-control" id="interface_name" name="interface_name" placeholder="接口名称"
+                           style="width: 30%">
+                    &nbsp;&nbsp;
+                    <label class="control-label">所属模块：</label>
+                    <select class="form-control" id="module_id" name="module_id">
+                        {% for module in modules %}
+                            <option value="{{ module.id }}">{{ module.module_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
+                </div>
+                <br/>
 
-					<ul class="dropdown-menu" aria-labelledby="dLabel">
-                        <li>GET</li>
-                        <li>POST</li>
-                        <li>PUT</li>
-                        <li>DELETE</li>
-                        <li>PATCH</li>
-                        <li>HEAD</li>
-                        <li>OPTIONS</li>
-                    </ul>
-
-					<div class="input-group">
-						&nbsp;
-						<input class="form-control" type="text" style="width: 500px" placeholder="输入url" id="interface_url"/>
-
-						<div class="btn-group">
-							&nbsp;
-						<button class="btn btn-outline btn-primary" type="button" style="width: 100px" id="test_interface">
-                            SEND <span class="fa fa-paper-plane-o fa-fw"></span></button>
-						<button class="btn btn-outline btn-success" type="button" style="width: 100px" id="add_interface">
-                            SAVE <span class="fa fa-floppy-o  fa-fw"></span></button>
-					</div>
-					</div>
-
-				</div>
-
-			</div>
-			<div class="tabbable tabs-below" id="tabs-857406">
-				<ul class="nav nav-tabs">
-					<li class="active">
-						<a href="#panel-95714" data-toggle="tab">Headers</a>
-					</li>
-					<li>
-						<a href="#panel-660949" data-toggle="tab">Body</a>
-					</li>
-                    <li>
-						<a href="#panel-660948" data-toggle="tab">Tests</a>
-					</li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="panel-95714">
-						<table class="table table-hover" id="header_table">
-                            <thead>
-                            <tr class="info">
-                                <th style="width: 50px">required</th>
-                                <th>key</th>
-                                <th>value</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><input type="checkbox" class="require_header_table" checked></td>
-                                <td><input type="text" class="form-control key_header_table" disabled></td>
-                                <td><input type="text" class="form-control value_header_table" disabled></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <button class="btn btn-info" id="add_headers">
-                            <span class="fa fa-plus-circle fa-fw"></span>
+                <div class="form-group">
+                    <div class="btn-group">
+                        <button id="dLabel" style="width: 100px" name="interface_method" type="button"
+                                class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                            <span id='interface_method'>GET</span>
+                            <span class="caret"></span>
                         </button>
-					</div>
-					<div class="tab-pane" id="panel-660949">
-						<p>
-                        <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
-                        <ul class="nav nav-tabs">
 
-                            <li class="active body_type" id="form_data_select"><a contenteditable="true" data-toggle="tab" href="#panel-288214">
-                                form-data
-                            </a></li>
-                            <li class="body_type" id="urlencoded_data_select"><a contenteditable="true" data-toggle="tab" href="#panel-173037">
-                                x-www-form-urlencoded
-                            </a></li>
-                             <li class="body_type" id="JSON_data_select"><a contenteditable="true" data-toggle="tab" href="#panel-173036">
-                                 JSON(application/json)
-                             </a></li>
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li>GET</li>
+                            <li>POST</li>
+                            <li>PUT</li>
+                            <li>DELETE</li>
+                            <li>PATCH</li>
+                            <li>HEAD</li>
+                            <li>OPTIONS</li>
                         </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" contenteditable="true" id="panel-288214">
-                                <table class="table table-hover" id="form_data">
-                                    <thead >
-                                    <tr class="warning">
-                                        <th style="width: 50px">required</th>
-                                        <th>key</th>
-                                        <th>value</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><input type="checkbox" class="require_form_data" checked></td>
-                                        <td><input type="text" class="form-control key_form_data"></td>
-                                        <td><input type="text" class="form-control value_form_data"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <button class="btn btn-info" id="add_form_data">
-                                    <span class="fa fa-plus-circle fa-fw"></span>
-                                </button>
-                            </div>
-                            <div class="tab-pane" contenteditable="true" id="panel-173037">
-                                <table class="table table-hover" id="urlencoded_data">
-                                    <thead >
-                                    <tr class="success">
-                                        <th style="width: 50px">required</th>
-                                        <th>key</th>
-                                        <th>value</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><input type="checkbox" class="require_urlencoded_data" checked></td>
-                                        <td><input type="text" class="form-control key_urlencoded_data"></td>
-                                        <td><input type="text" class="form-control value_urlencoded_data"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <button class="btn btn-info" id="add_urlencoded_data"><span class="fa fa-plus-circle fa-fw"></span></button>
-                            </div>
-                            <div class="tab-pane" contenteditable="true" id="panel-173036">
 
-                                <div id="jsoneditor" style="height: 300px;"></div>
+                        <div class="input-group">
+                            &nbsp;
+                            <input class="form-control" type="text" style="width: 500px" placeholder="输入url"
+                                   id="interface_url"/>
+
+                            <div class="btn-group">
+                                &nbsp;
+                                <button class="btn btn-outline btn-primary" type="button" style="width: 100px"
+                                        id="test_interface">
+                                    SEND <span class="fa fa-paper-plane-o fa-fw"></span></button>
+                                <button class="btn btn-outline btn-success" type="button" style="width: 100px"
+                                        id="add_interface">
+                                    SAVE <span class="fa fa-floppy-o  fa-fw"></span></button>
                             </div>
                         </div>
+
                     </div>
 
-						</p>
-					</div>
-                    <div class="tab-pane" id="panel-660948">
-						test
+                </div>
+                <div class="tabbable tabs-below" id="tabs-857406">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#panel-95714" data-toggle="tab">Headers</a>
+                        </li>
+                        <li>
+                            <a href="#panel-660949" data-toggle="tab">Body</a>
+                        </li>
+                        <li>
+                            <a href="#panel-660948" data-toggle="tab">Tests</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="panel-95714">
+                            <table class="table table-hover" id="header_table">
+                                <thead>
+                                <tr class="info">
+                                    <th style="width: 50px">required</th>
+                                    <th>key</th>
+                                    <th>value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="checkbox" class="require_header_table" checked></td>
+                                    <td><input type="text" class="form-control key_header_table" disabled></td>
+                                    <td><input type="text" class="form-control value_header_table" disabled></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-info" id="add_headers">
+                                <span class="fa fa-plus-circle fa-fw"></span>
+                            </button>
+                        </div>
+                        <div class="tab-pane" id="panel-660949">
+                            <p>
+
+                            <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
+                                <ul class="nav nav-tabs">
+
+                                    <li class="active body_type" id="form_data_select"><a contenteditable="true"
+                                                                                          data-toggle="tab"
+                                                                                          href="#panel-288214">
+                                        form-data
+                                    </a></li>
+                                    <li class="body_type" id="urlencoded_data_select"><a contenteditable="true"
+                                                                                         data-toggle="tab"
+                                                                                         href="#panel-173037">
+                                        x-www-form-urlencoded
+                                    </a></li>
+                                    <li class="body_type" id="JSON_data_select"><a contenteditable="true"
+                                                                                   data-toggle="tab"
+                                                                                   href="#panel-173036">
+                                        JSON(application/json)
+                                    </a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" contenteditable="true" id="panel-288214">
+                                        <table class="table table-hover" id="form_data">
+                                            <thead>
+                                            <tr class="warning">
+                                                <th style="width: 50px">required</th>
+                                                <th>key</th>
+                                                <th>value</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td><input type="checkbox" class="require_form_data" checked></td>
+                                                <td><input type="text" class="form-control key_form_data"></td>
+                                                <td><input type="text" class="form-control value_form_data"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-info" id="add_form_data">
+                                            <span class="fa fa-plus-circle fa-fw"></span>
+                                        </button>
+                                    </div>
+                                    <div class="tab-pane" contenteditable="true" id="panel-173037">
+                                        <table class="table table-hover" id="urlencoded_data">
+                                            <thead>
+                                            <tr class="success">
+                                                <th style="width: 50px">required</th>
+                                                <th>key</th>
+                                                <th>value</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td><input type="checkbox" class="require_urlencoded_data" checked></td>
+                                                <td><input type="text" class="form-control key_urlencoded_data"></td>
+                                                <td><input type="text" class="form-control value_urlencoded_data"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-info" id="add_urlencoded_data"><span
+                                                class="fa fa-plus-circle fa-fw"></span></button>
+                                    </div>
+                                    <div class="tab-pane" contenteditable="true" id="panel-173036">
+
+                                        <div id="jsoneditor" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </p>
+                        </div>
+                        <div class="tab-pane" id="panel-660948">
+                            test
+                        </div>
                     </div>
                 </div>
-            </div>
-            <hr/>
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Response
-                </div>
-                <div class="panel-body" id="interface_response" style="height: 300px">
-                   response
+                <hr/>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Response
+                    </div>
+                    <div class="panel-body" id="interface_response" style="height: 300px">
+                        response
+                    </div>
+
                 </div>
 
             </div>
-
-		</div>
-	</div>
-</div>
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -188,103 +207,104 @@ add new interface
     <script src="/static/js/test_runner/interface.js"></script>
 
     <script>
-    // create the editor
-    var container = document.getElementById('jsoneditor');
-    var options = {
-        modes: ['text', 'code', 'tree', 'form', 'view'],
-        mode: 'code',
-        ace: ace
-    };
-    var editor = new JSONEditor(container, options);
-
-
-	$('.dropdown-menu').on('click', function(e) {
-	var $target = $(e.target);
-	$target.is('li') && $('#interface_method').text($target.text())});
-
-    $("#add_form_data").click(function(){
-        $.table_add_tr("form_data");
-    });
-
-    $("#add_urlencoded_data").click(function(){
-        $.table_add_tr("urlencoded_data");
-    });
-
-    $("#add_headers").click(function(){
-        $.table_add_tr("header_table");
-    });
-
-    $("#form_data_select").click(function(){
-
-        $.set_header_type("application/form-data")
-    });
-
-    $("#urlencoded_data_select").click(function(){
-
-        $.set_header_type("application/x-www-form-urlencoded")
-    });
-
-    $("#JSON_data_select").click(function(){
-
-        $.set_header_type("application/json")
-    });
-
-    $("#test_interface").click(function(){
-        var api_data = $.get_api_data();
-        var data_type = $.trim($(".active.body_type").text());
-        var container = document.getElementById('interface_response');
-
-        container.innerHTML = "";
+        // create the editor
+        var container = document.getElementById('jsoneditor');
         var options = {
-                mode: 'view'
+            modes: ['text', 'code', 'tree', 'form', 'view'],
+            mode: 'code',
+            ace: ace
         };
-
-        if (data_type =="form-data"){
-
-			var data1 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
-            data1 = JSON.parse(data1);
-            var editor1 = new JSONEditor(container, options, data1);
-        }
-        if (data_type=="x-www-form-urlencoded"){
-			var data2 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
-            data2 = JSON.parse(data2);
-            var editor2 = new JSONEditor(container, options, data2);
-        }
-        if (data_type=="JSON(application/json)"){
-
-            var data3 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
-
-            data3 = JSON.parse(data3);
-            var editor2 = new JSONEditor(container, options, data3);
-
-        }
-    });
-
-    $("#add_interface").click(function(){
-        var api_data = $.get_api_data();
-        var data_type = $.trim($(".active.body_type").text());
+        var editor = new JSONEditor(container, options);
 
 
-        if (data_type =="form-data"){
+        $('.dropdown-menu').on('click', function (e) {
+            var $target = $(e.target);
+            $target.is('li') && $('#interface_method').text($target.text())
+        });
 
-			var data1 = $.api_save(api_data["interface_name"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
-            alert(data1)
-        }
-        if (data_type=="x-www-form-urlencoded"){
-			var data2 = $.api_save(api_data["interface_name"],api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
-            alert(data2)
-        }
-        if (data_type=="JSON(application/json)"){
+        $("#add_form_data").click(function () {
+            $.table_add_tr("form_data");
+        });
+
+        $("#add_urlencoded_data").click(function () {
+            $.table_add_tr("urlencoded_data");
+        });
+
+        $("#add_headers").click(function () {
+            $.table_add_tr("header_table");
+        });
+
+        $("#form_data_select").click(function () {
+
+            $.set_header_type("application/form-data")
+        });
+
+        $("#urlencoded_data_select").click(function () {
+
+            $.set_header_type("application/x-www-form-urlencoded")
+        });
+
+        $("#JSON_data_select").click(function () {
+
+            $.set_header_type("application/json")
+        });
+
+        $("#test_interface").click(function () {
+            var api_data = $.get_api_data();
+            var data_type = $.trim($(".active.body_type").text());
+            var container = document.getElementById('interface_response');
+
+            container.innerHTML = "";
+            var options = {
+                mode: 'view'
+            };
+
+            if (data_type == "form-data") {
+
+                var data1 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                data1 = JSON.parse(data1);
+                var editor1 = new JSONEditor(container, options, data1);
+            }
+            if (data_type == "x-www-form-urlencoded") {
+                var data2 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                data2 = JSON.parse(data2);
+                var editor2 = new JSONEditor(container, options, data2);
+            }
+            if (data_type == "JSON(application/json)") {
+
+                var data3 = $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+
+                data3 = JSON.parse(data3);
+                var editor2 = new JSONEditor(container, options, data3);
+
+            }
+        });
+
+        $("#add_interface").click(function () {
+            var api_data = $.get_api_data();
+            var data_type = $.trim($(".active.body_type").text());
 
 
-            var data3 = $.api_save(api_data["interface_name"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
-{##}
-{#            alert(data3)#}
+            if (data_type == "form-data") {
 
-        }
-    });
+                var data1 = $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                alert(data1)
+            }
+            if (data_type == "x-www-form-urlencoded") {
+                var data2 = $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                alert(data2)
+            }
+            if (data_type == "JSON(application/json)") {
 
 
-	</script>
+                var data3 = $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                {##}
+                {#            alert(data3)#}
+
+            }
+        });
+
+
+    </script>
 
 {% endblock %}

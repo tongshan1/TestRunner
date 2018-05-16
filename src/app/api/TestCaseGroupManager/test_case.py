@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from flask import render_template
+from flask import render_template, request
 
 from app.api import api
 from app.handler import register
+from app.api.ModuleManager.module import get_all_modules
+from flask_wtf.csrf import generate_csrf
 
 
-@register(api, "/test_case", methods=["GET"])
+@register(api, "/test_case", methods=["GET", "POST"])
 def test_case_add():
-    return render_template("test_cases/test_case_add.html")
+    if request.method == 'GET':
+        return render_template("test_cases/test_case_add.html", modules=get_all_modules(), csrf_token=generate_csrf())
+    else:
+        pass

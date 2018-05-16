@@ -23,7 +23,13 @@ class ApiRequest(object):
         :return:
         """
 
+        print(method)
+        print(path)
+        print(kwargs)
+
         response = self._send_request_safe_mode(method, path, **kwargs)
+
+        print(response)
         return response.text
 
     def _send_request_safe_mode(self, method, url, **kwargs):

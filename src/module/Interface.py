@@ -10,6 +10,7 @@ class Interface(db.Model):
     __tablename__ = 'autotest_Interface'
 
     id = Column(BigInteger, primary_key=True)
+    module_id = Column(BigInteger)
     interface_name = Column(String(200), nullable=False, index=True)
     interface_url = Column(String(255), nullable=False)
     interface_header = Column(JSON, nullable=True)

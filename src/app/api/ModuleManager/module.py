@@ -8,9 +8,13 @@ from app.form.module_form import ModuleForm
 from app.handler import register
 
 
+def get_all_modules():
+    return Module.query.all()
+
+
 @register(api, "/modules.html", methods=["GET"])
 def module_list():
-    modules = Module.query.all()
+    modules = get_all_modules()
     return render_template("modules/index.html", modules=modules)
 
 

@@ -8,7 +8,7 @@ $(document).ready(function(){
         var response;
 
         $.ajax({
-            url: "/api/run",
+            url: "/interface/run",
             method: "POST",
             async: false,
             data: {
@@ -27,18 +27,19 @@ $(document).ready(function(){
 
     };
 
-    $.api_save = function(interface_name, url, method, header, param){
+    $.api_save = function(interface_name,module_id,  url, method, header, param){
 
         var response;
         var csrf_token = $("#csrf_token").val();
 
         $.ajax({
-            url: "/api",
+            url: "/interface",
             method: "POST",
             async: false,
             data: {
                 "csrf_token": csrf_token,
                 "interface_name": interface_name,
+                "module_id":module_id,
                 "interface_url": url,
                 "interface_method": method,
                 "interface_header": header,
@@ -58,7 +59,7 @@ $(document).ready(function(){
     $.get_api_data = function(){
 
         var interface_name = $("#interface_name").val();
-        var interface_project = $("#interface_project").val();
+        var module_id = $("#module_id").val();
         var interface_url = $("#interface_url").val();
         var interface_method = $("#interface_method").text();
 
@@ -92,7 +93,7 @@ $(document).ready(function(){
 
         return {
             "interface_name": interface_name,
-            "interface_project": interface_project,
+            "module_id": module_id,
             "interface_url": interface_url,
             "interface_method":interface_method,
             "headers":headers,
