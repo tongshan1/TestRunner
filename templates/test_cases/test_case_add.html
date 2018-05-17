@@ -22,7 +22,7 @@
                     <label class="control-label">用例名称:</label>
                     <input type="text" class="form-control" id="test_case_name" name="test_case_name" placeholder="用例名称"
                            style="width: 30%">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
                     &nbsp;&nbsp;
                     <div class="form-group">
                         <label class="control-label">用例模版: </label>
@@ -135,9 +135,14 @@
 
                             </tbody>
                         </table>
-                        <button class="btn btn-info" id="add_headers">
-                            <span class="fa fa-plus-circle fa-fw"></span>
-                        </button>
+                        <div class="btn-gruop">
+                            <button class="btn btn-success" id="add_headers">
+                                <span class="fa fa-plus-circle fa-fw"></span>
+                            </button>
+                            <button class="btn btn-danger" id="del_headers">
+                                <span class="fa fa-minus fa-fw"></span>
+                            </button>
+                        </div>
                     </div>
                     <div class="tab-pane" id="panel-660949">
                         <p>
@@ -174,9 +179,14 @@
 
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-info" id="add_form_data">
-                                        <span class="fa fa-plus-circle fa-fw"></span>
-                                    </button>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success" id="add_form_data">
+                                            <span class="fa fa-plus-circle fa-fw"></span>
+                                        </button>
+                                        <button class="btn btn-danger" id="del_form_data">
+                                            <span class="fa fa-minus fa-fw"></span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="tab-pane" contenteditable="true" id="panel-173037">
                                     <table class="table table-hover" id="urlencoded_data">
@@ -191,8 +201,14 @@
 
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-info" id="add_urlencoded_data"><span
-                                            class="fa fa-plus-circle fa-fw"></span></button>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success" id="add_urlencoded_data">
+                                            <span class="fa fa-plus-circle fa-fw"></span>
+                                        </button>
+                                        <button class="btn btn-danger" id="del_urlencoded_data">
+                                            <span class="fa fa-minus fa-fw"></span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="tab-pane" contenteditable="true" id="panel-173036">
 
@@ -243,7 +259,7 @@
 
         $('.test_case_module_menu').on('click', function (e) {
             var $target = $(e.target);
-            $target.is('li') && $('#test_case_module').text($target.text()) && $('#test_case_module').attr("value",$target.val());
+            $target.is('li') && $('#test_case_module').text($target.text()) && $('#test_case_module').attr("value", $target.val());
             $.get_interface_by_module($target.val(), $.load_interface)
         });
 
@@ -263,14 +279,28 @@
             $.table_add_tr("form_data", "", "");
         });
 
+        $("#del_form_data").click(function () {
+            $.table_delete_tr("form_data");
+        });
+
         $("#add_urlencoded_data").click(function () {
             $.table_add_tr("urlencoded_data", "", "");
+        });
+
+        $("#del_urlencoded_data").click(function () {
+            $.table_delete_tr("urlencoded_data", "", "");
         });
 
 
         $("#add_headers").click(function () {
             $.table_add_tr("header_table", "", "");
         });
+
+        $("#del_headers").click(function () {
+
+            $.table_delete_tr("header_table");
+        });
+
 
         $("#form_data_select").click(function () {
 
@@ -329,13 +359,13 @@
                 alert(data1)
             }
             if (data_type == "x-www-form-urlencoded") {
-                var data2 = $.test_case_save(api_data["test_case_name"], api_data["module_id"],api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"]);
+                var data2 = $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"]);
                 alert(data2)
             }
             if (data_type == "JSON(application/json)") {
 
 
-                var data3 = $.test_case_save(api_data["test_case_names"],api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText());
+                var data3 = $.test_case_save(api_data["test_case_names"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText());
 
 
             }

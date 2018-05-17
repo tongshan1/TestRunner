@@ -101,9 +101,14 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <button class="btn btn-info" id="add_headers">
+                            <div class="btn-gruop">
+                            <button class="btn btn-success" id="add_headers">
                                 <span class="fa fa-plus-circle fa-fw"></span>
                             </button>
+                            <button class="btn btn-danger" id="del_headers">
+                                <span class="fa fa-minus fa-fw"></span>
+                            </button>
+                        </div>
                         </div>
                         <div class="tab-pane" id="panel-660949">
                             <p>
@@ -145,9 +150,14 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <button class="btn btn-info" id="add_form_data">
+                                        <div class="btn-group">
+                                        <button class="btn btn-success" id="add_form_data">
                                             <span class="fa fa-plus-circle fa-fw"></span>
                                         </button>
+                                        <button class="btn btn-danger" id="del_form_data">
+                                            <span class="fa fa-minus fa-fw"></span>
+                                        </button>
+                                    </div>
                                     </div>
                                     <div class="tab-pane" contenteditable="true" id="panel-173037">
                                         <table class="table table-hover" id="urlencoded_data">
@@ -166,8 +176,14 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <button class="btn btn-info" id="add_urlencoded_data"><span
-                                                class="fa fa-plus-circle fa-fw"></span></button>
+                                        <div class="btn-group">
+                                        <button class="btn btn-success" id="add_urlencoded_data">
+                                            <span class="fa fa-plus-circle fa-fw"></span>
+                                        </button>
+                                        <button class="btn btn-danger" id="del_urlencoded_data">
+                                            <span class="fa fa-minus fa-fw"></span>
+                                        </button>
+                                    </div>
                                     </div>
                                     <div class="tab-pane" contenteditable="true" id="panel-173036">
 
@@ -226,12 +242,23 @@
             $.table_add_tr("form_data");
         });
 
+        $("#del_form_data").click(function () {
+            $.table_delete_tr("form_data");
+        });
+
         $("#add_urlencoded_data").click(function () {
             $.table_add_tr("urlencoded_data");
+        });
+        $("#del_urlencoded_data").click(function () {
+            $.table_delete_tr("urlencoded_data");
         });
 
         $("#add_headers").click(function () {
             $.table_add_tr("header_table");
+        });
+        $("#del_headers").click(function () {
+
+            $.table_delete_tr("header_table");
         });
 
         $("#form_data_select").click(function () {

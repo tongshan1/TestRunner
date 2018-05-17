@@ -37,8 +37,7 @@ def interface_add():
         return redirect("/interface_list.html")
     else:
         print(interface_form.errors)
-
-    return "2"
+        return "2"
 
 
 @register(api, "/interface/module/<module_id>")
@@ -65,7 +64,6 @@ def interface_list():
 @register(api, "/interface.html", methods=['GET'])
 def interface():
     return render_template("interface/new.html", csrf_token=generate_csrf(), modules=get_all_modules())
-
 
 
 @register(api, "/interface/run", methods=["POST"])

@@ -115,6 +115,18 @@ $(document).ready(function(){
         cell3.innerHTML = '<input type="text" class="form-control value_'+table_id+'" value="'+value+'">';
     };
 
+    $.table_delete_tr = function(table_id){
+
+        var table = document.getElementById(table_id);
+
+        $(".require_"+table_id+":checked").each(function(){
+
+            var index = $(this).parent().parent().index();
+            table.deleteRow(index);
+        });
+
+    };
+
     $.set_header_type = function(type){
         var key = $("#header_table tbody tr:eq(0) td:eq(1) input");
         var value = $("#header_table tbody tr:eq(0) td:eq(2) input");
