@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9b25e7242f0a
+Revision ID: 99e2eed98600
 Revises: 
-Create Date: 2018-05-16 14:42:08.117580
+Create Date: 2018-05-17 18:20:13.767277
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '9b25e7242f0a'
+revision = '99e2eed98600'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -46,10 +46,11 @@ def upgrade():
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('interface_url', sa.String(length=255), nullable=False),
     sa.Column('testcase_name', sa.String(length=200), nullable=False),
+    sa.Column('module_id', sa.BigInteger(), nullable=False),
     sa.Column('testcase_method', sa.String(length=200), nullable=False),
-    sa.Column('testcase_header', postgresql.JSON(astext_type=sa.Text()), nullable=False),
-    sa.Column('testcase_body', postgresql.JSON(astext_type=sa.Text()), nullable=False),
-    sa.Column('testcase_response', postgresql.JSON(astext_type=sa.Text()), nullable=False),
+    sa.Column('testcase_header', postgresql.JSON(astext_type=sa.Text()), nullable=True),
+    sa.Column('testcase_body', postgresql.JSON(astext_type=sa.Text()), nullable=True),
+    sa.Column('testcase_verification', postgresql.JSON(astext_type=sa.Text()), nullable=True),
     sa.Column('is_active', sa.BOOLEAN(), nullable=False),
     sa.Column('datachange_createtime', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('datachange_lasttime', sa.DateTime(timezone=True), nullable=True),
@@ -129,6 +130,14 @@ def upgrade():
     op.create_index(op.f('ix_autotest_testcase_testgroup_testcase_execution_order'), 'autotest_testcase_testgroup', ['testcase_execution_order'], unique=False)
     op.create_index(op.f('ix_autotest_testcase_testgroup_testcase_group_id'), 'autotest_testcase_testgroup', ['testcase_group_id'], unique=False)
     op.create_index(op.f('ix_autotest_testcase_testgroup_testcase_id'), 'autotest_testcase_testgroup', ['testcase_id'], unique=False)
+    op.create_table('autotest_testcase_type',
+    sa.Column('id', sa.BigInteger(), nullable=False),
+    sa.Column('type_code', sa.BigInteger(), nullable=False),
+    sa.Column('type_name', sa.String(length=500), nullable=False),
+    sa.Column('is_active', sa.BOOLEAN(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_autotest_testcase_type_type_code'), 'autotest_testcase_type', ['type_code'], unique=False)
     op.create_table('autotest_testcasegroup',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('module_id', sa.BigInteger(), nullable=False),
@@ -167,6 +176,8 @@ def downgrade():
     op.drop_index(op.f('ix_autotest_testcasegroup_module_id'), table_name='autotest_testcasegroup')
     op.drop_index(op.f('ix_autotest_testcasegroup_datachange_lasttime'), table_name='autotest_testcasegroup')
     op.drop_table('autotest_testcasegroup')
+    op.drop_index(op.f('ix_autotest_testcase_type_type_code'), table_name='autotest_testcase_type')
+    op.drop_table('autotest_testcase_type')
     op.drop_index(op.f('ix_autotest_testcase_testgroup_testcase_id'), table_name='autotest_testcase_testgroup')
     op.drop_index(op.f('ix_autotest_testcase_testgroup_testcase_group_id'), table_name='autotest_testcase_testgroup')
     op.drop_index(op.f('ix_autotest_testcase_testgroup_testcase_execution_order'), table_name='autotest_testcase_testgroup')

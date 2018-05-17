@@ -5,7 +5,7 @@ from app import db
 from module.Interface import Interface
 from schema.interface import InterfaceSchema
 from app.api import api
-from app.handler import register
+from app.handler import register, success, fail
 from app.api.ModuleManager.module import get_all_modules
 from .request.request import api_request
 from app.form.interface_form import InterfaceFrom
@@ -34,10 +34,9 @@ def interface_add():
         )
         db.session.add(interface)
         db.session.commit()
-        return redirect("/interface_list.html")
+        return success()
     else:
-        print(interface_form.errors)
-        return "2"
+        return fail(2, error=interface_form.errors)
 
 
 @register(api, "/interface/module/<module_id>")

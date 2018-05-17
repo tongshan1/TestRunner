@@ -5,7 +5,7 @@ from module.Testcasegroup import Testcasegroup
 from module.Testcase_testgroup import Testcase_testgroup
 from module.Testcase import TestInterfacecase
 from app.api import api
-from app.handler import register
+from app.handler import register, success, fail
 from app.form.testcase_group_form import TestCaseGroupForm
 import logging
 
@@ -15,7 +15,13 @@ def get_all_testc_case_group():
     return testcase_group
 
 
-@register(api, "/testcase_group", methods=["POST"])
+@register(api, "/testcase_group.html", methods=["GET"])
+def testcase_group():
+    testcase_groups = get_all_testc_case_group()
+    return render_template("test_cases/test_group.html", form=TestCaseGroupForm(), testcase_groups=testcase_groups)
+
+
+@register(api, "/test_group", methods=["POST"])
 def testcase_group_add():
 
     testcase_group_form = TestCaseGroupForm()
@@ -33,7 +39,7 @@ def testcase_group_add():
     else:
         logging.error(testcase_group_form.errors)
 
-    return redirect("/")
+    return redirect("/testcase_group.html")
 
 
 @register(api, "/testcase_group/<id>/test_group_edit.html", methods=["GET"])

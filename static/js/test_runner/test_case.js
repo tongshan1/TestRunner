@@ -29,30 +29,31 @@ $(document).ready(function(){
 
     $.test_case_save = function(test_case_name, module_id, url, method, header, param){
 
-        var response;
         var csrf_token = $("#csrf_token").val();
 
         $.ajax({
             url: "/test_case",
             method: "POST",
-            async: false,
             data: {
                 "csrf_token": csrf_token,
-                "test_case_name": test_case_name,
+                "testcase_name": test_case_name,
                 "module_id":module_id,
                 "interface_url": url,
-                "test_case_method": method,
-                "test_case_header": header,
-                "test_case_body": param,
+                "testcase_method": method,
+                "testcase_header": header,
+                "testcase_body": param,
                 "is_active": true
             },
             success: function(data){
                 response =  data;
+                if(data.ret == 1){
+                    alert("添加成功")
+                }else{
+                    alert(data.error);
+                }
             }
 
         });
-
-        return response
 
     };
 

@@ -21,7 +21,7 @@ class TestInterfacecase(db.Model):
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())
 
-    def __init__(self, interface_url, testcase_name, module_id, testcase_method, testcase_header, testcase_body, testcase_verification,
+    def __init__(self, interface_url, testcase_name, module_id, testcase_method, testcase_header, testcase_body, testcase_verification=None,
                  is_active=True, datachange_createtime=None, datachange_lasttime=None, **kwargs):
         kwargs["interface_url"] = interface_url
         kwargs["testcase_name"] = testcase_name
