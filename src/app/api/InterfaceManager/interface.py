@@ -70,9 +70,9 @@ def interface_request():
     interface_url = request.form.get("interface_url")
     interface_method = request.form.get("interface_method")
     interface_header = eval(request.form.get("interface_header"))
-    interface_body = eval(request.form.get("interface_body").replace("true", "True").replace("false", "False"))
+    interface_body = eval(request.form.get("interface_body"))
 
-    response = api_request.request(interface_method, interface_url, headers=interface_header, json=interface_body)
+    response = api_request.request(interface_method, interface_url, headers=interface_header, data=interface_body)
 
     return response
 

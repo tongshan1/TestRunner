@@ -22,12 +22,11 @@ class ApiRequest(object):
         :param kwargs:
         :return:
         """
+        if "header" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
 
-        print(method)
-        print(path)
-        print(kwargs)
-
-        response = self._send_request_safe_mode(method, path, **kwargs)
+            response = self._send_request_safe_mode(method, path, json=(kwargs["data"].replace("true", "True").replace("false", "False")))
+        else:
+            response = self._send_request_safe_mode(method, path, data=kwargs["data"])
 
         print(response)
         return response.text

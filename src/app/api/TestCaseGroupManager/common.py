@@ -10,7 +10,7 @@ def get_testcase_group(group_id):
 def get_testcase_by_group_id(group_id):
 
     test_group = get_testcase_group(group_id)
-    testcase_testgroups = Testcase_testgroup.query.filter_by(testcase_group_id=group_id)
+    testcase_testgroups = Testcase_testgroup.query.filter_by(testcase_group_id=group_id, is_active=True)
 
     testcases = []
     if test_group.testcase_type == 1:
