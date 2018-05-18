@@ -3,6 +3,9 @@
 from sqlalchemy import BigInteger, Column, BOOLEAN, DateTime, func
 from app import db
 
+from .Testcasegroup import Testcasegroup
+from .Testcase import TestInterfacecase, TestUIcase
+
 
 class Testcase_testgroup(db.Model):
 
@@ -16,13 +19,22 @@ class Testcase_testgroup(db.Model):
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())
 
-    def __init__(self, testcase_group_id, testcase_id, testcase_execution_order, is_active=True, datachange_createtime=None,
-                 datachange_lasttime=None, **kwargs):
-        kwargs["testcase_group_id"] = testcase_group_id
-        kwargs["testcase_id"] = testcase_id
-        kwargs["testcase_execution_order"] = testcase_execution_order
-        kwargs["is_active"] = is_active
-        kwargs["datachange_createtime"] = datachange_createtime
-        kwargs["datachange_lasttime"] = datachange_lasttime
+    def __repr__(self):
+        return self.module_name
 
-        super().__init__(**kwargs)
+    @property
+    def testcase_group(self):
+        return Testcasegroup.query.get(self.testcase_group_id)
+
+    @testcase_group.setter
+    def testcase_group(self, testcase_group):
+        self.testcase_group_id = testcase_group.id
+
+    @property
+    def testcase(self):
+        if self.testcase_group.id == 1:
+            return TestInterfacecase.query.get(self.testcase_id)
+
+    @testcase.setter
+    def testcase(self, testcase):
+        self.testcase_id = testcase.id

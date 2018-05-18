@@ -76,10 +76,11 @@
                     </div>
                     <div class="modal-body">
                         {{ form.csrf_token }}
-                        {{ render_field(form.testcase_group_name, class="form-control", placeholder="测试集名称", size="50") }}
-                        {{ render_field(form.module, class="form-control", size="50") }}
-                        {{ render_field(form.type, class="form-control", size="50") }}
-                        {{ render_field(form.testcase_desc, class="form-control", size="50") }}
+                        {{ render_field(form.project_name, class="form-control", placeholder="项目名称", size="50") }}
+                        {{ render_field(form.project_testers, class="form-control", size="50") }}
+                        {{ render_field(form.project_developer, class="form-control", size="50") }}
+                        {{ render_field(form.project_version, class="form-control", size="50") }}
+                        {{ render_field(form.project_desc, class="form-control", size="50") }}
                         {{ render_field(form.is_active) }}
                     </div>
                     <div class="modal-footer">

@@ -21,7 +21,7 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    项目列表
+                    用例集列表
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -48,8 +48,11 @@
                                     <td></td>
                                     <td>{{ testcase_group.is_active }}</td>
                                     <td>
-                                        <button class="testcase_group_edit btn btn-primary" data-id="{{ testcase_group.id }}">
+                                        <a class="testcase_group_edit btn btn-primary" data-id="{{ testcase_group.id }}" href="/testcase_group/{{ testcase_group.id }}/test_group_edit.html">
                                             编辑
+                                        </a>
+                                        <button class="testcase_group_run btn btn-primary" data-id="{{ testcase_group.id }}">
+                                            运行
                                         </button>
                                     </td>
                                 </tr>
@@ -77,10 +80,10 @@
                     <div class="modal-body">
                         {{ form.csrf_token }}
                         {{ render_field(form.testcase_group_name, class="form-control", placeholder="项目名称", size="50") }}
-                        {{ render_field(form.module, class="form-control", size="50") }}
-                        {{ render_field(form.type, class="form-control", size="50") }}
+                        {{ render_field(form.module, class="form-control") }}
+                        {{ render_field(form.type, class="form-control") }}
                         {{ render_field(form.testcase_desc, class="form-control", size="50") }}
-                        {{ render_field(form.is_active) }}
+                        {{ render_field(form.is_active, class="form-control") }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -97,23 +100,5 @@
 {% endblock %}
 
 {% block own_js %}
-    <script>
-        $(document).ready(function () {
-            $('#new_test_group').modal({'show': $('#new_test_group').data('display')});
 
-            $('.testcase_group_edit').click(function () {
-                var testcase_group_id = $(this).data('id');
-                $.ajax({
-                    type: "get",
-                    url: "/projects/${project_id}/edit",
-                    success: function (data) {
-                        $('#edit-modal-container').html(data);
-                        $('#edit-project').modal({'show': true})
-                    },
-                    error: function () {
-                    }
-                })
-            })
-        });
-    </script>
 {% endblock %}

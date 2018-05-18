@@ -3,6 +3,7 @@
 from sqlalchemy import BigInteger, Column, Integer, String, BOOLEAN, DateTime, func
 from sqlalchemy.dialects.postgresql.json import JSON
 from app import db
+from .Module import Module
 
 
 class TestInterfacecase(db.Model):
@@ -36,6 +37,14 @@ class TestInterfacecase(db.Model):
 
         super().__init__(**kwargs)
 
+    @property
+    def module(self):
+        return Module.query.get(self.module_id)
+
+    @module.setter
+    def module(self, module):
+        self.module_id = module.id
+
 
 class TestUIcase(db.Model):
 
@@ -56,3 +65,10 @@ class TestUIcase(db.Model):
 
         super().__init__(**kwargs)
 
+    @property
+    def module(self):
+        return Module.query.get(self.module_id)
+
+    @module.setter
+    def module(self, module):
+        self.module_id = module.id

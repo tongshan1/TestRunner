@@ -8,6 +8,7 @@ from app.handler import register, success, fail
 from app.api.ModuleManager.module import get_all_modules
 from module.Testcase import TestInterfacecase
 from app.form.test_case_from import TestCaseFrom
+from schema.testcase import TestCaseSchema
 from flask_wtf.csrf import generate_csrf
 
 
@@ -36,3 +37,9 @@ def test_case_add():
             return fail(2, error=test_case_from.errors)
 
 
+@register(api, "/testcase/module/<module_id>")
+def get_testcase_by_module(module_id):
+    testcases = TestInterfacecase.query.filter(TestInterfacecase.module_id==module_id).all()
+    testcases = TestCaseSchema(many=True).dumps(testcases)
+
+    return testcases
