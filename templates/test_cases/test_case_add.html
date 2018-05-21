@@ -118,7 +118,7 @@
                         <a href="#panel-660949" data-toggle="tab">Body</a>
                     </li>
                     <li>
-                        <a href="#panel-660948" data-toggle="tab">Tests</a>
+                        <a href="#panel-660948" data-toggle="tab">Verification</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -132,6 +132,7 @@
                             </tr>
                             </thead>
                             <tbody>
+
 
                             </tbody>
                         </table>
@@ -152,16 +153,19 @@
 
                                 <li class="active body_type" id="form_data_select"><a contenteditable="true"
                                                                                       data-toggle="tab"
-                                                                                      href="#panel-288214">
+                                                                                      href="#panel-288214"
+                                                                                      id="form_data_a">
                                     form-data
                                 </a></li>
                                 <li class="body_type" id="urlencoded_data_select"><a contenteditable="true"
                                                                                      data-toggle="tab"
-                                                                                     href="#panel-173037">
+                                                                                     href="#panel-173037"
+                                                                                     id="urlencoded_data_a">
                                     x-www-form-urlencoded
                                 </a></li>
                                 <li class="body_type" id="JSON_data_select"><a contenteditable="true" data-toggle="tab"
-                                                                               href="#panel-173036">
+                                                                               href="#panel-173036"
+                                                                               id="urlencoded_data_a">
                                     JSON(application/json)
                                 </a></li>
                             </ul>
@@ -220,7 +224,26 @@
                         </p>
                     </div>
                     <div class="tab-pane" id="panel-660948">
-                        test
+                        <table class="table table-hover" id="verification_data">
+                            <thead>
+                            <tr class="danger">
+                                <th style="width: 50px">save</th>
+                                <th>key</th>
+                                <th>value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <div class="btn-group">
+                            <button class="btn btn-success" id="add_verification_data">
+                                <span class="fa fa-plus-circle fa-fw"></span>
+                            </button>
+                            <button class="btn btn-danger" id="del_verification_data">
+                                <span class="fa fa-minus fa-fw"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,6 +296,14 @@
         $('.test_case_method_menu').on('click', function (e) {
             var $target = $(e.target);
             $target.is('li') && $('#interface_method').text($target.text())
+        });
+
+        $("#add_verification_data").click(function () {
+            $.table_add_tr("verification_data", "", "");
+        });
+
+        $("#del_verification_data").click(function () {
+            $.table_delete_tr("verification_data");
         });
 
         $("#add_form_data").click(function () {
@@ -352,20 +383,20 @@
             var api_data = $.get_api_data();
             var data_type = $.trim($(".active.body_type").text());
 
+            alert(data_type);
+
 
             if (data_type == "form-data") {
 
-                var data1 = $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"]);
-                alert(data1)
+                var data1 = $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                var data2 = $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"]);
-                alert(data2)
+                var data2 = $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
 
-                var data3 = $.test_case_save(api_data["test_case_names"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText());
+                var data3 = $.test_case_save(api_data["test_case_names"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
 
 
             }

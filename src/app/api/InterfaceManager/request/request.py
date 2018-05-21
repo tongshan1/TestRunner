@@ -31,6 +31,16 @@ class ApiRequest(object):
         print(response)
         return response.text
 
+    def init_request(self, method, path, **kwargs):
+        """
+        替换变量
+        :return:
+        """
+        # 替换path
+
+
+
+
     def _send_request_safe_mode(self, method, url, **kwargs):
         """
         Send a HTTP request, and catch any exception that might occur due to connection problems.

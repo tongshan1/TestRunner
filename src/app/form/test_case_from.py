@@ -10,6 +10,6 @@ class TestCaseFrom(Form):
     testcase_method = StringField('testcase_method', [length(min=0, max=100), data_required(message= u'testcase_method不能为空')])
     testcase_header = StringField('testcase_header')
     testcase_body = StringField('testcase_body')
-    testcase_verification = StringField('testcase_body')
+    testcase_verification = StringField('testcase_verification')
     is_active = BooleanField('is_active')
 
