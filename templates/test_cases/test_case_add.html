@@ -360,18 +360,18 @@
 
             if (data_type == "form-data") {
 
-                var data1 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"]);
+                var data1 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
                 data1 = JSON.parse(data1);
                 var editor1 = new JSONEditor(container, options, data1);
             }
             if (data_type == "x-www-form-urlencoded") {
-                var data2 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"]);
+                var data2 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
                 data2 = JSON.parse(data2);
                 var editor2 = new JSONEditor(container, options, data2);
             }
             if (data_type == "JSON(application/json)") {
 
-                var data3 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText());
+                var data3 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
 
                 data3 = JSON.parse(data3);
                 var editor2 = new JSONEditor(container, options, data3);

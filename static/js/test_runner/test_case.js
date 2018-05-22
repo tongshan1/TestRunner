@@ -3,7 +3,7 @@
  */
 $(document).ready(function () {
 
-    $.api_request = function (url, method, header, param) {
+    $.api_request = function (url, method, header, param, verification) {
 
         var response;
 
@@ -15,7 +15,8 @@ $(document).ready(function () {
                 "interface_url": url,
                 "interface_method": method,
                 "interface_header": header,
-                "interface_body": param
+                "interface_body": param,
+                "testcase_verification": verification
             },
             success: function (data) {
                 response = data;

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from requests.exceptions import (InvalidSchema, InvalidURL, MissingSchema,)
+from .util import replace_variable, set_variable, str_to_dict
 
 
 class ApiRequest(object):
@@ -22,24 +23,31 @@ class ApiRequest(object):
         :param kwargs:
         :return:
         """
-        if "header" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
 
-            response = self._send_request_safe_mode(method, path, json=(kwargs["data"].replace("true", "True").replace("false", "False")))
+        method, path, kwargs = self.__init_request(method, path, kwargs)
+        if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
+
+            response = self._send_request_safe_mode(method, path, json=kwargs["data"])
         else:
             response = self._send_request_safe_mode(method, path, data=kwargs["data"])
 
-        print(response)
         return response.text
 
-    def init_request(self, method, path, **kwargs):
+    def __init_request(self, method, path, **kwargs):
         """
         替换变量
         :return:
         """
         # 替换path
+        path = replace_variable(path)
 
+        if "headers" in kwargs.keys():
+            kwargs["headers"] = str_to_dict(replace_variable(kwargs["headers"]))
 
+        if "data" in kwargs.keys():
+            kwargs["data"] = str_to_dict(replace_variable(kwargs["data"]))
 
+        return method, path, kwargs
 
     def _send_request_safe_mode(self, method, url, **kwargs):
         """
