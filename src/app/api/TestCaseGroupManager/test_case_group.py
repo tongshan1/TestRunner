@@ -11,7 +11,7 @@ from app.form.testcase_testgoup_from import TestCaseTestGroupForm
 from app.api.ModuleManager.module import get_all_modules
 from flask_wtf.csrf import generate_csrf
 import logging
-from .common import get_testcase_by_group_id
+from .util import get_testcase_by_group_id
 
 
 def get_all_testc_case_group():
@@ -81,4 +81,15 @@ def testcase_testgroup_delete(id):
 
     db.session.add(testcase_testgroup)
     db.session.commit()
+    return success()
+
+
+@register(api, "/testgroup/<test_group_id>/run", methods=["POST"])
+def testgroup_run(test_group_id):
+    testcases = get_testcase_by_group_id(test_group_id)
+
+    # testcase_testgroup.is_active = False
+    #
+    # db.session.add(testcase_testgroup)
+    # db.session.commit()
     return success()

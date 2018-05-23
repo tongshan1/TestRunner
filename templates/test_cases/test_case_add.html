@@ -266,7 +266,7 @@
 
 {% block own_js %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
+    <script src="/static/vendor/jquery/ace.js"></script>
     <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
     <script src="/static/js/test_runner/test_case.js"></script>
 
@@ -351,30 +351,20 @@
         $("#test_test_case").click(function () {
             var api_data = $.get_api_data();
             var data_type = $.trim($(".active.body_type").text());
-            var container = document.getElementById('test_case_response');
 
-            container.innerHTML = "";
-            var options = {
-                mode: 'view'
-            };
 
             if (data_type == "form-data") {
 
-                var data1 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
-                data1 = JSON.parse(data1);
-                var editor1 = new JSONEditor(container, options, data1);
+                $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
+
             }
             if (data_type == "x-www-form-urlencoded") {
-                var data2 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
-                data2 = JSON.parse(data2);
-                var editor2 = new JSONEditor(container, options, data2);
+
+                $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-                var data3 = $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
-
-                data3 = JSON.parse(data3);
-                var editor2 = new JSONEditor(container, options, data3);
+                $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
 
             }
         });
@@ -382,8 +372,6 @@
         $("#add_test_case").click(function () {
             var api_data = $.get_api_data();
             var data_type = $.trim($(".active.body_type").text());
-
-            alert(data_type);
 
 
             if (data_type == "form-data") {

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import requests
 from requests.exceptions import (InvalidSchema, InvalidURL, MissingSchema,)
-from .util import replace_variable, set_variable, str_to_dict
+from .util import replace_variable, str_to_dict
+from .response import ApiResponse
 
 
 class ApiRequest(object):
@@ -24,12 +25,17 @@ class ApiRequest(object):
         :return:
         """
 
-        method, path, kwargs = self.__init_request(method, path, kwargs)
+        method, path, kwargs = self.__init_request(method, path, **kwargs)
         if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
 
             response = self._send_request_safe_mode(method, path, json=kwargs["data"])
         else:
             response = self._send_request_safe_mode(method, path, data=kwargs["data"])
+
+        api_response = ApiResponse(response)
+
+        if kwargs.get("testcase_verification"):
+            result = api_response.validate(kwargs["testcase_verification"])
 
         return response.text
 
@@ -41,11 +47,11 @@ class ApiRequest(object):
         # 替换path
         path = replace_variable(path)
 
-        if "headers" in kwargs.keys():
-            kwargs["headers"] = str_to_dict(replace_variable(kwargs["headers"]))
-
-        if "data" in kwargs.keys():
-            kwargs["data"] = str_to_dict(replace_variable(kwargs["data"]))
+        for key, value in kwargs.items():
+            if value in [None,  "", {}]:
+                del kwargs[key]
+            else:
+                kwargs[key] = str_to_dict(replace_variable(value))
 
         return method, path, kwargs
 

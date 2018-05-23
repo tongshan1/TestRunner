@@ -8,6 +8,8 @@ class Variable(dict):
 
 
 variable = Variable()
+variable["ts"] = "1527055281"
+variable["hash"] = "15215b8b123c9e7ed2bc858eb398606bdcfe76133f7d98fa832022523298dbc0s"
 
 
 def replace_variable(str):
@@ -21,7 +23,6 @@ def replace_variable(str):
 
     for key in keys:
         value = variable.get(key)
-        print(value)
         str = str.replace("{$"+key+"$}", value)
 
     return str
@@ -39,12 +40,6 @@ def set_variable(key, value):
 def str_to_dict(str):
     try:
 
-        str
-        json.loads(str)
+        return json.loads(str)
     except ValueError:
-        raise
-
-
-str = '{"ret":true}'
-
-print(str_to_dict(str))
+        return str

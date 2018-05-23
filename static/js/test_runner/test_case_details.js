@@ -7,10 +7,9 @@ $(document).ready(function(){
 
         var testcase_group_id = $("#testcase_group_id").val();
         var testcase_id = $("#test_case_module_interface").attr("value");
-        var is_active = $("#is_active").attr("checked");
+        var is_active = $("#is_active").is(":checked");
         var csrf_token = $("#csrf_token").val();
 
-        alert(testcase_group_id);
 
         $.ajax({
             url:"/testcase_testgroup",
@@ -23,7 +22,12 @@ $(document).ready(function(){
 
             },
             success: function(data){
-                alert(data)
+                if(data.ret == 1){
+                    alert("添加成功！");
+                    window.location.reload();
+                }else{
+                    alert("添加失败！")
+                }
             }
         })
     };
@@ -67,15 +71,15 @@ $(document).ready(function(){
     };
 
     $.delete_case = function(case_id){
-        alert(case_id);
         $.ajax({
             url:"/testcase_testgroup/"+case_id+"/delete",
             method:"DELETE",
             success: function(data){
                 if(data.ret ==1){
-                    alert("删除成功！")
+                    alert("删除成功！");
+                    window.location.reload();
                 }else{
-                    alert("删除成功！")
+                    alert("删除失败！")
                 }
 
             }

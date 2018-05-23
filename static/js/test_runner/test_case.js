@@ -5,12 +5,10 @@ $(document).ready(function () {
 
     $.api_request = function (url, method, header, param, verification) {
 
-        var response;
 
         $.ajax({
             url: "/interface/run",
             method: "POST",
-            async: false,
             data: {
                 "interface_url": url,
                 "interface_method": method,
@@ -19,7 +17,17 @@ $(document).ready(function () {
                 "testcase_verification": verification
             },
             success: function (data) {
-                response = data;
+
+                var container = document.getElementById('test_case_response');
+
+                container.innerHTML = "";
+
+                var options = {
+                    mode: 'view'
+                };
+                var editor = new JSONEditor(container, options, JSON.parse(data));
+
+                editor.expandAll();
             }
 
         });
@@ -47,7 +55,7 @@ $(document).ready(function () {
                 "is_active": true
             },
             success: function (data) {
-                response = data;
+                //response = data;
                 if (data.ret == 1) {
                     alert("添加成功")
                 } else {
@@ -193,7 +201,8 @@ $(document).ready(function () {
 
             for (var key in body) {
                 $.table_add_tr("form_data", key, body[key]);
-            };
+            }
+            ;
             body_type.click()
         }
 

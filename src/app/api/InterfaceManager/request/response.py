@@ -1,3 +1,4 @@
+from .util import set_variable
 
 class DictObj(dict):
     def __init__(self):
@@ -40,23 +41,34 @@ class DictObj(dict):
 class ApiResponse(DictObj):
 
     def __init__(self, api_response):
-        self.api_response = api_response
-        self.dict = self.data
+
+        try:
+            self.data = api_response.json()
+        except ValueError:
+            self.data = api_response.text
         super().__init__()
 
-    @property
-    def data(self):
-        try:
-            data = self.api_response.json()
-        except ValueError:
-            data = self.api_response.text
-        return data
+    def __repr__(self):
+        return str(self.data)
 
     def get_value_by_key(self, key):
-        return eval("self.dict."+key)
+        return eval("self.data."+key)
 
-    def validate(self, key, value):
+    def validate(self, verification):
+        result = True
 
-        real_value = self.get_value_by_key(key)
+        for key, value in verification.items():
 
-        return real_value == value
+            real_value = self.get_value_by_key(key)
+
+            # 如果需要保存
+            if value[1]:
+
+                set_variable(key, self.get_value_by_key(key))
+
+            if value[0] is None:
+                pass
+            if real_value != value[0]:
+                result =  False
+
+        return result

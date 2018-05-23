@@ -45,22 +45,22 @@
                     <th>请求url</th>
                     <th>请求headers</th>
                     <th>请求body</th>
-                    <th>验证结果</th>
+                    <th>验证点</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for testcase in tescases %}
+                {% for key, testcase in tescases.items() %}
                     <tr>
-                        <td><input type="checkbox" class="test_case_check" value="{{ testcase.id }}"></td>
+                        <td><input type="checkbox" class="test_case_check" value="{{ key }}"></td>
                         <td>{{ testcase.testcase_name }}</td>
                         <td>{{ testcase.interface_url }}</td>
                         <td>{{ testcase.testcase_header }}</td>
                         <td>{{ testcase.testcase_body }}</td>
-                        <td>{{ testcase.testcase_response }}</td>
+                        <td>{{ testcase.testcase_verification }}</td>
                         <td>
                             <button class="btn btn-primary">编辑</button>
-                            <button class="btn btn-danger delete_case"  value="{{ testcase.id }}">删除</button>
+                            <button class="btn btn-danger delete_case" value="{{ key }}">删除</button>
                         </td>
                     </tr>
                 {% endfor %}
@@ -71,7 +71,7 @@
         </div>
         <div class="panel-footer">
             <a class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal">添加用例</a>
-            <button class="btn btn-danger" id="delete_cases" >删除用例</button>
+            <button class="btn btn-danger" id="delete_cases">删除用例</button>
             <button class="btn btn-info" id="run_case">运行用例</button>
 
         </div>
@@ -85,7 +85,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    <h4 class="modal-title" id="myModalLabel"> 选择已经存在的用例</h4>
+                    <h4 class="modal-title" id="myModalLabel"> 选择用例</h4>
 
                     <form role="form" action="/testcase_testgroup" method="post">
 
@@ -131,29 +131,24 @@
 
                                         <ul class="dropdown-menu test_case_module_interface_menu"
                                             aria-labelledby="dLabel">
-
-
                                         </ul>
-
-
                                     </div>
 
                                 </div>
+                                是否可用
+                                <input type="checkbox" id="is_active" checked>
                             </div>
-                            是否可用
-                            <input type="checkbox" id="is_active">
+                            <a href="/test_case">用例不存在？</a>
 
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="add_testcase_testgroup">添加</button>
-                        </div>
+
                     </form>
-                    <h4 class="modal-title" id="myModalLabel"> 新增已经存在的用例</h4>
+
 
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="add_testcase_testgroup">添加</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    {#        <button type="submit" class="btn btn-primary">新增</button>#}
                 </div>
                 </form>
             </div>
@@ -181,10 +176,10 @@
         $("#add_testcase_testgroup").on('click', function () {
             $.add_test_case()
         });
-        $("#delete_cases").on("click", function(){
+        $("#delete_cases").on("click", function () {
             $.delete_cases("table_delete_tr");
         });
-        $(".delete_case").on("click", function(){
+        $(".delete_case").on("click", function () {
             var case_id = $(this).attr("value");
             $.delete_case(case_id);
 

@@ -5,12 +5,10 @@ $(document).ready(function(){
 
     $.api_request = function(url, method, header, param){
 
-        var response;
 
         $.ajax({
             url: "/interface/run",
             method: "POST",
-            async: false,
             data: {
                 "interface_url": url,
                 "interface_method": method,
@@ -18,12 +16,20 @@ $(document).ready(function(){
                 "interface_body": param
             },
             success: function(data){
-                response =  data;
+                var container = document.getElementById('test_case_response');
+
+                container.innerHTML = "";
+
+                var options = {
+                    mode: 'view'
+                };
+                var editor = new JSONEditor(container, options, JSON.parse(data));
+
+                editor.expandAll();
             }
 
         });
 
-        return response
 
     };
 

@@ -8,15 +8,17 @@ def get_testcase_group(group_id):
 
 
 def get_testcase_by_group_id(group_id):
-
     test_group = get_testcase_group(group_id)
-    testcase_testgroups = Testcase_testgroup.query.filter_by(testcase_group_id=group_id, is_active=True)
+    testcase_testgroups = Testcase_testgroup.query.filter_by(testcase_group_id=group_id, is_active=True).order_by(
+        Testcase_testgroup.testcase_execution_order)
 
-    testcases = []
+    print(testcase_testgroups)
+
+    testcases = {}
     if test_group.testcase_type == 1:
 
         for testcase_testgroup in testcase_testgroups:
             testcase_id = testcase_testgroup.testcase_id
             testcase = TestInterfacecase.query.get(testcase_id)
-            testcases.append(testcase)
+            testcases[testcase_testgroup.id] = testcase
     return testcases

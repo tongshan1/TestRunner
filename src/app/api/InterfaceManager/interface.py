@@ -30,7 +30,7 @@ def interface_add():
             interface_header=interface_form.interface_header.data,
             interface_body=interface_form.interface_body.data,
             interface_method=interface_form.interface_method.data,
-            is_active=interface_form.is_active.data
+            is_active=interface_form.is_active.data,
         )
         db.session.add(interface)
         db.session.commit()
@@ -71,7 +71,7 @@ def interface_request():
     interface_method = request.form.get("interface_method")
     interface_header = request.form.get("interface_header")
     interface_body = request.form.get("interface_body")
-    testcase_verification = request.form.get("interface_body")
+    testcase_verification = request.form.get("testcase_verification")
 
     response = api_request.request(interface_method, interface_url, headers=interface_header, data=interface_body, testcase_verification=testcase_verification)
 
