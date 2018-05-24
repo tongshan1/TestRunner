@@ -44,7 +44,7 @@ class Result(db.Model):
 
     @classmethod
     def get_by_report_id(cls, report_id):
-        return cls.query.filter(report_id=report_id).all()
+        return cls.query.filter_by(report_id=report_id).all()
 
 
 class Report(db.Model):
