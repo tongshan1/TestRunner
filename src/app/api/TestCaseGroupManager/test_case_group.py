@@ -3,15 +3,14 @@ from flask import redirect, render_template, flash, request
 from app import db
 from module.Testcasegroup import Testcasegroup
 from module.Testcase_testgroup import Testcase_testgroup
-from module.Testcase import TestInterfacecase
 from app.api import api
 from app.handler import register, success, fail
 from app.form.testcase_group_form import TestCaseGroupForm
 from app.form.testcase_testgoup_from import TestCaseTestGroupForm
 from app.api.ModuleManager.module import get_all_modules
 from flask_wtf.csrf import generate_csrf
-import logging
 from .util import get_testcase_by_group_id
+from .TestCase.all_tests import AllTests
 
 
 def get_all_testc_case_group():
@@ -37,7 +36,6 @@ def testcase_group_add():
         flash(u'添加成功', category='success')
         return redirect("/testcase_group.html")
     else:
-        logging.error(testcase_group_form.errors)
         flash(u'添加失败', category='danger')
         return render_template("test_cases/test_group.html", form=testcase_group_form,
                                testcase_groups=get_all_testc_case_group())
@@ -69,7 +67,6 @@ def testcase_testgroup_add():
         db.session.commit()
         return success()
     else:
-        logging.error(testcase_testgroup_from.errors)
         return fail(ret=2)
 
 
@@ -86,10 +83,8 @@ def testcase_testgroup_delete(id):
 
 @register(api, "/testgroup/<test_group_id>/run", methods=["POST"])
 def testgroup_run(test_group_id):
-    testcases = get_testcase_by_group_id(test_group_id)
 
-    # testcase_testgroup.is_active = False
-    #
-    # db.session.add(testcase_testgroup)
-    # db.session.commit()
+    all_test = AllTests()
+    all_test.run_case(test_group_id)
+
     return success()

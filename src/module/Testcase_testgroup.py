@@ -38,3 +38,11 @@ class Testcase_testgroup(db.Model):
     @testcase.setter
     def testcase(self, testcase):
         self.testcase_id = testcase.id
+
+    @classmethod
+    def get_by_id(cls, id):
+        return cls.query.get(id)
+
+    @classmethod
+    def get_by_group_id(cls, group_id):
+        return cls.query.filter(testcase_group_id=group_id).all()

@@ -12,8 +12,6 @@ def get_testcase_by_group_id(group_id):
     testcase_testgroups = Testcase_testgroup.query.filter_by(testcase_group_id=group_id, is_active=True).order_by(
         Testcase_testgroup.testcase_execution_order)
 
-    print(testcase_testgroups)
-
     testcases = {}
     if test_group.testcase_type == 1:
 

@@ -1,5 +1,4 @@
-from flask import request, redirect, render_template, jsonify
-import json
+from flask import request, redirect, render_template
 
 from app import db
 from module.Interface import Interface
@@ -73,7 +72,7 @@ def interface_request():
     interface_body = request.form.get("interface_body")
     testcase_verification = request.form.get("testcase_verification")
 
-    response = api_request.request(interface_method, interface_url, headers=interface_header, data=interface_body, testcase_verification=testcase_verification)
+    response, result = api_request.request(interface_method, interface_url, headers=interface_header, data=interface_body, testcase_verification=testcase_verification)
 
     return response
 

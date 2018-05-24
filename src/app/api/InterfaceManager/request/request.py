@@ -2,7 +2,7 @@
 import requests
 from requests.exceptions import (InvalidSchema, InvalidURL, MissingSchema,)
 from .util import replace_variable, str_to_dict
-from .response import ApiResponse
+from .response import ApiResponse, DictObj
 
 
 class ApiRequest(object):
@@ -24,20 +24,35 @@ class ApiRequest(object):
         :param kwargs:
         :return:
         """
+        result_one = DictObj()
+        note = ""
+        response = ""
+        try:
 
-        method, path, kwargs = self.__init_request(method, path, **kwargs)
-        if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
+            method, path, kwargs = self.__init_request(method, path, **kwargs)
 
-            response = self._send_request_safe_mode(method, path, json=kwargs["data"])
-        else:
-            response = self._send_request_safe_mode(method, path, data=kwargs["data"])
+            if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
 
-        api_response = ApiResponse(response)
+                response = self._send_request_safe_mode(method, path, json=kwargs["data"])
+            else:
+                response = self._send_request_safe_mode(method, path, data=kwargs["data"])
 
-        if kwargs.get("testcase_verification"):
-            result = api_response.validate(kwargs["testcase_verification"])
+            api_response = ApiResponse(response)
+            response = response.text
 
-        return response.text
+            if kwargs.get("testcase_verification"):
+                result = api_response.validate(kwargs["testcase_verification"])
+            else:
+                result = 1
+
+            result_one.result = result
+            result_one.note = note
+        except Exception as e:
+
+            result_one.result = 2
+            result_one.note = e
+        finally:
+            return response, result_one
 
     def __init_request(self, method, path, **kwargs):
         """

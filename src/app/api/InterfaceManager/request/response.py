@@ -42,10 +42,11 @@ class ApiResponse(DictObj):
 
     def __init__(self, api_response):
 
+        self.text = api_response.text
         try:
             self.data = api_response.json()
         except ValueError:
-            self.data = api_response.text
+            self.data = self.text
         super().__init__()
 
     def __repr__(self):
@@ -55,7 +56,14 @@ class ApiResponse(DictObj):
         return eval("self.data."+key)
 
     def validate(self, verification):
-        result = True
+        """
+        result : 1 pass
+                 2 error
+                 3 fail
+        :param verification:
+        :return:
+        """
+        result = 1
 
         for key, value in verification.items():
 
@@ -66,9 +74,10 @@ class ApiResponse(DictObj):
 
                 set_variable(key, self.get_value_by_key(key))
 
+            # 验证值
             if value[0] is None:
-                pass
+                continue
             if real_value != value[0]:
-                result =  False
+                result = 3
 
         return result

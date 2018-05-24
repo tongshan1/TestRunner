@@ -1,0 +1,61 @@
+{% extends "blank.html" %}
+
+{% block title %}
+    test report
+{% endblock %}
+
+{% block page_header %}
+    查看报告
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    报告列表
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>用例集</th>
+                                <th>测试结果</th>
+{#                                <th>测试人员</th>#}
+                                <th>总用例数</th>
+                                <th>通过用例</th>
+                                <th>失败用例</th>
+                                <th>错误用例</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for report in reports %}
+                                <tr>
+                                    <td>{{ report.testgroup.testcase_group_name }}</td>
+                                    <td>{{ report.result }}</td>
+{#                                    <td>{{ report.testgroup }}</td>#}
+                                    <td>{{ report.total }}</td>
+                                    <td>{{ report.success }}</td>
+                                    <td>{{ report.fail }}</td>
+                                    <td>{{ report.error }}</td>
+                                    <td>
+                                        <a href="/report/{{ report.id }}/report_detail.html" class="btn btn-primary">查看详情</a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

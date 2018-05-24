@@ -48,10 +48,12 @@
                                     <td></td>
                                     <td>{{ testcase_group.is_active }}</td>
                                     <td>
-                                        <a class="testcase_group_edit btn btn-primary" data-id="{{ testcase_group.id }}" href="/testcase_group/{{ testcase_group.id }}/test_group_edit.html">
+                                        <a class="testcase_group_edit btn btn-primary" data-id="{{ testcase_group.id }}"
+                                           href="/testcase_group/{{ testcase_group.id }}/test_group_edit.html">
                                             编辑
                                         </a>
-                                        <button class="testcase_group_run btn btn-primary" data-id="{{ testcase_group.id }}">
+                                        <button class="testcase_group_run btn btn-primary"
+                                                data-id="{{ testcase_group.id }}">
                                             运行
                                         </button>
                                     </td>
@@ -100,5 +102,23 @@
 {% endblock %}
 
 {% block own_js %}
+
+    <script>
+        var testcase_group_run = $(".testcase_group_run");
+
+        testcase_group_run.on("click", function(){
+            var group_id = testcase_group_run.attr("data-id");
+            $.ajax({
+                "url": "/testgroup/"+group_id+"/run",
+                "method": "POST",
+                "success": function(data){
+
+                }
+
+            })
+
+        });
+
+    </script>
 
 {% endblock %}
