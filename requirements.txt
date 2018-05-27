@@ -52,3 +52,4 @@ Werkzeug==0.14.1
 WTForms==2.1
 WTForms-Alchemy==0.16.7
 WTForms-Components==0.10.3
+marshmallow==3.0.0b11.dev0

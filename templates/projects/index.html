@@ -103,13 +103,13 @@
 {% block own_js %}
     <script>
         $(document).ready(function () {
-            $('#new-project').modal({'show': $('#new-project').data('display')})
+            $('#new-project').modal({'show': $('#new-project').data('display')});
 
             $('.project-edit').click(function () {
                 var project_id = $(this).data('id');
                 $.ajax({
                     type: "get",
-                    url: `/projects/${project_id}/edit`,
+                    url: "/projects/${project_id}/edit",
                     success: function (data) {
                         $('#edit-modal-container').html(data);
                         $('#edit-project').modal({'show': true})

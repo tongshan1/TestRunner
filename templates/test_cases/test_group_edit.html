@@ -1,0 +1,191 @@
+{% extends "blank.html" %}
+
+{% block title %}
+    编辑用例
+{% endblock %}
+
+{% block page_header %}
+    编辑用例
+{% endblock %}
+
+
+{% block content %}
+    <div class="panel panel-primary" style="width: 100%">
+        <div class="panel-heading">
+            用例基本信息
+        </div>
+        <div class="panel-body">
+            <div class="form-inline">
+                <label for="inputTaskType" class="control-label">用例名称:</label>
+                <input type="text" class="form-control" value="{{ testcase_group.testcase_group_name }}">
+                <label for="inputTaskType" class="control-label">所属模块:</label>
+                <input type="text" class="form-control" value="{{ testcase_group.module.module_name }}">
+            </div>
+            <div>&nbsp;&nbsp;</div>
+            <div class="form-inline">
+                <label for="inputTaskType" class="control-label">用例类型:</label>
+                <input type="text" class="form-control" value="{{ testcase_group.type.type_name }}">
+                <label for="inputTaskType" class="control-label">用例简介:</label>
+                <input type="text" class="form-control" value="{{ testcase_group.testcase_desc }}">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            包含用例
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" id="test_case_id">
+                <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>用例名称</th>
+                    <th>请求url</th>
+                    <th>请求headers</th>
+                    <th>请求body</th>
+                    <th>验证点</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, testcase in tescases.items() %}
+                    <tr>
+                        <td><input type="checkbox" class="test_case_check" value="{{ key }}"></td>
+                        <td>{{ testcase.testcase_name }}</td>
+                        <td>{{ testcase.interface_url }}</td>
+                        <td>{{ testcase.testcase_header }}</td>
+                        <td>{{ testcase.testcase_body }}</td>
+                        <td>{{ testcase.testcase_verification }}</td>
+                        <td></td>
+                        <td>
+                            <button class="btn btn-primary">编辑</button>
+                            <button class="btn btn-danger delete_case" value="{{ key }}">删除</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal">添加用例</a>
+            <button class="btn btn-danger" id="delete_cases">删除用例</button>
+            <button class="btn btn-info" id="run_case">运行用例</button>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel"> 新增{{ testcase_group.testcase_group_name }}集用例</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="modal-title" id="myModalLabel"> 选择用例</h4>
+
+                    <form role="form" action="/testcase_testgroup" method="post">
+
+                        <div class="modal-body">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <input type="hidden" value="{{ testcase_group.id }}" id="testcase_group_id">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
+                                    <label class="control-label">模块: </label>
+
+                                    <div class="btn-group">
+                                        <button id="dLabel" style="width: 100px" name="interface_method" type="button"
+                                                class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false">
+                                            <span id='test_case_module' value="test">无</span>
+                                            <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu test_case_module_menu" aria-labelledby="dLabel">
+                                            {% for module in modules %}
+                                                <li value="{{ module.id }}">{{ module.module_name }}</li>
+                                            {% endfor %}
+                                        </ul>
+
+
+                                    </div>
+
+                                </div>
+                                &nbsp;&nbsp;
+                                <label class="control-label">用例: </label>
+
+                                <div class="form-group">
+
+                                    <div class="btn-group">
+                                        <button id="dLabel" style="width: 100px" name="interface_method" type="button"
+                                                class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false">
+                                            <span id='test_case_module_interface'>无</span>
+                                            <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu test_case_module_interface_menu"
+                                            aria-labelledby="dLabel">
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                是否可用
+                                <input type="checkbox" id="is_active" checked>
+                            </div>
+                            <a href="/test_case">用例不存在？</a>
+
+                        </div>
+
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="add_testcase_testgroup">添加</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block own_js %}
+    <script src="/static/js/test_runner/test_case_details.js"></script>
+    <script>
+        $('.test_case_module_menu').on('click', function (e) {
+            var $target = $(e.target);
+            $target.is('li') && $('#test_case_module').text($target.text()) && $('#test_case_module').attr("value", $target.val());
+            $.get_test_case_by_module($target.val(), $.load_interface)
+        });
+
+        $('.test_case_module_interface_menu').on('click', function (e) {
+            var $target = $(e.target);
+            $target.is('li') && $('#test_case_module_interface').text($target.text());
+            var test_case_id = $target.attr("value");
+            $('#test_case_module_interface').attr("value", test_case_id);
+
+        });
+        $("#add_testcase_testgroup").on('click', function () {
+            $.add_test_case()
+        });
+        $("#delete_cases").on("click", function () {
+            $.delete_cases("table_delete_tr");
+        });
+        $(".delete_case").on("click", function () {
+            var case_id = $(this).attr("value");
+            $.delete_case(case_id);
+
+        });
+
+    </script>
+{% endblock %}

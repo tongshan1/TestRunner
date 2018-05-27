@@ -9,11 +9,12 @@ class Interface(db.Model):
     __tablename__ = 'autotest_Interface'
 
     id = Column(BigInteger, primary_key=True)
-    interface_name = Column(String(200), nullable=False, index=True)
-    interface_url = Column(String(255), nullable=False)
+    module_id = Column(BigInteger)
+    interface_name = Column( nullable=False, index=True)
+    interface_url = Column(nullable=False)
     interface_header = Column(JSON, nullable=True)
     interface_body = Column(JSON, nullable=True)
-    interface_method = Column(String(10), nullable=False)
+    interface_method = Column(nullable=False)
     is_active = Column(BOOLEAN, nullable=False, default=True)
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())

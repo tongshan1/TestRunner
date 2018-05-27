@@ -1,12 +1,25 @@
-from flask_wtf import Form
-from wtforms import StringField, BooleanField, SubmitField, IntegerField
+from wtforms_alchemy import ModelForm
+from wtforms_alchemy.fields import StringField, QuerySelectField
+from wtforms.fields import BooleanField
 from wtforms.validators import length, data_required
 
+from module.Testcasegroup import Testcasegroup, TestCaseType
+from module.Module import Module
 
-class TestCaseGroupForm(Form):
-    testcase_group_name = StringField('testcase_group_name', [length(min=4, max=50), data_required(message= u'项目名不能为空')])
-    module_id = IntegerField('module_id', [ data_required(message= u'所属模块不能为空')])
-    testcase_type = IntegerField('testcase_type', [ data_required(message= u'开发人员不能为空')])
-    testcase_desc = StringField('testcase_desc', [length(min=4, max=100), data_required(message= u'项目版本不能为空')])
-    is_active = BooleanField('is_active')
-    submit = SubmitField("submit")
+
+def get_modules():
+    return Module.query
+
+
+def get_types():
+    return TestCaseType.query
+
+
+class TestCaseGroupForm(ModelForm):
+    testcase_group_name = StringField(u'用例集名', [length(min=0, max=100), data_required(message= u'用例集名不能为空')])
+    testcase_desc = StringField(u'用例集描述', [length(min=0, max=100), data_required(message= u'用例集描述不能为空')])
+    is_active = BooleanField(u'是否可用')
+
+    module = QuerySelectField(label=u'所属模块',query_factory=get_modules)
+    type = QuerySelectField(label=u'用例集类型',query_factory=get_types)
+

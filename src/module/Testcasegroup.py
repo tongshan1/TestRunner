@@ -2,6 +2,19 @@
 
 from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, func
 from app import db
+from .Module import Module
+
+
+class TestCaseType(db.Model):
+    __tablename__ = 'autotest_testcase_type'
+
+    id = Column(BigInteger, primary_key=True)
+    type_code = Column(BigInteger, index=True, nullable=False)
+    type_name = Column(String(500), nullable=False)
+    is_active = Column(BOOLEAN, nullable=False)
+
+    def __repr__(self):
+        return self.type_name
 
 
 class Testcasegroup(db.Model):
@@ -16,6 +29,26 @@ class Testcasegroup(db.Model):
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())
 
+    def __repr__(self):
+        return self.module_name
+
+    @property
+    def module(self):
+        return Module.query.get(self.module_id)
+
+    @module.setter
+    def module(self, module):
+        self.module_id = module.id
+
+    @property
+    def type(self):
+        return TestCaseType.query.get(self.testcase_type)
+
+    @type.setter
+    def type(self, type):
+        self.testcase_type = type.id
+
+
     def __init__(self, module_id, testcase_group_name, testcase_type, testcase_desc,
                  is_active=True, datachange_createtime=None, datachange_lasttime=None, **kwargs):
         kwargs["module_id"] = module_id
@@ -27,3 +60,4 @@ class Testcasegroup(db.Model):
         kwargs["datachange_lasttime"] = datachange_lasttime
 
         super().__init__(**kwargs)
+

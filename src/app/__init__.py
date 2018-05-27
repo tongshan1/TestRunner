@@ -4,8 +4,9 @@
 from config import config, ROOT_PATH
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from celery import Celery
+# from celery import Celery
 from jac.contrib.flask import JAC
+
 
 db = SQLAlchemy()
 
@@ -27,26 +28,26 @@ def create_app():
     return app
 
 
-def make_celery():
-    app = create_app()
-    celery = Celery(app.import_name,
-                    backend=app.config['CELERY_RESULT_BACKEND'],
-                    broker=app.config['CELERY_BROKER_URL'])
-    celery.conf.update(app.config)
-    TaskBase = celery.Task
-
-    class ContextTask(TaskBase):
-        abstract = True
-
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-
-    celery.Task = ContextTask
-    return celery
-
-
-celery = make_celery()
+# def make_celery():
+#     app = create_app()
+#     celery = Celery(app.import_name,
+#                     backend=app.config['CELERY_RESULT_BACKEND'],
+#                     broker=app.config['CELERY_BROKER_URL'])
+#     celery.conf.update(app.config)
+#     TaskBase = celery.Task
+#
+#     class ContextTask(TaskBase):
+#         abstract = True
+#
+#         def __call__(self, *args, **kwargs):
+#             with app.app_context():
+#                 return TaskBase.__call__(self, *args, **kwargs)
+#
+#     celery.Task = ContextTask
+#     return celery
+#
+#
+# celery = make_celery()
 
 # @app.before_first_request
 # def set_up_logging():

@@ -5,12 +5,10 @@ $(document).ready(function(){
 
     $.api_request = function(url, method, header, param){
 
-        var response;
 
         $.ajax({
-            url: "/api/run",
+            url: "/interface/run",
             method: "POST",
-            async: false,
             data: {
                 "interface_url": url,
                 "interface_method": method,
@@ -18,27 +16,35 @@ $(document).ready(function(){
                 "interface_body": param
             },
             success: function(data){
-                response =  data;
+                alert(data);
+                var container = document.getElementById('interface_response');
+
+                container.innerHTML = "";
+
+                var options = {
+                    mode: 'view'
+                };
+                var editor = new JSONEditor(container, options, JSON.parse(data));
+
+                editor.expandAll();
             }
 
         });
 
-        return response
 
     };
 
-    $.api_save = function(interface_name, url, method, header, param){
+    $.api_save = function(interface_name,module_id,  url, method, header, param){
 
-        var response;
         var csrf_token = $("#csrf_token").val();
 
         $.ajax({
-            url: "/api",
+            url: "/interface",
             method: "POST",
-            async: false,
             data: {
                 "csrf_token": csrf_token,
                 "interface_name": interface_name,
+                "module_id":module_id,
                 "interface_url": url,
                 "interface_method": method,
                 "interface_header": header,
@@ -46,19 +52,22 @@ $(document).ready(function(){
                 "is_active": true
             },
             success: function(data){
-                response =  data;
+                if (data.ret == 1){
+                    alert("添加成功");
+                }else{
+                    alert(data.error);
+                }
             }
 
         });
 
-        return response
 
     };
 
     $.get_api_data = function(){
 
         var interface_name = $("#interface_name").val();
-        var interface_project = $("#interface_project").val();
+        var module_id = $("#module_id").val();
         var interface_url = $("#interface_url").val();
         var interface_method = $("#interface_method").text();
 
@@ -92,7 +101,7 @@ $(document).ready(function(){
 
         return {
             "interface_name": interface_name,
-            "interface_project": interface_project,
+            "module_id": module_id,
             "interface_url": interface_url,
             "interface_method":interface_method,
             "headers":headers,
@@ -112,6 +121,18 @@ $(document).ready(function(){
         cell1.innerHTML = '<input type="checkbox" class="require_'+table_id+'" checked>';
         cell2.innerHTML = '<input type="text" class="form-control key_'+table_id+'">';
         cell3.innerHTML = '<input type="text" class="form-control value_'+table_id+'">';
+    };
+
+    $.table_delete_tr = function(table_id){
+
+        var table = document.getElementById(table_id);
+
+        $(".require_"+table_id+":checked").each(function(){
+
+            var index = $(this).parent().parent().index();
+            table.deleteRow(index);
+        });
+
     };
 
     $.set_header_type = function(type){
