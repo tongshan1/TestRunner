@@ -38,8 +38,59 @@ cd src && celery -A jobs worker
 cd src &&  celery -A jobs beat
 ```
 
+## uwsgi
 
-# Pycharm
+```
+cp uwsgi.ini.example uwsgi.ini
+# modify your config
+uwsgi --ini uwsgi.ini
+```
+
+nginx conf example
+```
+upstream flask {
+    server unix:///your_path/TestRunner/uwsgi.sock;
+}
+
+
+server {
+    listen      8888;
+    charset     utf-8;
+    client_max_body_size 100M;   # adjust to taste
+
+    location /static {
+       alias /your_path/TestRunner/static;
+       gzip_static on;
+       expires max;
+       add_header Cache-Control public;
+    }
+
+    location / {
+        uwsgi_pass  flask;
+        include     uwsgi_params;
+    }
+}
+```
+
+
+## deploy
+
+install node
+npm install -g less
+```bash
+fab deploy
+
+# 部署目录
+../shared 文件夹内如大致如下
+fab deploy 前
+config.py uwsgi.ini venv
+
+fab deploy 后
+config.py  static  uwsgi.ini  uwsgi.log  uwsgi.pid  uwsgi.sock  venv
+```
+
+
+## Pycharm
 ```
 mark src as source root
 ```

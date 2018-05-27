@@ -16,16 +16,14 @@
     </title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    {% compress 'css' %}
+        <link href="/static/vendor/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <link href="/static/vendor/metisMenu/metisMenu.min.css" type="text/css" rel="stylesheet">
+        <link href="/static/css/sb-admin-2.css" type="text/css" rel="stylesheet">
+        <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/static/css/chosen/bootstrap-chosen.css" rel="stylesheet" type="text/css">
+    {% endcompress %}
 
-    <!-- MetisMenu CSS -->
-    <link href="/static/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="/static/dist/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     {% block own_css %}
 
     {% endblock %}
@@ -35,6 +33,7 @@
 <body>
 
 {% from 'macros/render_field.html' import render_field with context %}
+{% from 'macros/pagination.html' import pagination_widget with context %}
 
 <div id="wrapper">
 
@@ -193,17 +192,12 @@
     </div>
 </div>
 
-<!-- jQuery -->
-<script src="/static/vendor/jquery/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-<!-- Metis Menu Plugin JavaScript -->
-<script src="/static/vendor/metisMenu/metisMenu.min.js"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="/static/dist/js/sb-admin-2.js"></script>
+{% compress 'js' %}
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="/static/js/sb-admin-2.js"></script>
+{% endcompress %}
 
 {% block own_js %}
 {% endblock %}

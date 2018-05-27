@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import BigInteger, Column, Integer, String, BOOLEAN, DateTime, func
-from sqlalchemy.dialects.postgresql.json import JSON
+from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, func
 from app import db
 from .Project import Project
 

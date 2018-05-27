@@ -4,6 +4,7 @@ from sqlalchemy import BigInteger, Column, Integer, String, BOOLEAN, DateTime, f
 from sqlalchemy.dialects.postgresql.json import JSON
 from .Testcase_testgroup import Testcase_testgroup
 from .Testcasegroup import Testcasegroup
+from sqlalchemy import BigInteger, Column, BOOLEAN, DateTime, func, Text
 from app import db
 
 
@@ -49,7 +50,6 @@ class Result(db.Model):
 
 
 class Report(db.Model):
-
     __tablename__ = 'autotest_report'
 
     id = Column(BigInteger, primary_key=True)

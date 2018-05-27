@@ -102,6 +102,12 @@ ENV/
 .DS_Store
 
 /src/config.py
+/src/setting.py
 /src/celerybeat-schedule
 /src/celerybeat.pid
 /src/jobs/schedule.py
+/static/dist/
+/runner.sock
+/uwsgi.ini
+/uwsgi.pid
+/fabfile.py

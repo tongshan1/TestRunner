@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import BigInteger, Column, Integer, String, Text
-from sqlalchemy.dialects.postgresql.json import JSON
+from sqlalchemy import Column, Integer, String, Text
 from app import db
+
 
 class SystemSetting(db.Model()):
     __tablename__ = 'autotest_system_setting'

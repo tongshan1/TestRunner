@@ -14,8 +14,10 @@ def get_all_project():
 
 @register(api, "/projects.html")
 def project():
-    projects = get_all_project()
-    return render_template("projects/index.html", projects=projects, form=ProjectForm())
+    page = request.args.get('page', 1, type=int)
+    pagination = Project.query.paginate(page, error_out=False)
+    projects = pagination.items
+    return render_template("projects/index.html", pagination=pagination, projects=projects, form=ProjectForm())
 
 
 @register(api, "/project", methods=["POST"])

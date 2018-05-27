@@ -1,0 +1,17 @@
+[uwsgi]
+chdir = /your_path/TestRunner/src
+home = /your_path/TestRunner/venv
+master = true
+wsgi-file = manage.py
+callable = app
+socket = /your_path/TestRunner/runner.sock
+processes = 2
+threads = 4
+buffer-size = 32768
+daemonize = /your_path/TestRunner/uwsgi.log
+pidfile = /your_path/TestRunner/uwsgi.pid
+chmod-socket = 664
+vacuum = true
+max-requests = 1000
+socket-timeout = 10
+
