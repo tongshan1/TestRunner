@@ -44,7 +44,8 @@ class Result(db.Model):
 
     @classmethod
     def get_by_report_id(cls, report_id):
-        return cls.query.filter_by(report_id=report_id).all()
+        return cls.query.filter_by(report_id=report_id).order_by(
+        Result.datachange_createtime)
 
 
 class Report(db.Model):

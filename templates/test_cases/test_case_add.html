@@ -281,6 +281,7 @@
         var editor = new JSONEditor(container, options);
 
         $('.test_case_module_menu').on('click', function (e) {
+
             var $target = $(e.target);
             $target.is('li') && $('#test_case_module').text($target.text()) && $('#test_case_module').attr("value", $target.val());
             $.get_interface_by_module($target.val(), $.load_interface)
@@ -376,15 +377,15 @@
 
             if (data_type == "form-data") {
 
-                var data1 = $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
+                $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                var data2 = $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
+                $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
 
-                var data3 = $.test_case_save(api_data["test_case_names"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
+                $.test_case_save(api_data["test_case_names"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
 
 
             }

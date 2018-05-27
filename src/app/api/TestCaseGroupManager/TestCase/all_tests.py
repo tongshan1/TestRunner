@@ -43,7 +43,7 @@ class AllTests():
             testcase_verification = test_case.testcase_verification
 
             response, result_one = api_request.request(method, url, headers=testcase_header, data=testcase_body, testcase_verification=testcase_verification)
-            result = Result(report.id, testcase_testgroup_id, result_one.result, result_one.note)
+            result = Result(report.id, testcase_testgroup_id, result_one.result, str(result_one.note))
             db.session.add(result)
 
             if result_one.result == 1:

@@ -33,6 +33,7 @@ $(document).ready(function(){
     };
 
     $.load_interface = function(testcase){
+        $(".test_case_module_interface_menu").html("");
         testcase = $.parseJSON(testcase);
         for(var i= 0; i <=testcase.length; i++){
             $(".test_case_module_interface_menu").append("<li value=\""+testcase[i].id+"\">"+testcase[i].testcase_name+"</li>")

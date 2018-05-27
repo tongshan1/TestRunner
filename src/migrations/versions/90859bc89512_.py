@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 99e2eed98600
+Revision ID: 90859bc89512
 Revises: 
-Create Date: 2018-05-17 18:20:13.767277
+Create Date: 2018-05-25 15:47:33.368055
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '99e2eed98600'
+revision = '90859bc89512'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -87,16 +87,31 @@ def upgrade():
     op.create_index(op.f('ix_autotest_project_datachange_lasttime'), 'autotest_project', ['datachange_lasttime'], unique=False)
     op.create_table('autotest_report',
     sa.Column('id', sa.BigInteger(), nullable=False),
-    sa.Column('project_id', sa.BigInteger(), nullable=False),
-    sa.Column('module_id', sa.BigInteger(), nullable=False),
-    sa.Column('testcase_id', sa.BigInteger(), nullable=False),
-    sa.Column('result', sa.BOOLEAN(), nullable=False),
-    sa.Column('result_log', sa.Text(), nullable=False),
+    sa.Column('testgroup_id', sa.BigInteger(), nullable=False),
+    sa.Column('result', sa.BOOLEAN(), nullable=True),
+    sa.Column('fail', postgresql.JSON(astext_type=sa.Text()), nullable=True),
+    sa.Column('error', postgresql.JSON(astext_type=sa.Text()), nullable=True),
+    sa.Column('success', postgresql.JSON(astext_type=sa.Text()), nullable=True),
+    sa.Column('total', sa.BigInteger(), nullable=True),
+    sa.Column('result_log', sa.Text(), nullable=True),
+    sa.Column('is_active', sa.BOOLEAN(), nullable=False),
     sa.Column('datachange_createtime', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('datachange_lasttime', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_autotest_report_datachange_lasttime'), 'autotest_report', ['datachange_lasttime'], unique=False)
+    op.create_table('autotest_result',
+    sa.Column('id', sa.BigInteger(), nullable=False),
+    sa.Column('report_id', sa.BigInteger(), nullable=False),
+    sa.Column('testcase_testgroup_id', sa.BigInteger(), nullable=False),
+    sa.Column('result', sa.Integer(), nullable=False),
+    sa.Column('note', sa.Text(), nullable=True),
+    sa.Column('is_active', sa.BOOLEAN(), nullable=False),
+    sa.Column('datachange_createtime', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
+    sa.Column('datachange_lasttime', sa.DateTime(timezone=True), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_autotest_result_datachange_lasttime'), 'autotest_result', ['datachange_lasttime'], unique=False)
     op.create_table('autotest_scheduledtask',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('task_name', sa.String(length=50), nullable=False),
@@ -187,6 +202,8 @@ def downgrade():
     op.drop_index(op.f('ix_autotest_scheduledtask_module_id'), table_name='autotest_scheduledtask')
     op.drop_index(op.f('ix_autotest_scheduledtask_datachange_lasttime'), table_name='autotest_scheduledtask')
     op.drop_table('autotest_scheduledtask')
+    op.drop_index(op.f('ix_autotest_result_datachange_lasttime'), table_name='autotest_result')
+    op.drop_table('autotest_result')
     op.drop_index(op.f('ix_autotest_report_datachange_lasttime'), table_name='autotest_report')
     op.drop_table('autotest_report')
     op.drop_index(op.f('ix_autotest_project_datachange_lasttime'), table_name='autotest_project')

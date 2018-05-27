@@ -55,9 +55,9 @@ $(document).ready(function () {
                 "is_active": true
             },
             success: function (data) {
-                //response = data;
                 if (data.ret == 1) {
-                    alert("添加成功")
+                    alert("添加成功");
+                    window.location.reload();
                 } else {
                     alert(data.error);
                 }

@@ -27,21 +27,26 @@ class ApiRequest(object):
         result_one = DictObj()
         note = ""
         response = ""
+        testcase_verification = ""
         try:
 
             method, path, kwargs = self.__init_request(method, path, **kwargs)
+
+            if "testcase_verification" in kwargs.keys():
+                testcase_verification = kwargs.pop("testcase_verification")
 
             if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
 
                 response = self._send_request_safe_mode(method, path, json=kwargs["data"])
             else:
-                response = self._send_request_safe_mode(method, path, data=kwargs["data"])
+
+                response = self._send_request_safe_mode(method, path, **kwargs)
 
             api_response = ApiResponse(response)
             response = response.text
 
-            if kwargs.get("testcase_verification"):
-                result = api_response.validate(kwargs["testcase_verification"])
+            if testcase_verification != "":
+                result = api_response.validate(testcase_verification)
             else:
                 result = 1
 
@@ -50,7 +55,7 @@ class ApiRequest(object):
         except Exception as e:
 
             result_one.result = 2
-            result_one.note = e
+            result_one.note = str(e)
         finally:
             return response, result_one
 
@@ -61,12 +66,12 @@ class ApiRequest(object):
         """
         # 替换path
         path = replace_variable(path)
-
-        for key, value in kwargs.items():
-            if value in [None,  "", {}]:
-                del kwargs[key]
+        print(kwargs)
+        for key in list(kwargs.keys()):
+            if kwargs[key] in [None,  "", {}, '{"":""}', '{}']:
+                kwargs.pop(key)
             else:
-                kwargs[key] = str_to_dict(replace_variable(value))
+                kwargs[key] = str_to_dict(replace_variable(kwargs[key]))
 
         return method, path, kwargs
 
@@ -75,10 +80,12 @@ class ApiRequest(object):
         Send a HTTP request, and catch any exception that might occur due to connection problems.
         Safe mode has been removed from requests 1.x.
         """
-        try:
 
-            return self.session.request(method, url, **kwargs)
-        except (MissingSchema, InvalidSchema, InvalidURL):
-            raise
+        return self.session.request(method, url, **kwargs)
+        # try:
+        #
+        #     return self.session.request(method, url, **kwargs)
+        # except (MissingSchema, InvalidSchema, InvalidURL) as e:
+        #     print(e)
 
 api_request = ApiRequest()

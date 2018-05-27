@@ -16,7 +16,8 @@ $(document).ready(function(){
                 "interface_body": param
             },
             success: function(data){
-                var container = document.getElementById('test_case_response');
+                alert(data);
+                var container = document.getElementById('interface_response');
 
                 container.innerHTML = "";
 
@@ -54,7 +55,7 @@ $(document).ready(function(){
                 if (data.ret == 1){
                     alert("添加成功");
                 }else{
-                    alert("添加失败");
+                    alert(data.error);
                 }
             }
 

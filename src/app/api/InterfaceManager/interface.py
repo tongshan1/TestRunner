@@ -35,6 +35,7 @@ def interface_add():
         db.session.commit()
         return success()
     else:
+        print(interface_form.errors)
         return fail(2, error=interface_form.errors)
 
 
