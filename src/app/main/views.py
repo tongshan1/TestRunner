@@ -11,6 +11,7 @@ def login():
 
 @main.route('/')
 @main.route('/index')
+@main.route('/index.html')
 def index():
     return render_template("index.html")
 
