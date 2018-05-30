@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import jsonify
+from flask import jsonify, render_template
 from . import main
 
 
@@ -10,7 +10,7 @@ def forbidden(e):
 
 @main.app_errorhandler(404)
 def page_not_found(e):
-    return jsonify({404: 'NotFound'}), 404
+     return render_template("error/404.html")
 
 
 @main.app_errorhandler(405)
@@ -20,4 +20,4 @@ def page_not_allowed(e):
 
 @main.app_errorhandler(500)
 def internal_server_error(e):
-    return jsonify({500: 'Error'}), 500
+    return render_template("error/500.html")
