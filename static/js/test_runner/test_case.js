@@ -163,6 +163,7 @@ $(document).ready(function () {
     };
 
     $.load_interface = function (interfaces) {
+        $(".test_case_module_interface_menu").html("");
         interfaces = $.parseJSON(interfaces);
         for (var i = 0; i <= interfaces.length; i++) {
             $(".test_case_module_interface_menu").append("<li value=\"" + interfaces[i].id + "\">" + interfaces[i].interface_name + "</li>")

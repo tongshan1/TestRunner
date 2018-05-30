@@ -3,6 +3,7 @@
 from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, func
 from sqlalchemy.dialects.mysql.json import JSON
 from app import db
+from .Module import  Module
 
 
 class Interface(db.Model):
@@ -31,3 +32,16 @@ class Interface(db.Model):
         kwargs["datachange_lasttime"] = datachange_lasttime
 
         super().__init__(**kwargs)
+
+    @property
+    def module(self):
+        return Module.query.get(self.module_id)
+
+    @module.setter
+    def module(self, module):
+        self.module_id = module.id
+
+    @classmethod
+    def get_all_oder_by_module(cls):
+        return cls.query.filter_by(is_active=True).order_by(
+            cls.module_id)

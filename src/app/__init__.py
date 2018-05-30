@@ -25,6 +25,9 @@ def create_app():
     from app.api import api as api_blueprint
     app.register_blueprint(api_blueprint)
 
+    from app.filter import app_filter as app_filter_blueprint
+    app.register_blueprint(app_filter_blueprint)
+
     return app
 
 

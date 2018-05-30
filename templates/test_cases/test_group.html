@@ -8,6 +8,10 @@
     用例集管理
 {% endblock %}
 
+{% block own_css %}
+    <link rel="stylesheet" href="/static/vendor/ladda/ladda-themeless.min.css">
+{% endblock %}
+
 {% block content %}
 
     <div class="card mb-3">
@@ -33,6 +37,7 @@
                                 <th>用例集类型</th>
                                 <th>所属模块</th>
                                 <th>用例集描述</th>
+                                <th>上次运行时间</th>
                                 <th>上次运行结果</th>
                                 <th>是否可用</th>
                                 <th>操作</th>
@@ -45,17 +50,19 @@
                                     <td>{{ testcase_group.type }}</td>
                                     <td>{{ testcase_group.module }}</td>
                                     <td>{{ testcase_group.testcase_desc }}</td>
-                                    <td></td>
+                                    <td>{{ testcase_group.id | filter_group_latest_time }}</td>
+                                    <td>{{ testcase_group.id | filter_group_latest_result |safe }}</td>
                                     <td>{{ testcase_group.is_active }}</td>
                                     <td>
-                                        <a class="testcase_group_edit btn btn-primary" data-id="{{ testcase_group.id }}"
+                                        <a class="testcase_group_edit btn btn-info" data-id="{{ testcase_group.id }}"
                                            href="/testcase_group/{{ testcase_group.id }}/test_group_edit.html">
-                                            编辑
+                                            <span class="fa fa-wrench fa-lg"></span>
                                         </a>
-                                        <button class="testcase_group_run btn btn-primary"
-                                                data-id="{{ testcase_group.id }}">
-                                            运行
+                                        <button class="testcase_group_run btn btn-success ladda-button"
+                                                data-id="{{ testcase_group.id }}" data-style="zoom-in">
+                                            <span class="fa fa-chevron-circle-right fa-lg ladda-label"></span>
                                         </button>
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -77,11 +84,11 @@
                 <form role="form" action="/test_group" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">新增项目</h4>
+                        <h4 class="modal-title" id="myModalLabel">新增用例集</h4>
                     </div>
                     <div class="modal-body">
                         {{ form.csrf_token }}
-                        {{ render_field(form.testcase_group_name, class="form-control", placeholder="项目名称", size="50") }}
+                        {{ render_field(form.testcase_group_name, class="form-control", placeholder="用例集名称", size="50") }}
                         {{ render_field(form.module, class="form-control") }}
                         {{ render_field(form.type, class="form-control") }}
                         {{ render_field(form.testcase_desc, class="form-control", size="50") }}
@@ -102,17 +109,28 @@
 {% endblock %}
 
 {% block own_js %}
+    <script src="/static/vendor/ladda/spin.min.js"></script>
+    <script src="/static/vendor/ladda/ladda.min.js"></script>
 
     <script>
+
+        // Create a new instance of ladda for the specified button
+        var l = Ladda.create(document.querySelector('.testcase_group_run'));
+
+
         var testcase_group_run = $(".testcase_group_run");
 
-        testcase_group_run.on("click", function(){
+        testcase_group_run.on("click", function () {
+
+            l.start();
+
             var group_id = testcase_group_run.attr("data-id");
             $.ajax({
-                "url": "/testgroup/"+group_id+"/run",
+                "url": "/testgroup/" + group_id + "/run",
                 "method": "POST",
-                "success": function(data){
+                "success": function (data) {
 
+                    l.stop();
                 }
 
             })

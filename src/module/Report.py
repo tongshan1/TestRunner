@@ -46,7 +46,7 @@ class Result(db.Model):
     @classmethod
     def get_by_report_id(cls, report_id):
         return cls.query.filter_by(report_id=report_id).order_by(
-        Result.datachange_createtime)
+            Result.datachange_createtime)
 
 
 class Report(db.Model):
@@ -64,7 +64,7 @@ class Report(db.Model):
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())
 
-    def __init__(self, testgroup_id,  **kwargs):
+    def __init__(self, testgroup_id, **kwargs):
         kwargs["testgroup_id"] = testgroup_id
 
         super().__init__(**kwargs)
@@ -84,3 +84,7 @@ class Report(db.Model):
     @classmethod
     def get_by_id(cls, id):
         return cls.query.get(id)
+
+    @classmethod
+    def get_latest_by_group_id(cls, group_id):
+        return cls.query.filter_by(testgroup_id=group_id).order_by(cls.datachange_createtime.desc()).first()

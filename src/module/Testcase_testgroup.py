@@ -42,16 +42,7 @@ class Testcase_testgroup(db.Model):
     def get_by_id(cls, id):
         return cls.query.get(id)
 
-    def __init__(self, testcase_group_id, testcase_id, testcase_execution_order, is_active=True,
-                 datachange_createtime=None,
-                 datachange_lasttime=None, **kwargs):
-        kwargs["testcase_group_id"] = testcase_group_id
-        kwargs["testcase_id"] = testcase_id
-        kwargs["testcase_execution_order"] = testcase_execution_order
-        kwargs["is_active"] = is_active
-        kwargs["datachange_createtime"] = datachange_createtime
-        kwargs["datachange_lasttime"] = datachange_lasttime
-
     @classmethod
     def get_by_group_id(cls, group_id):
         return cls.query.filter(testcase_group_id=group_id).all()
+

@@ -41,7 +41,7 @@
 
 // Edge <= 12 - 13+, Firefox <=18 - 45+, IE 10 - 11, Safari 5.1 - 9+, iOS 6 - 9.1
 // throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
-// arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be util
+// arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be utils
 // enough that all such attempts are guarded in a try block.
 "use strict";
 
@@ -650,7 +650,7 @@ var i,
 	},
 
 	// CSS string/identifier serialization
-	// https://drafts.csswg.org/cssom/#util-serializing-idioms
+	// https://drafts.csswg.org/cssom/#utils-serializing-idioms
 	rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\0-\x1f\x7f-\uFFFF\w-]/g,
 	fcssescape = function( ch, asCodePoint ) {
 		if ( asCodePoint ) {
@@ -1458,7 +1458,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		}
 
 		return i ?
-			// Do a sibling check if the nodes have a util ancestor
+			// Do a sibling check if the nodes have a utils ancestor
 			siblingCheck( ap[i], bp[i] ) :
 
 			// Otherwise nodes in our document sort first
@@ -5444,7 +5444,7 @@ jQuery.Event.prototype = {
 	}
 };
 
-// Includes all util event props including KeyEvent and MouseEvent specific props
+// Includes all utils event props including KeyEvent and MouseEvent specific props
 jQuery.each( {
 	altKey: true,
 	bubbles: true,
@@ -7192,7 +7192,7 @@ jQuery.fn.extend( {
 
 				ret = elem.value;
 
-				// Handle most util string cases
+				// Handle most utils string cases
 				if ( typeof ret === "string" ) {
 					return ret.replace( rreturn, "" );
 				}
