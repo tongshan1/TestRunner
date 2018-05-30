@@ -16,6 +16,10 @@ class TestCaseType(db.Model):
     def __repr__(self):
         return self.type_name
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
 
 class Testcasegroup(db.Model):
     __tablename__ = 'autotest_testcasegroup'
@@ -48,3 +52,10 @@ class Testcasegroup(db.Model):
     def type(self, type):
         self.testcase_type = type.id
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
+    @classmethod
+    def get_by_id(cls, id):
+        return cls.query.get(id)

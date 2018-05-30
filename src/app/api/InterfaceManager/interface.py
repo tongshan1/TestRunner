@@ -11,11 +11,6 @@ from app.form.interface_form import InterfaceFrom
 from flask_wtf.csrf import generate_csrf
 
 
-def get_all_interface():
-    interfaces = Interface.query.all()
-    return interfaces
-
-
 @register(api, "/interface", methods=["POST"])
 def interface_add():
 
@@ -57,7 +52,7 @@ def interface_by_id(interface_id):
 
 @register(api, "/interface_list.html", methods=["GET"])
 def interface_list():
-    return render_template("interface/list.html", interfaces=get_all_interface())
+    return render_template("interface/list.html", interfaces=Interface.get_all_oder_by_module())
 
 
 @register(api, "/interface.html", methods=['GET'])

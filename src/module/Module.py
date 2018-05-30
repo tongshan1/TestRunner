@@ -29,3 +29,7 @@ class Module(db.Model):
     @project.setter
     def project(self, project):
         self.project_id = project.id
+
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()

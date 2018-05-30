@@ -53,7 +53,7 @@ function _inheritsLoose(subClass, superClass) {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v4.0.0): util.js
+ * Bootstrap (v4.0.0): utils.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -1599,12 +1599,12 @@ function getRoot(node) {
 }
 
 /**
- * Finds the offset parent util to the two provided nodes
+ * Finds the offset parent utils to the two provided nodes
  * @method
  * @memberof Popper.Utils
  * @argument {Element} element1
  * @argument {Element} element2
- * @returns {Element} util offset parent
+ * @returns {Element} utils offset parent
  */
 function findCommonOffsetParent(element1, element2) {
   // This check is needed to avoid errors in case one of the elements isn't defined for any reason
@@ -1617,7 +1617,7 @@ function findCommonOffsetParent(element1, element2) {
   var start = order ? element1 : element2;
   var end = order ? element2 : element1;
 
-  // Get util ancestor container
+  // Get utils ancestor container
   var range = document.createRange();
   range.setStart(start, 0);
   range.setEnd(end, 0);
