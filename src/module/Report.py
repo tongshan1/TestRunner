@@ -77,6 +77,11 @@ class Report(db.Model):
     def testgroup(self, testgroup):
         self.testgroup_id = testgroup.id
 
+    @property
+    def during_time(self):
+        time = self.datachange_lasttime - self.datachange_createtime
+        return time
+
     @classmethod
     def all(cls):
         return cls.query.all()
