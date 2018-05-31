@@ -35,7 +35,7 @@ class ApiRequest(object):
             if "testcase_verification" in kwargs.keys():
                 testcase_verification = kwargs.pop("testcase_verification")
 
-            if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "JSON(application/json)":
+            if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "application/json":
 
                 response = self._send_request_safe_mode(method, path, json=kwargs["data"])
             else:

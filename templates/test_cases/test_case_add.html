@@ -109,6 +109,9 @@
                 </div>
 
             </div>
+            <div class="alert alert-warning">
+                通过{$key$}的形式来传递变量。key是你要传递的变量名。例：在上个接口的Verification保存你要传递的变量（变量不需要验证只需要传递时value不需填），key 填key1 ，在后续接口中可以使用{$key1$}来获取保存下来的变量
+            </div>
             <div class="tabbable tabs-below" id="tabs-857406">
                 <ul class="nav nav-tabs">
                     <li class="active">
@@ -132,7 +135,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
 
                             </tbody>
                         </table>
@@ -266,7 +268,7 @@
 
 {% block own_js %}
 
-    <script src="/static/vendor/jquery/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
     <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
     <script src="/static/js/test_runner/test_case.js"></script>
 
@@ -296,7 +298,7 @@
 
         $('.test_case_method_menu').on('click', function (e) {
             var $target = $(e.target);
-            $target.is('li') && $('#interface_method').text($target.text())
+            $target.is('li') && $('#test_case_method').text($target.text())
         });
 
         $("#add_verification_data").click(function () {

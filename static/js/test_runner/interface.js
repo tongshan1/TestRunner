@@ -16,7 +16,6 @@ $(document).ready(function(){
                 "interface_body": param
             },
             success: function(data){
-                alert(data);
                 var container = document.getElementById('interface_response');
 
                 container.innerHTML = "";
