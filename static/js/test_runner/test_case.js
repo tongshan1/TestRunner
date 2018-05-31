@@ -154,8 +154,9 @@ $(document).ready(function () {
     };
 
     $.set_header_type = function (type) {
-        var key = $("#header_table th tr:eq(0) td:eq(1) input");
-        var value = $("#header_table th tr:eq(0) td:eq(2) input");
+
+        var key = $("#header_table tbody tr:eq(0) td:eq(1) input");
+        var value = $("#header_table tbody tr:eq(0) td:eq(2) input");
 
         key.val("Content-type");
         value.val(type);
