@@ -1,9 +1,6 @@
-/**
- * Created by tongshan on 2018/4/27.
- */
 $(document).ready(function () {
 
-    $.api_request = function (url, method, header, param, verification) {
+    $.api_request = function (l, url, method, header, param, verification) {
 
 
         $.ajax({
@@ -17,22 +14,26 @@ $(document).ready(function () {
                 "testcase_verification": verification
             },
             success: function (data) {
+                try {
+                    var container = document.getElementById('test_case_response');
 
-                var container = document.getElementById('test_case_response');
+                    container.innerHTML = "";
 
-                container.innerHTML = "";
+                    var options = {
+                        mode: 'view'
+                    };
+                    var editor = new JSONEditor(container, options, JSON.parse(data));
 
-                var options = {
-                    mode: 'view'
-                };
-                var editor = new JSONEditor(container, options, JSON.parse(data));
+                    editor.expandAll();
+                } catch (SyntaxError) {
+                    alert("请求失败！")
+                }
 
-                editor.expandAll();
+                l.stop();
             }
 
         });
 
-        return response
 
     };
 
