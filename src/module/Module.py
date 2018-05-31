@@ -33,3 +33,7 @@ class Module(db.Model):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+
+    @classmethod
+    def get_by_name(cls, module_name):
+        return cls.query.flter_by(module_name=module_name)
