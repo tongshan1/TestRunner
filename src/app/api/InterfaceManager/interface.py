@@ -19,16 +19,18 @@ def interface_add():
     interface_form = InterfaceFrom()
 
     if interface_form.validate_on_submit():
-        interface = Interface(
-            interface_name=interface_form.interface_name.data,
-            module_id=interface_form.module_id.data,
-            interface_url=interface_form.interface_url.data,
-            interface_header=interface_form.interface_header.data,
-            interface_body=interface_form.interface_body.data,
-            interface_method=interface_form.interface_method.data,
-            is_active=interface_form.is_active.data,
-        )
-        db.session.add(interface)
+        interface_obj = Interface()
+        interface_form.populate_obj(interface_obj)
+        # interface = Interface(
+        #     interface_name=interface_form.interface_name.data,
+        #     module_id=interface_form.module_id.data,
+        #     interface_url=interface_form.interface_url.data,
+        #     interface_header=interface_form.interface_header.data,
+        #     interface_body=interface_form.interface_body.data,
+        #     interface_method=interface_form.interface_method.data,
+        #     is_active=interface_form.is_active.data,
+        # )
+        db.session.add(interface_obj)
         db.session.commit()
         return success()
     else:
