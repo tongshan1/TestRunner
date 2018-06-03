@@ -1,65 +1,95 @@
 {% extends "blank.html" %}
 
 {% block title %}
-interface list
+    interface list
 {% endblock %}
 
 {% block page_header %}
     接口列表
 {% endblock %}
 
-{% block  content%}
-    <div style="margin-bottom: 20px;">
-    <div>
-        <a id="interface_add" type="button" class="btn btn-primary " href="/api.html">新增接口</a>
-        <a id="interface_add" type="button" class="btn btn-info " src="#">批量导入</a>
-    </div>
-    <div>&nbsp;&nbsp;</div>
+{% block  content %}
+
     <div class="panel panel-default">
         <div class="panel-heading">
-           <h4>auth</h4>
+            <a id="interface_add" type="button" class="btn btn-primary " href="/interface.html">新增接口</a>
+            <a id="bulk-import" type="button" class="btn btn-info " data-toggle="modal" data-target="#myModal">批量导入</a>
         </div>
         <div class="panel-body">
-        <table class="table table-striped table-bordered table-hover" id="dataTable" width="95%" cellspacing="0">
-          <thead>
-            <tr>
-              <th><input type="checkbox"></th>
-              <th>接口名称</th>
-              <th>接口URL</th>
-              <th>接口方法</th>
-              <th>接口header</th>
-              <th>接口body</th>
-              <th>是否可用</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for interface in interfaces %}
-            <tr>
-              <td><input type="checkbox"></td>
-              <td>{{ interface.interface_name }}</td>
-              <th>{{ interface.interface_url }}</th>
-              <td>{{ interface.interface_method }}</td>
-              <td>{{ interface.interface_header }}</td>
-              <td>{{ interface.interface_body }}</td>
-              <td>{{ interface.is_active }}</td>
-              <td><a id="modules_modify" class="btn btn-primary" href="/api/{{ interface.id }}">编辑</a>&nbsp;&nbsp;<button id="modules_false" class="btn btn-primary">关闭</button></td>
+            <table class="table table-striped table-bordered table-hover" id="dataTable" width="95%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>所属模块</th>
+                    <th>接口名称</th>
+                    <th>接口URL</th>
+                    <th>接口方法</th>
+                    <th>接口header</th>
+                    <th>接口body</th>
+                    <th>是否可用</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for interface in interfaces %}
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>{{ interface.module.module_name }}</td>
+                        <td>{{ interface.interface_name }}</td>
+                        <th>{{ interface.interface_url }}</th>
+                        <td>{{ interface.interface_method }}</td>
+                        <td>{{ interface.interface_header }}</td>
+                        <td>{{ interface.interface_body }}</td>
+                        <td>{{ interface.is_active }}</td>
+                        <td><a id="interface_modify" class="btn btn-primary" href="/api/{{ interface.id }}">编辑</a>&nbsp;&nbsp;
+                            <button id="interface_delete" class="btn btn-primary">删除</button>
+                        </td>
 
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
         <div class="panel-footer">
-            <a class="btn btn-primary"> 新增</a>
-            <a class="btn btn-danger"> 删除</a>
+            <a class="btn btn-primary" href="/interface.html"> 新增</a>
+            <a class="btn btn-danger" class="delete_interface"> 删除</a>
         </div>
     </div>
 
 
     </div>
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-</div>
+    </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">批量导入接口</h4>
+                </div>
+                <form action="/interface/import" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="alert alert-danger">
+                            目前只支持swagger格式。<a href="https://swagger.io/" class="alert-link">什么是swagger？</a>.
+                        </div>
+                        <div class="form-group">
+                            <label>File input</label>
+                            <input type="file" name="interface_file" id="interface_file">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">导入</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 {% endblock %}
 
@@ -72,11 +102,11 @@ interface list
 
     <script>
 
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            responsive: true
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                responsive: true
+            });
         });
-    });
 
     </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from functools import lru_cache, wraps
 from flask import jsonify
-from util.util import retcode, ERROR_MAP
+from utils.util import retcode, ERROR_MAP
 
 import time
 

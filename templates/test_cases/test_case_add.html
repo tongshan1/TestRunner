@@ -6,6 +6,7 @@
 
 {% block own_css %}
     <link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/vendor/ladda/ladda-themeless.min.css">
 {% endblock %}
 
 {% block page_header %}
@@ -91,38 +92,44 @@
                     </ul>
 
                     <div class="input-group">
-                        &nbsp;
                         <input class="form-control" type="text" style="width: 500px" placeholder="输入url"
                                id="test_case_url"/>
-
                         <div class="btn-group">
-                            &nbsp;
-                            <button class="btn btn-outline btn-primary" type="button" style="width: 100px"
-                                    id="test_test_case">
-                                SEND <span class="fa fa-paper-plane-o fa-fw"></span></button>
+                            <button class="btn btn-outline btn-primary ladda-button" type="button" style="width: 100px"
+                                    id="test_test_case" data-style="zoom-in">
+                                <span class="ladda-label">
+                                    SEND <span class="fa fa-paper-plane-o fa-fw"></span>
+                                </span>
+
+                            </button>
                             <button class="btn btn-outline btn-success" type="button" style="width: 100px"
                                     id="add_test_case">
-                                SAVE <span class="fa fa-floppy-o  fa-fw"></span></button>
+                                SAVE <span class="fa fa-floppy-o  fa-fw"></span>
+                            </button>
                         </div>
                     </div>
 
                 </div>
 
             </div>
+            <div class="alert alert-warning">
+                通过{$key$}的形式来传递变量。key是你要传递的变量名。例：在上个接口的Verification保存你要传递的变量（变量不需要验证只需要传递时value不需填），key 填key1
+                ，在后续接口中可以使用{$key1$}来获取保存下来的变量
+            </div>
             <div class="tabbable tabs-below" id="tabs-857406">
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a href="#panel-95714" data-toggle="tab">Headers</a>
+                        <a href="#panel-header" data-toggle="tab">Headers</a>
                     </li>
                     <li>
-                        <a href="#panel-660949" data-toggle="tab">Body</a>
+                        <a href="#panel-body" data-toggle="tab">Body</a>
                     </li>
                     <li>
-                        <a href="#panel-660948" data-toggle="tab">Verification</a>
+                        <a href="#panel-verification" data-toggle="tab">Verification</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="panel-95714">
+                    <div class="tab-pane active" id="panel-header">
                         <table class="table table-hover" id="header_table">
                             <thead>
                             <tr class="info">
@@ -132,7 +139,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
 
                             </tbody>
                         </table>
@@ -145,32 +151,32 @@
                             </button>
                         </div>
                     </div>
-                    <div class="tab-pane" id="panel-660949">
-                        <p>
+                    <div class="tab-pane" id="panel-body">
 
                         <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
-                            <ul class="nav nav-tabs">
+                            <ul class="nav nav-pills">
 
-                                <li class="active body_type" id="form_data_select"><a contenteditable="true"
-                                                                                      data-toggle="tab"
-                                                                                      href="#panel-288214"
-                                                                                      id="form_data_a">
-                                    form-data
-                                </a></li>
-                                <li class="body_type" id="urlencoded_data_select"><a contenteditable="true"
-                                                                                     data-toggle="tab"
-                                                                                     href="#panel-173037"
-                                                                                     id="urlencoded_data_a">
-                                    x-www-form-urlencoded
-                                </a></li>
-                                <li class="body_type" id="JSON_data_select"><a contenteditable="true" data-toggle="tab"
-                                                                               href="#panel-173036"
-                                                                               id="urlencoded_data_a">
-                                    JSON(application/json)
-                                </a></li>
+                                <li class="active body_type" id="form_data_select">
+                                    <a data-toggle="tab" href="#panel-form-data"
+                                       id="form_data_a">
+                                        form-data
+                                    </a>
+                                </li>
+                                <li class="body_type" id="urlencoded_data_select">
+                                    <a data-toggle="tab" href="#panel-urlencoded-data"
+                                       id="urlencoded_data_a">
+                                        x-www-form-urlencoded
+                                    </a>
+                                </li>
+                                <li class="body_type" id="JSON_data_select">
+                                    <a data-toggle="tab" href="#panel-json-data"
+                                       id="urlencoded_data_a">
+                                        JSON(application/json)
+                                    </a>
+                                </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" contenteditable="true" id="panel-288214">
+                                <div class="tab-pane fade in active" contenteditable="true" id="panel-form-data">
                                     <table class="table table-hover" id="form_data">
                                         <thead>
                                         <tr class="warning">
@@ -192,7 +198,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="tab-pane" contenteditable="true" id="panel-173037">
+                                <div class="tab-pane fade" contenteditable="true" id="panel-urlencoded-data">
                                     <table class="table table-hover" id="urlencoded_data">
                                         <thead>
                                         <tr class="success">
@@ -214,16 +220,15 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="tab-pane" contenteditable="true" id="panel-173036">
+                                <div class="tab-pane fade" contenteditable="true" id="panel-json-data">
 
                                     <div id="jsoneditor" style="height: 300px;"></div>
                                 </div>
                             </div>
                         </div>
 
-                        </p>
                     </div>
-                    <div class="tab-pane" id="panel-660948">
+                    <div class="tab-pane" id="panel-verification">
                         <table class="table table-hover" id="verification_data">
                             <thead>
                             <tr class="danger">
@@ -266,8 +271,10 @@
 
 {% block own_js %}
 
-    <script src="/static/vendor/jquery/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
     <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
+    <script src="/static/vendor/ladda/spin.min.js"></script>
+    <script src="/static/vendor/ladda/ladda.min.js"></script>
     <script src="/static/js/test_runner/test_case.js"></script>
 
     <script>
@@ -296,7 +303,7 @@
 
         $('.test_case_method_menu').on('click', function (e) {
             var $target = $(e.target);
-            $target.is('li') && $('#interface_method').text($target.text())
+            $target.is('li') && $('#test_case_method').text($target.text())
         });
 
         $("#add_verification_data").click(function () {
@@ -349,23 +356,26 @@
             $.set_header_type("application/json")
         });
 
+        var l = Ladda.create(document.getElementById('test_test_case'));
+
         $("#test_test_case").click(function () {
             var api_data = $.get_api_data();
             var data_type = $.trim($(".active.body_type").text());
 
+            l.start();
 
             if (data_type == "form-data") {
 
-                $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
+                $.api_request(l, api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
 
             }
             if (data_type == "x-www-form-urlencoded") {
 
-                $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
+                $.api_request(l, api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_request(api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
+                $.api_request(l, api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
 
             }
         });

@@ -1,9 +1,6 @@
-/**
- * Created by tongshan on 2018/4/27.
- */
 $(document).ready(function () {
 
-    $.api_request = function (url, method, header, param, verification) {
+    $.api_request = function (l, url, method, header, param, verification) {
 
 
         $.ajax({
@@ -17,22 +14,26 @@ $(document).ready(function () {
                 "testcase_verification": verification
             },
             success: function (data) {
+                try {
+                    var container = document.getElementById('test_case_response');
 
-                var container = document.getElementById('test_case_response');
+                    container.innerHTML = "";
 
-                container.innerHTML = "";
+                    var options = {
+                        mode: 'view'
+                    };
+                    var editor = new JSONEditor(container, options, JSON.parse(data));
 
-                var options = {
-                    mode: 'view'
-                };
-                var editor = new JSONEditor(container, options, JSON.parse(data));
+                    editor.expandAll();
+                } catch (SyntaxError) {
+                    alert("请求失败！")
+                }
 
-                editor.expandAll();
+                l.stop();
             }
 
         });
 
-        return response
 
     };
 
@@ -154,8 +155,9 @@ $(document).ready(function () {
     };
 
     $.set_header_type = function (type) {
-        var key = $("#header_table th tr:eq(0) td:eq(1) input");
-        var value = $("#header_table th tr:eq(0) td:eq(2) input");
+
+        var key = $("#header_table tbody tr:eq(0) td:eq(1) input");
+        var value = $("#header_table tbody tr:eq(0) td:eq(2) input");
 
         key.val("Content-type");
         value.val(type);
@@ -163,6 +165,7 @@ $(document).ready(function () {
     };
 
     $.load_interface = function (interfaces) {
+        $(".test_case_module_interface_menu").html("");
         interfaces = $.parseJSON(interfaces);
         for (var i = 0; i <= interfaces.length; i++) {
             $(".test_case_module_interface_menu").append("<li value=\"" + interfaces[i].id + "\">" + interfaces[i].interface_name + "</li>")

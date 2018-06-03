@@ -8,27 +8,32 @@
     编辑用例
 {% endblock %}
 
+{% block own_css %}
+    <link rel="stylesheet" href="/static/vendor/ladda/ladda-themeless.min.css">
+{% endblock %}
+
 
 {% block content %}
     <div class="panel panel-primary" style="width: 100%">
         <div class="panel-heading">
             用例基本信息
         </div>
-        <div class="panel-body">
-            <div class="form-inline">
-                <label for="inputTaskType" class="control-label">用例名称:</label>
-                <input type="text" class="form-control" value="{{ testcase_group.testcase_group_name }}">
-                <label for="inputTaskType" class="control-label">所属模块:</label>
-                <input type="text" class="form-control" value="{{ testcase_group.module.module_name }}">
+        <form action="/testgroup/{{ form._obj.id }}/update" method="post">
+            <div class="panel-body">
+
+                <div class="form-inline">
+                    {{ form.csrf_token }}
+                    {{ render_field(form.testcase_group_name, class="form-control", placeholder="用例集名称", size="50") }}
+                    {{ render_field(form.module, class="form-control") }}
+                    {{ render_field(form.type, class="form-control") }}
+                    {{ render_field(form.testcase_desc, class="form-control", size="50") }}
+                    {{ render_field(form.is_active, class="form-control") }}
+                </div>
             </div>
-            <div>&nbsp;&nbsp;</div>
-            <div class="form-inline">
-                <label for="inputTaskType" class="control-label">用例类型:</label>
-                <input type="text" class="form-control" value="{{ testcase_group.type.type_name }}">
-                <label for="inputTaskType" class="control-label">用例简介:</label>
-                <input type="text" class="form-control" value="{{ testcase_group.testcase_desc }}">
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">更新</button>
             </div>
-        </div>
+        </form>
 
     </div>
 
@@ -72,9 +77,14 @@
 
         </div>
         <div class="panel-footer">
-            <a class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal">添加用例</a>
-            <button class="btn btn-danger" id="delete_cases">删除用例</button>
-            <button class="btn btn-info" id="run_case">运行用例</button>
+            <btton class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal" data-placement="top" title="Tooltip on top">
+                <span class="fa fa-plus-circle" ></span></button>
+            </btton>
+            <button class="btn btn-danger" id="delete_cases">
+                <span class="fa  fa-times-circle"></span></button>
+            <button class="btn btn-info ladda-button" id="run_case" data-id="{{ form._obj.id }}"  data-style="zoom-in">
+                <span class="fa fa-chevron-circle-right ladda-label"></span>
+            </button>
 
         </div>
     </div>
@@ -83,7 +93,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"> 新增{{ testcase_group.testcase_group_name }}集用例</h4>
+                    <h4 class="modal-title" id="myModalLabel"> 新增{{ form.testcase_group_name.data }}集用例</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
@@ -94,7 +104,7 @@
                         <div class="modal-body">
                             <div class="form-inline">
                                 <div class="form-group">
-                                    <input type="hidden" value="{{ testcase_group.id }}" id="testcase_group_id">
+                                    <input type="hidden" value="{{ form._obj.id }}" id="testcase_group_id">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
                                     <label class="control-label">模块: </label>
 
@@ -160,6 +170,8 @@
 {% endblock %}
 
 {% block own_js %}
+    <script src="/static/vendor/ladda/spin.min.js"></script>
+    <script src="/static/vendor/ladda/ladda.min.js"></script>
     <script src="/static/js/test_runner/test_case_details.js"></script>
     <script>
         $('.test_case_module_menu').on('click', function (e) {
@@ -186,6 +198,29 @@
             $.delete_case(case_id);
 
         });
+
+        // Create a new instance of ladda for the specified button
+        var l = Ladda.create(document.getElementById('run_case'));
+
+        var testcase_group_run = $("#run_case");
+
+        testcase_group_run.on("click", function () {
+
+            l.start();
+
+            var group_id = testcase_group_run.attr("data-id");
+            $.ajax({
+                "url": "/testgroup/" + group_id + "/run",
+                "method": "POST",
+                "success": function (data) {
+
+                    l.stop();
+                }
+
+            })
+
+        });
+
 
     </script>
 {% endblock %}

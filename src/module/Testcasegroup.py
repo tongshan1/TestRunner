@@ -16,6 +16,10 @@ class TestCaseType(db.Model):
     def __repr__(self):
         return self.type_name
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
 
 class Testcasegroup(db.Model):
     __tablename__ = 'autotest_testcasegroup'
@@ -48,16 +52,10 @@ class Testcasegroup(db.Model):
     def type(self, type):
         self.testcase_type = type.id
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
-    def __init__(self, module_id, testcase_group_name, testcase_type, testcase_desc,
-                 is_active=True, datachange_createtime=None, datachange_lasttime=None, **kwargs):
-        kwargs["module_id"] = module_id
-        kwargs["testcase_group_name"] = testcase_group_name
-        kwargs["testcase_type"] = testcase_type
-        kwargs["testcase_desc"] = testcase_desc
-        kwargs["is_active"] = is_active
-        kwargs["datachange_createtime"] = datachange_createtime
-        kwargs["datachange_lasttime"] = datachange_lasttime
-
-        super().__init__(**kwargs)
-
+    @classmethod
+    def get_by_id(cls, id):
+        return cls.query.get(id)

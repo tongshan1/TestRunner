@@ -1,9 +1,7 @@
-/**
- * Created by tongshan on 2018/4/27.
- */
+
 $(document).ready(function(){
 
-    $.api_request = function(url, method, header, param){
+    $.api_request = function(l, url, method, header, param){
 
 
         $.ajax({
@@ -16,17 +14,22 @@ $(document).ready(function(){
                 "interface_body": param
             },
             success: function(data){
-                alert(data);
-                var container = document.getElementById('interface_response');
+                try {
+                    var container = document.getElementById('interface_response');
 
-                container.innerHTML = "";
+                    container.innerHTML = "";
 
-                var options = {
-                    mode: 'view'
-                };
-                var editor = new JSONEditor(container, options, JSON.parse(data));
+                    var options = {
+                        mode: 'view'
+                    };
+                    var editor = new JSONEditor(container, options, JSON.parse(data));
 
-                editor.expandAll();
+                    editor.expandAll();
+                } catch (SyntaxError) {
+                    alert("请求失败！")
+                }
+
+                l.stop();
             }
 
         });
@@ -54,6 +57,7 @@ $(document).ready(function(){
             success: function(data){
                 if (data.ret == 1){
                     alert("添加成功");
+                    window.location.href = "/interface_list.html";
                 }else{
                     alert(data.error);
                 }

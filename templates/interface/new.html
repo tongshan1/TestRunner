@@ -6,6 +6,7 @@
 
 {% block own_css %}
     <link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/vendor/ladda/ladda-themeless.min.css">
 {% endblock %}
 
 {% block page_header %}
@@ -53,18 +54,23 @@
                         </ul>
 
                         <div class="input-group">
-                            &nbsp;
+
                             <input class="form-control" type="text" style="width: 500px" placeholder="输入url"
                                    id="interface_url"/>
 
                             <div class="btn-group">
-                                &nbsp;
-                                <button class="btn btn-outline btn-primary" type="button" style="width: 100px"
-                                        id="test_interface">
-                                    SEND <span class="fa fa-paper-plane-o fa-fw"></span></button>
+
+                                <button class="btn btn-outline btn-primary ladda-button" type="button"
+                                        style="width: 100px"
+                                        id="test_interface" data-style="zoom-in">
+                                    <span class="ladda-label">
+                                    SEND <span class="fa fa-paper-plane-o fa-fw"></span>
+                                    </span>
+                                </button>
                                 <button class="btn btn-outline btn-success" type="button" style="width: 100px"
                                         id="add_interface">
-                                    SAVE <span class="fa fa-floppy-o  fa-fw"></span></button>
+                                    SAVE <span class="fa fa-floppy-o  fa-fw"></span>
+                                </button>
                             </div>
                         </div>
 
@@ -74,23 +80,25 @@
                 <div class="tabbable tabs-below" id="tabs-857406">
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a href="#panel-95714" data-toggle="tab">Headers</a>
+                            <a href="#panel-headers" data-toggle="tab">Headers</a>
                         </li>
                         <li>
-                            <a href="#panel-660949" data-toggle="tab">Body</a>
+                            <a href="#panel-query" data-toggle="tab">Query</a>
                         </li>
                         <li>
-                            <a href="#panel-660948" data-toggle="tab">Tests</a>
+                            <a href="#panel-body" data-toggle="tab">Body</a>
                         </li>
+
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="panel-95714">
+                        <div class="tab-pane active" id="panel-headers">
                             <table class="table table-hover" id="header_table">
                                 <thead>
                                 <tr class="info">
                                     <th style="width: 50px">required</th>
                                     <th>key</th>
                                     <th>value</th>
+                                    <th>description</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -98,42 +106,68 @@
                                     <td><input type="checkbox" class="require_header_table" checked></td>
                                     <td><input type="text" class="form-control key_header_table" disabled></td>
                                     <td><input type="text" class="form-control value_header_table" disabled></td>
+                                    <td><input type="text" class="form-control description_header_table" disabled></td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div class="btn-gruop">
-                            <button class="btn btn-success" id="add_headers">
-                                <span class="fa fa-plus-circle fa-fw"></span>
-                            </button>
-                            <button class="btn btn-danger" id="del_headers">
-                                <span class="fa fa-minus fa-fw"></span>
-                            </button>
+                                <button class="btn btn-success" id="add_headers">
+                                    <span class="fa fa-plus-circle fa-fw"></span>
+                                </button>
+                                <button class="btn btn-danger" id="del_headers">
+                                    <span class="fa fa-minus fa-fw"></span>
+                                </button>
+                            </div>
                         </div>
+                        <div class="tab-pane" id="panel-query">
+                            <table class="table table-hover" id="query_table">
+                                <thead>
+                                <tr class="warning">
+                                    <th style="width: 50px">required</th>
+                                    <th>key</th>
+                                    <th>value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="checkbox" class="require_query_table" checked></td>
+                                    <td><input type="text" class="form-control key_query_table" disabled></td>
+                                    <td><input type="text" class="form-control value_query_table" disabled></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="btn-gruop">
+                                <button class="btn btn-success" id="add_query">
+                                    <span class="fa fa-plus-circle fa-fw"></span>
+                                </button>
+                                <button class="btn btn-danger" id="del_query">
+                                    <span class="fa fa-minus fa-fw"></span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="tab-pane" id="panel-660949">
-                            <p>
+                        <div class="tab-pane" id="panel-body">
 
-                            <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
-                                <ul class="nav nav-tabs">
+                            <div class="tabbable tabs-below" id="tabs-518269"><!-- Only required for left/right tabs -->
+                                <ul class="nav nav-pills">
 
-                                    <li class="active body_type" id="form_data_select"><a contenteditable="true"
-                                                                                          data-toggle="tab"
-                                                                                          href="#panel-288214">
-                                        form-data
-                                    </a></li>
-                                    <li class="body_type" id="urlencoded_data_select"><a contenteditable="true"
-                                                                                         data-toggle="tab"
-                                                                                         href="#panel-173037">
-                                        x-www-form-urlencoded
-                                    </a></li>
-                                    <li class="body_type" id="JSON_data_select"><a contenteditable="true"
-                                                                                   data-toggle="tab"
-                                                                                   href="#panel-173036">
-                                        JSON(application/json)
-                                    </a></li>
+                                    <li class="active body_type" id="form_data_select">
+                                        <a data-toggle="tab" href="#panel-form-data">
+                                            form-data
+                                        </a>
+                                    </li>
+                                    <li class="body_type" id="urlencoded_data_select">
+                                        <a data-toggle="tab" href="#panel-urlencoded-data">
+                                            x-www-form-urlencoded
+                                        </a>
+                                    </li>
+                                    <li class="body_type" id="JSON_data_select">
+                                        <a data-toggle="tab" href="#panel-json-data">
+                                            JSON(application/json)
+                                        </a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" contenteditable="true" id="panel-288214">
+                                    <div class="tab-pane fade in active" id="panel-form-data">
                                         <table class="table table-hover" id="form_data">
                                             <thead>
                                             <tr class="warning">
@@ -151,15 +185,15 @@
                                             </tbody>
                                         </table>
                                         <div class="btn-group">
-                                        <button class="btn btn-success" id="add_form_data">
-                                            <span class="fa fa-plus-circle fa-fw"></span>
-                                        </button>
-                                        <button class="btn btn-danger" id="del_form_data">
-                                            <span class="fa fa-minus fa-fw"></span>
-                                        </button>
+                                            <button class="btn btn-success" id="add_form_data">
+                                                <span class="fa fa-plus-circle fa-fw"></span>
+                                            </button>
+                                            <button class="btn btn-danger" id="del_form_data">
+                                                <span class="fa fa-minus fa-fw"></span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    </div>
-                                    <div class="tab-pane" contenteditable="true" id="panel-173037">
+                                    <div class="tab-pane fade" id="panel-urlencoded-data">
                                         <table class="table table-hover" id="urlencoded_data">
                                             <thead>
                                             <tr class="success">
@@ -177,26 +211,23 @@
                                             </tbody>
                                         </table>
                                         <div class="btn-group">
-                                        <button class="btn btn-success" id="add_urlencoded_data">
-                                            <span class="fa fa-plus-circle fa-fw"></span>
-                                        </button>
-                                        <button class="btn btn-danger" id="del_urlencoded_data">
-                                            <span class="fa fa-minus fa-fw"></span>
-                                        </button>
+                                            <button class="btn btn-success" id="add_urlencoded_data">
+                                                <span class="fa fa-plus-circle fa-fw"></span>
+                                            </button>
+                                            <button class="btn btn-danger" id="del_urlencoded_data">
+                                                <span class="fa fa-minus fa-fw"></span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    </div>
-                                    <div class="tab-pane" contenteditable="true" id="panel-173036">
+                                    <div class="tab-pane fade" id="panel-json-data">
 
                                         <div id="jsoneditor" style="height: 300px;"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            </p>
                         </div>
-                        <div class="tab-pane" id="panel-660948">
-                            test
-                        </div>
+
                     </div>
                 </div>
                 <hr/>
@@ -218,8 +249,10 @@
 
 {% block own_js %}
 
-    <script src="/static/vendor/jquery/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
     <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
+    <script src="/static/vendor/ladda/spin.min.js"></script>
+    <script src="/static/vendor/ladda/ladda.min.js"></script>
     <script src="/static/js/test_runner/interface.js"></script>
 
     <script>
@@ -276,6 +309,8 @@
             $.set_header_type("application/json")
         });
 
+        var l = Ladda.create(document.getElementById('test_interface'));
+
         $("#test_interface").click(function () {
             var api_data = $.get_api_data();
             var data_type = $.trim($(".active.body_type").text());
@@ -283,16 +318,16 @@
 
             if (data_type == "form-data") {
 
-                $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
 
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
 
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_request(api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
 
             }
         });
@@ -304,14 +339,14 @@
 
             if (data_type == "form-data") {
 
-                $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_save(api_data["interface_name"],api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
                 {##}
                 {#            alert(data3)#}
 
