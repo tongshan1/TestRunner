@@ -3,6 +3,7 @@ import requests
 from requests.exceptions import (InvalidSchema, InvalidURL, MissingSchema,)
 from .util import replace_variable, str_to_dict
 from .response import ApiResponse, DictObj
+from app import logger
 
 
 class ApiRequest(object):
@@ -44,7 +45,7 @@ class ApiRequest(object):
 
             api_response = ApiResponse(response)
             response = response.text
-
+            logger.debug("get response" + response)
             if testcase_verification != "":
                 result = api_response.validate(testcase_verification)
             else:
@@ -65,8 +66,9 @@ class ApiRequest(object):
         :return:
         """
         # 替换path
+        logger.debug("request kwargs"+str(kwargs))
         path = replace_variable(path)
-        print(kwargs)
+
         for key in list(kwargs.keys()):
             if kwargs[key] in [None,  "", {}, '{"":""}', '{}']:
                 kwargs.pop(key)

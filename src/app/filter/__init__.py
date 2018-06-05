@@ -2,12 +2,12 @@ from flask import Blueprint
 
 app_filter = Blueprint('app_filter', __name__)
 
-from .template_filter import filter_result
-from .template_filter import filter_testcase_class
-from .template_filter import filter_testcase_result
-from .template_filter import filter_group_latest_result
-from .template_filter import filter_group_latest_time
-# from .filter import count_pass
+from .report_filter import filter_result
+from .report_filter import filter_testcase_class
+from .report_filter import filter_testcase_result
+from .report_filter import filter_group_latest_result
+from .report_filter import filter_group_latest_time
+from .interface_filter import str_json
 
 
 # # 注册自定义过滤器

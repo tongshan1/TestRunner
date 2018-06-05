@@ -9,5 +9,7 @@ class InterfaceFrom(Form):
     interface_url = StringField('interface_url', [length(min=0), data_required(message= u'接口url不能为空')])
     interface_header = StringField('interface_header', [data_required(message= u'interface_header不能为空')])
     interface_body = StringField('interface_body')
+    interface_query = StringField('interface_query')
+    interface_desc = StringField("interface_desc")
     interface_method = StringField('interface_method', [length(min=0, max=100), data_required(message= u'interface_method不能为空')])
     is_active = BooleanField('is_active')

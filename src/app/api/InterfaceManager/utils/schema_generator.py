@@ -13,6 +13,7 @@ def build_data(data):
     scopes = OrderedDict()  # (endpoint, method) = [scope_a, scope_b]
     operationId = OrderedDict()
     tags = OrderedDict()
+    desc= OrderedDict()
 
     schemas = OrderedDict([(schema_var_name(path), swagger.get(path)) for path in swagger.definitions])
 
@@ -60,11 +61,21 @@ def build_data(data):
                 filters[(endpoint, method)] = filter
 
             # operationId
-            operationId[(endpoint, method)] = data.get('operationId')
+            name = data.get('operationId')
+            if name in ["", None]:
+                name = "{}_{}".format(method, endpoint.repaceall("/", "_"))
+            operationId[(endpoint, method)] = name
 
             # tags
-            tags[(endpoint, method)] = data.get('tags')
+            tag = data.get('tags')
+            if len(tag) < 1:
+                tag = u"未分配"
+            else:
+                tag = tag[0]
+            tags[(endpoint, method)] = tag
 
+            # summary and description
+            desc[(endpoint, method)] = "{0} {1}".format(data.get("summary"), data.get("description"))
 
             # scopes
             securitys = data.get('security') or []
@@ -80,7 +91,8 @@ def build_data(data):
         filters=filters,
         scopes=scopes,
         operationId=operationId,
-        tags=tags
+        tags=tags,
+        desc=desc
         # merge_default=getsource(merge_default),
         # normalize=getsource(normalize)
     )

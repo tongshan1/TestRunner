@@ -6,6 +6,7 @@ from app import db
 from app.api import api
 from app.api.ModuleManager.module import get_all_modules
 from app.handler import register, success, fail
+from app.logger import logger
 from app.form.interface_form import InterfaceFrom
 
 from module.Interface import Interface
@@ -47,10 +48,19 @@ def get_interface_by_module(module_id):
 
 @register(api, "/interface/<interface_id>", methods=["GET"])
 def interface_by_id(interface_id):
-    interface_obj = Interface.query.filter(Interface.id == interface_id).one()
+    interface_obj = Interface.get_by_id(interface_id)
     interface_obj = InterfaceSchema().dumps(interface_obj)
 
     return interface_obj
+
+
+@register(api, "/interface/<interface_id>/edit", methods=["GET", "POST"])
+def interface_edit(interface_id):
+    interface_obj = Interface.get_by_id(interface_id)
+    if request.method == "GET":
+        return render_template("interface/edit.html", interface=interface_obj, csrf_token=generate_csrf(), modules=get_all_modules())
+    else:
+        pass
 
 
 @register(api, "/interface_list.html", methods=["GET"])
