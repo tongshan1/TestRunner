@@ -32,7 +32,15 @@
                     </select>
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
                 </div>
-                <br/>
+                <hr/>
+
+                <div class="form-inline">
+                    <label class="control-label">接口描述:</label>
+                    <input type="text" class="form-control" id="interface_desc" name="interface_desc"
+                           placeholder="接口描述" style="width: 30%">
+                </div>
+
+                <hr/>
 
                 <div class="form-group">
                     <div class="btn-group">
@@ -126,13 +134,15 @@
                                     <th style="width: 50px">required</th>
                                     <th>key</th>
                                     <th>value</th>
+                                    <th>description</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td><input type="checkbox" class="require_query_table" checked></td>
-                                    <td><input type="text" class="form-control key_query_table" disabled></td>
-                                    <td><input type="text" class="form-control value_query_table" disabled></td>
+                                    <td><input type="text" class="form-control key_query_table"></td>
+                                    <td><input type="text" class="form-control value_query_table"></td>
+                                    <td><input type="text" class="form-control description_query_table"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -174,6 +184,7 @@
                                                 <th style="width: 50px">required</th>
                                                 <th>key</th>
                                                 <th>value</th>
+                                                <th>description</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -181,6 +192,7 @@
                                                 <td><input type="checkbox" class="require_form_data" checked></td>
                                                 <td><input type="text" class="form-control key_form_data"></td>
                                                 <td><input type="text" class="form-control value_form_data"></td>
+                                                <td><input type="text" class="form-control description_form_data"></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -200,6 +212,7 @@
                                                 <th style="width: 50px">required</th>
                                                 <th>key</th>
                                                 <th>value</th>
+                                                <th>description</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -207,6 +220,8 @@
                                                 <td><input type="checkbox" class="require_urlencoded_data" checked></td>
                                                 <td><input type="text" class="form-control key_urlencoded_data"></td>
                                                 <td><input type="text" class="form-control value_urlencoded_data"></td>
+                                                <td><input type="text" class="form-control description_urlencoded_data">
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -271,6 +286,14 @@
             $target.is('li') && $('#interface_method').text($target.text())
         });
 
+        $("#add_query").click(function () {
+            $.table_add_tr("query_table");
+        });
+
+        $("#del_query").click(function () {
+            $.table_delete_tr("query_table");
+        });
+
         $("#add_form_data").click(function () {
             $.table_add_tr("form_data");
         });
@@ -318,16 +341,16 @@
 
             if (data_type == "form-data") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"], api_data["query"]);
 
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"], api_data["query"]);
 
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText(), api_data["query"]);
 
             }
         });
@@ -339,14 +362,14 @@
 
             if (data_type == "form-data") {
 
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_save(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], api_data["form_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_save(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], api_data["urlencoded_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_save(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], editor.getText());
                 {##}
                 {#            alert(data3)#}
 

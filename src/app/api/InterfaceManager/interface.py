@@ -13,6 +13,7 @@ from module.Interface import Interface
 from schema.interface import InterfaceSchema
 from .request.request import api_request
 from .utils.insert_swagger import insert_data
+from app.logger import logger
 
 
 @register(api, "/interface", methods=["POST"])

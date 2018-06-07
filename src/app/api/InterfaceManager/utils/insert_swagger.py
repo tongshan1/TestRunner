@@ -42,6 +42,7 @@ def init_parameters(parameters):
     for parameter in parameters:
         parameter_in = parameter.pop("in")
         parameter.pop("type")
+        parameter.pop("required")
         parameter["value"] = ""
         if parameter_in == "headers":
             headers.append(parameter)
@@ -50,7 +51,7 @@ def init_parameters(parameters):
         if parameter_in in ("formData", "body"):
             body.append(parameter)
 
-    return {"headers": headers, "body": body, "query": query}
+    return {"headers": json.dumps(headers, ensure_ascii=False), "body": json.dumps(body, ensure_ascii=False), "query": json.dumps(query, ensure_ascii=False)}
 
 
 def insert_data(file):
