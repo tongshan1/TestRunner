@@ -1,7 +1,22 @@
 
 $(document).ready(function(){
 
+    $.init_request_data = function(data){
+
+        var request_data = new Object();
+
+        for(var i= 0;i<data.length;i++){
+            request_data[data[i].name] = data[i].value;
+
+        }
+        return request_data
+    };
+
     $.api_request = function(l, url, method, header, query, param){
+
+        header = $.init_request_data(header);
+        param = $.init_request_data(param);
+        query = $.init_request_data(query);
 
 
         $.ajax({
@@ -10,9 +25,9 @@ $(document).ready(function(){
             data: {
                 "interface_url": url,
                 "interface_method": method,
-                "interface_header": header,
-                "interface_query": query,
-                "interface_body": param
+                "interface_header":  JSON.stringify(header),
+                "interface_query":  JSON.stringify(query),
+                "interface_body":  JSON.stringify(param)
             },
             success: function(data){
                 try {
@@ -27,6 +42,7 @@ $(document).ready(function(){
 
                     editor.expandAll();
                 } catch (SyntaxError) {
+                    alert(data);
                     alert("请求失败！")
                 }
 
@@ -53,9 +69,9 @@ $(document).ready(function(){
                 "module_id":module_id,
                 "interface_url": url,
                 "interface_method": method,
-                "interface_header": header,
-                "interface_query": query,
-                "interface_body": param,
+                "interface_header":  JSON.stringify(header),
+                "interface_query":  JSON.stringify(query),
+                "interface_body":  JSON.stringify(param),
                 "is_active": true
             },
             success: function(data){
@@ -101,7 +117,7 @@ $(document).ready(function(){
             headers.push(header)
 
         });
-        headers = JSON.stringify(headers);
+        //headers = JSON.stringify(headers);
 
         $(query_key).each(function(){
             var data = new Object();
@@ -113,7 +129,7 @@ $(document).ready(function(){
 
         });
 
-        query = JSON.stringify(query);
+        //query = JSON.stringify(query);
 
         $(form_data_key).each(function(){
             var data = new Object();
@@ -124,7 +140,7 @@ $(document).ready(function(){
             form_data.push(data)
 
         });
-        form_data = JSON.stringify(form_data);
+        //form_data = JSON.stringify(form_data);
 
         $(urlencoded_data_key).each(function(){
 
@@ -136,7 +152,7 @@ $(document).ready(function(){
             urlencoded_data.push(data)
 
         });
-        urlencoded_data = JSON.stringify(urlencoded_data);
+        //urlencoded_data = JSON.stringify(urlencoded_data);
 
 
         return {

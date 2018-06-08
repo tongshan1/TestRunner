@@ -59,7 +59,8 @@ def interface_by_id(interface_id):
 def interface_edit(interface_id):
     interface_obj = Interface.get_by_id(interface_id)
     if request.method == "GET":
-        return render_template("interface/edit.html", interface=interface_obj, csrf_token=generate_csrf(), modules=get_all_modules())
+        return render_template("interface/edit.html", interface=interface_obj, csrf_token=generate_csrf(),
+                               modules=get_all_modules())
     else:
         pass
 
@@ -80,10 +81,12 @@ def interface_request():
     interface_method = request.form.get("interface_method")
     interface_header = request.form.get("interface_header")
     interface_body = request.form.get("interface_body")
+    interface_query = request.form.get("interface_query")
     testcase_verification = request.form.get("testcase_verification")
 
     response, result = api_request.request(interface_method, interface_url, headers=interface_header,
-                                           data=interface_body, testcase_verification=testcase_verification)
+                                           data=interface_body, testcase_verification=testcase_verification,
+                                           interface_query=interface_query)
 
     return response
 
