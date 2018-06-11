@@ -6,14 +6,13 @@ from app import db
 from app.api import api
 from app.api.ModuleManager.module import get_all_modules
 from app.handler import register, success, fail
-from app.logger import logger
 from app.form.interface_form import InterfaceFrom
+from app.logger import logger
 
 from module.Interface import Interface
 from schema.interface import InterfaceSchema
 from .request.request import api_request
 from .utils.insert_swagger import insert_data
-from app.logger import logger
 
 
 @register(api, "/interface", methods=["POST"])
@@ -86,7 +85,7 @@ def interface_request():
 
     response, result = api_request.request(interface_method, interface_url, headers=interface_header,
                                            data=interface_body, testcase_verification=testcase_verification,
-                                           interface_query=interface_query)
+                                           params=interface_query)
 
     return response
 

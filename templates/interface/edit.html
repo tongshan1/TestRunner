@@ -34,7 +34,15 @@
                     </select>
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
                 </div>
-                <br/>
+                <hr/>
+
+                <div class="form-inline">
+                    <label class="control-label">接口描述:</label>
+                    <input type="text" class="form-control" id="interface_desc" name="interface_desc"
+                           placeholder="接口描述" style="width: 30%">
+                </div>
+
+                <hr/>
 
                 <div class="form-group">
                     <div class="btn-group">

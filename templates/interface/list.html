@@ -24,10 +24,9 @@
                     <th>接口名称</th>
                     <th>接口URL</th>
                     <th>接口方法</th>
-                    <th>接口header</th>
-                    <th>接口query</th>
-                    <th>接口body</th>
-                    <th>是否可用</th>
+{#                    <th>接口header</th>#}
+{#                    <th>接口query</th>#}
+{#                    <th>接口body</th>#}
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -37,12 +36,11 @@
                         <td><input type="checkbox"></td>
                         <td>{{ interface.module.module_name }}</td>
                         <td>{{ interface.interface_name }}</td>
-                        <th>{{ interface.interface_url }}</th>
+                        <td>{{ interface.interface_url }}</td>
                         <td>{{ interface.interface_method }}</td>
-                        <td>{{ interface.interface_header }}</td>
-                        <td>{{ interface.interface_query }}</td>
-                        <td>{{ interface.interface_body }}</td>
-                        <td>{{ interface.is_active }}</td>
+{#                        <td>{{ interface.interface_header }}</td>#}
+{#                        <td>{{ interface.interface_query }}</td>#}
+{#                        <td>{{ interface.interface_body }}</td>#}
                         <td><a id="interface_modify" class="btn btn-primary" href="/interface/{{ interface.id }}/edit">编辑</a>&nbsp;&nbsp;
                             <button id="interface_delete" class="btn btn-primary">删除</button>
                         </td>

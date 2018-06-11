@@ -38,7 +38,8 @@ class ApiRequest(object):
 
             if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "application/json":
 
-                response = self._send_request_safe_mode(method, path, json=kwargs["data"])
+                json = kwargs.pop("data", None)
+                response = self._send_request_safe_mode(method, path, json=json, **kwargs)
             else:
 
                 response = self._send_request_safe_mode(method, path, **kwargs)
@@ -55,6 +56,8 @@ class ApiRequest(object):
             result_one.note = note
         except Exception as e:
 
+            logger.error(e)
+
             result_one.result = 2
             result_one.note = str(e)
         finally:
@@ -68,6 +71,7 @@ class ApiRequest(object):
         # 替换path
         logger.debug("request kwargs"+str(kwargs))
         path = replace_variable(path)
+        query = ""
 
         for key in list(kwargs.keys()):
             if kwargs[key] in [None,  "", {}, '{"":""}', '{}']:

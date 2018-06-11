@@ -9,7 +9,7 @@ $(document).ready(function(){
             request_data[data[i].name] = data[i].value;
 
         }
-        return request_data
+        return JSON.stringify(request_data)
     };
 
     $.api_request = function(l, url, method, header, query, param){
@@ -25,9 +25,9 @@ $(document).ready(function(){
             data: {
                 "interface_url": url,
                 "interface_method": method,
-                "interface_header":  JSON.stringify(header),
-                "interface_query":  JSON.stringify(query),
-                "interface_body":  JSON.stringify(param)
+                "interface_header":  header,
+                "interface_query": query,
+                "interface_body": param
             },
             success: function(data){
                 try {
