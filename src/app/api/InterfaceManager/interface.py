@@ -17,20 +17,12 @@ from .utils.insert_swagger import insert_data
 
 @register(api, "/interface", methods=["POST"])
 def interface_add():
-    interface_form = InterfaceFrom()
+    interface_form = InterfaceFrom(request.form)
 
-    if interface_form.validate_on_submit():
+    logger.error(request.form)
+    if interface_form.validate():
         interface_obj = Interface()
         interface_form.populate_obj(interface_obj)
-        # interface = Interface(
-        #     interface_name=interface_form.interface_name.data,
-        #     module_id=interface_form.module_id.data,
-        #     interface_url=interface_form.interface_url.data,
-        #     interface_header=interface_form.interface_header.data,
-        #     interface_body=interface_form.interface_body.data,
-        #     interface_method=interface_form.interface_method.data,
-        #     is_active=interface_form.is_active.data,
-        # )
         db.session.add(interface_obj)
         db.session.commit()
         return success()
@@ -61,7 +53,15 @@ def interface_edit(interface_id):
         return render_template("interface/edit.html", interface=interface_obj, csrf_token=generate_csrf(),
                                modules=get_all_modules())
     else:
-        pass
+        interface_form = InterfaceFrom(request.form)
+        if interface_form.validate():
+            interface_obj = Interface.get_by_id(interface_id)
+            interface_form.populate_obj(interface_obj)
+            db.session.add(interface_obj)
+            db.session.commit()
+            return success()
+        else:
+            return fail(2, error=str(interface_form.errors))
 
 
 @register(api, "/interface_list.html", methods=["GET"])

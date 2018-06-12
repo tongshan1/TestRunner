@@ -1,7 +1,7 @@
 {% extends "blank.html" %}
 
 {% block title %}
-    add new interface
+    edit interface
 {% endblock %}
 
 {% block own_css %}
@@ -21,6 +21,7 @@
 
                 <div class="form-inline">
                     <label class="control-label">接口名称:</label>
+                    <input type="hidden" value="{{ interface.id }}" id="interface_id" name="interface_id">
                     <input type="text" class="form-control" id="interface_name" name="interface_name"
                            value="{{ interface.interface_name }}" disabled
                            style="width: 30%">
@@ -39,7 +40,7 @@
                 <div class="form-inline">
                     <label class="control-label">接口描述:</label>
                     <input type="text" class="form-control" id="interface_desc" name="interface_desc"
-                           placeholder="接口描述" style="width: 30%">
+                           placeholder="接口描述" style="width: 30%" value="{{ interface.interface_desc }}">
                 </div>
 
                 <hr/>
@@ -113,12 +114,15 @@
                                 </thead>
                                 <tbody>
                                 {% for header in  interface.interface_header | str_json() %}
-                                <tr>
-                                    <td><input type="checkbox" class="require_header_table" checked></td>
-                                    <td><input type="text" class="form-control key_header_table" value="{{ header.name }}"></td>
-                                    <td><input type="text" class="form-control value_header_table" value="{{ header.value }}"></td>
-                                    <td><input type="text" class="form-control description_header_table" value="{{ header.description }}"></td>
-                                </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="require_header_table" checked></td>
+                                        <td><input type="text" class="form-control key_header_table"
+                                                   value="{{ header.name }}"></td>
+                                        <td><input type="text" class="form-control value_header_table"
+                                                   value="{{ header.value }}"></td>
+                                        <td><input type="text" class="form-control description_header_table"
+                                                   value="{{ header.description }}"></td>
+                                    </tr>
                                 {% endfor %}
                                 </tbody>
 
@@ -144,12 +148,15 @@
                                 </thead>
                                 <tbody>
                                 {% for query in  interface.interface_query | str_json() %}
-                                <tr>
-                                    <td><input type="checkbox" class="require_query_table" checked></td>
-                                    <td><input type="text" class="form-control key_query_table" value="{{ query.name }}"></td>
-                                    <td><input type="text" class="form-control value_query_table" value="{{ query.value }}"></td>
-                                    <td><input type="text" class="form-control description_query_table" value="{{ query.description }}"></td>
-                                </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="require_query_table" checked></td>
+                                        <td><input type="text" class="form-control key_query_table"
+                                                   value="{{ query.name }}"></td>
+                                        <td><input type="text" class="form-control value_query_table"
+                                                   value="{{ query.value }}"></td>
+                                        <td><input type="text" class="form-control description_query_table"
+                                                   value="{{ query.description }}"></td>
+                                    </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
@@ -199,6 +206,17 @@
                                                 <td><input type="text" class="form-control key_form_data"></td>
                                                 <td><input type="text" class="form-control value_form_data"></td>
                                             </tr>
+                                            {% for body in  interface.interface_body | str_json(interface.interface_headers) %}
+                                                <tr>
+                                                    <td><input type="checkbox" class="require_form_data" checked></td>
+                                                    <td><input type="text" class="form-control key_form_data"
+                                                               value="{{ body.name }}"></td>
+                                                    <td><input type="text" class="form-control value_form_data"
+                                                               value="{{ body.value }}"></td>
+                                                    <td><input type="text" class="form-control description_form_data"
+                                                               value="{{ body.description }}"></td>
+                                                </tr>
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                         <div class="btn-group">
@@ -356,14 +374,14 @@
 
             if (data_type == "form-data") {
 
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"],api_data["form_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"],api_data["urlencoded_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"],editor.getText());
                 {##}
                 {#            alert(data3)#}
 

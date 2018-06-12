@@ -76,7 +76,42 @@ $(document).ready(function(){
             },
             success: function(data){
                 if (data.ret == 1){
-                    alert("添加成功");
+                    alert("添加成功！");
+                    window.location.href = "/interface_list.html";
+                }else{
+                    alert(data.error);
+                }
+            }
+
+        });
+
+
+    };
+
+    $.api_update = function(interface_name,interface_desc,module_id,  url, method, header, query, param){
+
+
+        var csrf_token = $("#csrf_token").val();
+        var interface_id = $("#interface_id").val();
+
+        $.ajax({
+            url: "/interface/"+interface_id+"/edit",
+            method: "POST",
+            data: {
+                "csrf_token": csrf_token,
+                "interface_name": interface_name,
+                "interface_desc":interface_desc,
+                "module_id":module_id,
+                "interface_url": url,
+                "interface_method": method,
+                "interface_header":  JSON.stringify(header),
+                "interface_query":  JSON.stringify(query),
+                "interface_body":  JSON.stringify(param),
+                "is_active": true
+            },
+            success: function(data){
+                if (data.ret == 1){
+                    alert("更新成功！");
                     window.location.href = "/interface_list.html";
                 }else{
                     alert(data.error);
@@ -95,6 +130,7 @@ $(document).ready(function(){
         var interface_url = $("#interface_url").val();
         var interface_method = $("#interface_method").text();
         var interface_desc = $("#interface_desc").val();
+
 
         var headers = [];
         var head_key = $(".key_header_table");

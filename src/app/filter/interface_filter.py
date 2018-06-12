@@ -12,6 +12,16 @@ def str_json(data):
     """
     try:
         data = json.loads(data)
+        return data
     except Exception:
         logger.error("data 转化失败")
     return []
+
+
+@app_filter.app_template_filter("set_body")
+def set_body(data, interface_headers):
+    """
+    设置body
+    :param data:
+    :return:
+    """
