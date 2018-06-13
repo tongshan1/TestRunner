@@ -71,7 +71,6 @@ class ApiRequest(object):
         # 替换path
         logger.debug("request kwargs"+str(kwargs))
         path = replace_variable(path)
-        query = ""
 
         for key in list(kwargs.keys()):
             if kwargs[key] in [None,  "", {}, '{"":""}', '{}']:

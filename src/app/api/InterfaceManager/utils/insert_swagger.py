@@ -8,6 +8,7 @@ from module.Module import Module
 from module.Interface import Interface
 from .schema_generator import build_data
 from app import db
+from app.logger import logger
 
 
 def get_data(file):
@@ -39,17 +40,19 @@ def init_parameters(parameters):
     headers = []
     body = []
     query = []
+
     for parameter in parameters:
         parameter_in = parameter.pop("in")
         parameter.pop("type")
-        parameter.pop("required")
+        parameter.pop("required", "")
         parameter["value"] = ""
         if parameter_in == "headers":
             headers.append(parameter)
-        if parameter_in == "query":
+        elif parameter_in == "query":
             query.append(parameter)
-        if parameter_in in ("formData", "body"):
+        elif parameter_in in ("formData", "body"):
             body.append(parameter)
+            logger.error(body)
 
     return {"headers": json.dumps(headers, ensure_ascii=False), "body": json.dumps(body, ensure_ascii=False), "query": json.dumps(query, ensure_ascii=False)}
 
@@ -97,7 +100,7 @@ def insert_data(file):
             params = init_parameters(param[key])
             interface_obj.interface_header=params["headers"]
             interface_obj.interface_query=params["query"]
-            interface_obj.interface_bod=params["body"]
+            interface_obj.interface_body=params["body"]
             interface_obj.interface_desc=desc[key]
             db.session.add(interface_obj)
 

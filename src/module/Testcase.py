@@ -44,6 +44,10 @@ class TestInterfacecase(db.Model):
     def module(self, module):
         self.module_id = module.id
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
 
 class TestUIcase(db.Model):
     __tablename__ = 'autotest_UI_testcase'

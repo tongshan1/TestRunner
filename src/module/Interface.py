@@ -38,3 +38,7 @@ class Interface(db.Model):
     @classmethod
     def get_by_id(cls, id):
         return cls.query.get(id)
+
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()

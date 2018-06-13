@@ -8,6 +8,9 @@ from .report_filter import filter_testcase_result
 from .report_filter import filter_group_latest_result
 from .report_filter import filter_group_latest_time
 from .interface_filter import str_json
+from .interface_filter import set_form_data
+from .interface_filter import set_urlencoded_data
+from .interface_filter import set_json_data
 
 
 # # 注册自定义过滤器

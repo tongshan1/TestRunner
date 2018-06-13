@@ -201,12 +201,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td><input type="checkbox" class="require_form_data" checked></td>
-                                                <td><input type="text" class="form-control key_form_data"></td>
-                                                <td><input type="text" class="form-control value_form_data"></td>
-                                            </tr>
-                                            {% for body in  interface.interface_body | str_json(interface.interface_headers) %}
+                                            {% for body in  interface.interface_body | set_form_data(interface.interface_header) %}
                                                 <tr>
                                                     <td><input type="checkbox" class="require_form_data" checked></td>
                                                     <td><input type="text" class="form-control key_form_data"
@@ -238,11 +233,16 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td><input type="checkbox" class="require_urlencoded_data" checked></td>
-                                                <td><input type="text" class="form-control key_urlencoded_data"></td>
-                                                <td><input type="text" class="form-control value_urlencoded_data"></td>
-                                            </tr>
+                                            {% for body in  interface.interface_body | set_urlencoded_data(interface.interface_header) %}
+                                                <tr>
+                                                    <td><input type="checkbox" class="require_urlencoded_data" checked>
+                                                    </td>
+                                                    <td><input type="text" class="form-control key_urlencoded_data">
+                                                    </td>
+                                                    <td><input type="text" class="form-control value_urlencoded_data">
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                         <div class="btn-group">
@@ -298,8 +298,8 @@
             mode: 'code',
             ace: ace
         };
-        var editor = new JSONEditor(container, options);
-
+        var data = {{ interface.interface_body|set_json_data(interface.interface_header) }};
+        var editor = new JSONEditor(container, options, data);
 
         $('.dropdown-menu').on('click', function (e) {
             var $target = $(e.target);
@@ -353,16 +353,16 @@
 
             if (data_type == "form-data") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"], api_data["query"]);
 
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"], api_data["query"]);
 
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText(), api_data["query"]);
 
             }
         });
@@ -374,14 +374,14 @@
 
             if (data_type == "form-data") {
 
-                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"],api_data["form_data"]);
+                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], api_data["form_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"],api_data["urlencoded_data"]);
+                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], api_data["urlencoded_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"],editor.getText());
+                $.api_update(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], editor.getText());
                 {##}
                 {#            alert(data3)#}
 

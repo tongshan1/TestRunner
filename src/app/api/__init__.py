@@ -8,3 +8,4 @@ from . import ProjectManager
 from . import TestCaseGroupManager
 from . import ReportManager
 from . import Timer
+from . import Index
