@@ -41,10 +41,7 @@
                                     <li value="{{ module.id }}">{{ module.module_name }}</li>
                                 {% endfor %}
                             </ul>
-
-
                         </div>
-
                     </div>
                     &nbsp;&nbsp;
                     <div class="form-group">
@@ -67,10 +64,30 @@
 
                     </div>
 
+                    &nbsp;&nbsp;
+                    <div class="form-group">
+                        <label class="control-label">当前环境: </label>
+
+                        <div class="btn-group">
+                            <button id="dLabel" style="width: 100px" name="interface_environment" type="button"
+                                    class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                <span id='test_case_environment' value="test">无</span>
+                                <span class="caret"></span>
+                            </button>
+
+                            <ul class="dropdown-menu test_case_environment_menu" aria-labelledby="dLabel">
+                                <li>staging</li>
+{#                                {% for module in modules %}#}
+{#                                    <li value="{{ module.id }}">{{ module.module_name }}</li>#}
+{#                                {% endfor %}#}
+                            </ul>
+                        </div>
+                    </div>
 
                 </div>
             </div>
-            <br/>
+            <hr/>
 
             <div class="form-group">
                 <div class="btn-group">
@@ -94,6 +111,7 @@
                     <div class="input-group">
                         <input class="form-control" type="text" style="width: 500px" placeholder="输入url"
                                id="test_case_url"/>
+
                         <div class="btn-group">
                             <button class="btn btn-outline btn-primary ladda-button" type="button" style="width: 100px"
                                     id="test_test_case" data-style="zoom-in">
@@ -116,10 +134,14 @@
                 通过{$key$}的形式来传递变量。key是你要传递的变量名。例：在上个接口的Verification保存你要传递的变量（变量不需要验证只需要传递时value不需填），key 填key1
                 ，在后续接口中可以使用{$key1$}来获取保存下来的变量
             </div>
+            <hr/>
             <div class="tabbable tabs-below" id="tabs-857406">
                 <ul class="nav nav-tabs">
                     <li class="active">
                         <a href="#panel-header" data-toggle="tab">Headers</a>
+                    </li>
+                    <li>
+                        <a href="#panel-query" data-toggle="tab">Query</a>
                     </li>
                     <li>
                         <a href="#panel-body" data-toggle="tab">Body</a>
@@ -136,6 +158,7 @@
                                 <th style="width: 50px">required</th>
                                 <th>key</th>
                                 <th>value</th>
+                                <th>description</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -151,6 +174,34 @@
                             </button>
                         </div>
                     </div>
+                    <div class="tab-pane" id="panel-query">
+                            <table class="table table-hover" id="query_table">
+                                <thead>
+                                <tr class="warning">
+                                    <th style="width: 50px">required</th>
+                                    <th>key</th>
+                                    <th>value</th>
+                                    <th>description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+{#                                <tr>#}
+{#                                    <td><input type="checkbox" class="require_query_table" checked></td>#}
+{#                                    <td><input type="text" class="form-control key_query_table"></td>#}
+{#                                    <td><input type="text" class="form-control value_query_table"></td>#}
+{#                                    <td><input type="text" class="form-control description_query_table"></td>#}
+{#                                </tr>tr#}
+                                </tbody>
+                            </table>
+                            <div class="btn-gruop">
+                                <button class="btn btn-success" id="add_query">
+                                    <span class="fa fa-plus-circle fa-fw"></span>
+                                </button>
+                                <button class="btn btn-danger" id="del_query">
+                                    <span class="fa fa-minus fa-fw"></span>
+                                </button>
+                            </div>
+                        </div>
                     <div class="tab-pane" id="panel-body">
 
                         <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
@@ -183,6 +234,7 @@
                                             <th style="width: 50px">required</th>
                                             <th>key</th>
                                             <th>value</th>
+                                            <th>description</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -205,6 +257,7 @@
                                             <th style="width: 50px">required</th>
                                             <th>key</th>
                                             <th>value</th>
+                                            <th>description</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -235,6 +288,7 @@
                                 <th style="width: 50px">save</th>
                                 <th>key</th>
                                 <th>value</th>
+                                <th>description</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -301,13 +355,19 @@
 
         });
 
+         $('.test_case_environment_menu').on('click', function (e) {
+            var $target = $(e.target);
+            $target.is('li') && $('#test_case_environment').text($target.text());
+
+        });
+
         $('.test_case_method_menu').on('click', function (e) {
             var $target = $(e.target);
             $target.is('li') && $('#test_case_method').text($target.text())
         });
 
         $("#add_verification_data").click(function () {
-            $.table_add_tr("verification_data", "", "");
+            $.table_add_tr("verification_data", "", "", "");
         });
 
         $("#del_verification_data").click(function () {
@@ -315,7 +375,7 @@
         });
 
         $("#add_form_data").click(function () {
-            $.table_add_tr("form_data", "", "");
+            $.table_add_tr("form_data", "", "", "");
         });
 
         $("#del_form_data").click(function () {
@@ -323,16 +383,24 @@
         });
 
         $("#add_urlencoded_data").click(function () {
-            $.table_add_tr("urlencoded_data", "", "");
+            $.table_add_tr("urlencoded_data", "", "", "");
         });
 
         $("#del_urlencoded_data").click(function () {
-            $.table_delete_tr("urlencoded_data", "", "");
+            $.table_delete_tr("urlencoded_data");
+        });
+
+        $("#add_query").click(function () {
+            $.table_add_tr("query_table", "", "", "");
+        });
+
+        $("#del_query").click(function () {
+            $.table_delete_tr("query_table");
         });
 
 
         $("#add_headers").click(function () {
-            $.table_add_tr("header_table", "", "");
+            $.table_add_tr("header_table", "", "", "");
         });
 
         $("#del_headers").click(function () {
