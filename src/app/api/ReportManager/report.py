@@ -3,9 +3,9 @@ from app.handler import register, success, fail
 from app.api import api
 from module.Report import Report, Result
 
+
 def filter_result(result):
     """
-
     :param key:
     :return:
     """
@@ -13,7 +13,6 @@ def filter_result(result):
         return u"成功"
     else:
         return u"失败"
-
 
 
 @register(api, "/report.html", methods=["GET"])

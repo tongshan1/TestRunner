@@ -92,10 +92,18 @@ def insert_data(file):
         operationId = data.get("operationId")
         desc = data.get("desc")
         for key, value in tags.items():
-            interface_obj = Interface()
+
+            # 判断接口是否有插入过 如果有就更新 判断方法 endpoint 和 method是否存在一样的
+            interface_url = key[0]
+            interface_method = key[1]
+
+            interface_obj = Interface.get_by_url_method(interface_url, interface_method)
+            if interface_obj is None:
+                interface_obj = Interface()
+                interface_obj.interface_url = key[0]
+                interface_obj.interface_method = key[1]
+
             interface_obj.interface_name = operationId[key]
-            interface_obj.interface_url = key[0]
-            interface_obj.interface_method = key[1]
             interface_obj.module = get_module(value)
             params = init_parameters(param[key])
             interface_obj.interface_header=params["headers"]

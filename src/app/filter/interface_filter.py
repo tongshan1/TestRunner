@@ -37,8 +37,8 @@ def set_form_data(data, interface_headers):
     return []
 
 
-@app_filter.app_template_filter("set_form_data")
-def set_form_data(data, interface_headers):
+@app_filter.app_template_filter("set_urlencoded_data")
+def set_urlencoded_data(data, interface_headers):
     """
     设置body
     :param data:
@@ -52,7 +52,7 @@ def set_form_data(data, interface_headers):
         for header in headers:
             if header["name"] == "Content-type":
                 is_set_body_type = True
-                if header["value"] == "application/form-data":
+                if header["value"] == "application/x-www-form-urlencoded":
                     return data
 
         if not is_set_body_type:
@@ -64,8 +64,8 @@ def set_form_data(data, interface_headers):
     return []
 
 
-@app_filter.app_template_filter("set_urlencoded_data")
-def set_urlencoded_data(data, interface_headers):
+@app_filter.app_template_filter("set_form_data")
+def set_form_data(data, interface_headers):
     """
     设置body
     :param data:
@@ -77,7 +77,7 @@ def set_urlencoded_data(data, interface_headers):
 
         for header in headers:
             if header["name"] == "Content-type":
-                if header["value"] == "application/x-www-form-urlencoded":
+                if header["value"] == "application/form-data":
                     return data
 
     except Exception as e:
@@ -97,8 +97,6 @@ def set_json_data(data, interface_headers):
     try:
         data = json.loads(data)
         headers = json.loads(interface_headers)
-
-
         for header in headers:
             if header["name"] == "Content-type":
                 if header["value"] == "application/json":

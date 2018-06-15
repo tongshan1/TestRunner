@@ -219,10 +219,8 @@ $(document).ready(function () {
             $.table_add_tr("header_table", headers[x].name, headers[x].value, headers[x]["description"]);
 
             if(headers[x].name == "Content-type"){
-
                 header_Content_type = headers[x].value
             }
-
         }
 
         if (header_Content_type == "application/form-data") {

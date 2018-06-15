@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, Text, func
-from sqlalchemy.dialects.mysql.json import JSON
+from sqlalchemy.dialects.postgresql.json import JSON
+from sqlalchemy.orm.exc import NoResultFound
 from app import db
+from app.logger import logger
 from .Module import Module
 
 
@@ -42,3 +44,12 @@ class Interface(db.Model):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+
+    @classmethod
+    def get_by_url_method(cls, url, method):
+        interface = None
+        try:
+            interface = cls.query.filter_by(interface_url=url, interface_method=method).one()
+        except NoResultFound:
+            logger.error("没有找到！")
+        return interface

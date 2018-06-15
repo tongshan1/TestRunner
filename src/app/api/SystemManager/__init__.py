@@ -1,1 +1,1 @@
-__author__ = 'sara'
+from . import system_setting
