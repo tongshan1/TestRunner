@@ -17,15 +17,21 @@ class SystemSetting(db.Model):
     key = Column(String(32), nullable=False, unique=True)
     type = Column(Integer, nullable=False)
     value = Column(JSON)
+    is_default = Column(Boolean, default=False)
+    is_used = Column(Boolean, default=False)
     desc = Column(Text)
     is_active = Column(Boolean, default=True)
 
     @classmethod
     def get_runner_setting(cls):
         try:
-            return cls.query.filter_by(type=1).all()
+            return cls.query.filter_by(type=1).order_by().all()
         except NoResultFound:
             return []
+
+    @classmethod
+    def get_default_runner_setting(cls):
+        return cls.query.filter_by(type=1, is_default=True).all()
 
     @classmethod
     def get_by_id(cls, id):

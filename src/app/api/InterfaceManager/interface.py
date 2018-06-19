@@ -10,9 +10,16 @@ from app.form.interface_form import InterfaceFrom
 from app.logger import logger
 
 from module.Interface import Interface
+from module.System_setting import SystemSetting
 from schema.interface import InterfaceSchema
 from .request.request import api_request
 from .utils.insert_swagger import insert_data
+
+
+@register(api, "/interface.html", methods=['GET'])
+def interface():
+    return render_template("interface/new.html", csrf_token=generate_csrf(), modules=get_all_modules(),
+                           runner_setting=SystemSetting.get_runner_setting())
 
 
 @register(api, "/interface", methods=["POST"])
@@ -69,13 +76,9 @@ def interface_list():
     return render_template("interface/list.html", interfaces=Interface.get_all_oder_by_module())
 
 
-@register(api, "/interface.html", methods=['GET'])
-def interface():
-    return render_template("interface/new.html", csrf_token=generate_csrf(), modules=get_all_modules())
-
-
 @register(api, "/interface/run", methods=["POST"])
 def interface_request():
+    runner_setting = request.form.get("setting")
     interface_url = request.form.get("interface_url")
     interface_method = request.form.get("interface_method")
     interface_header = request.form.get("interface_header")
@@ -85,7 +88,7 @@ def interface_request():
 
     response, result = api_request.request(interface_method, interface_url, headers=interface_header,
                                            data=interface_body, testcase_verification=testcase_verification,
-                                           params=interface_query)
+                                           params=interface_query, runner_setting=runner_setting)
 
     return response
 

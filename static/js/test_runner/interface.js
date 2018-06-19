@@ -18,11 +18,13 @@ $(document).ready(function(){
         param = $.init_request_data(param);
         query = $.init_request_data(query);
 
+        var setting = $("#test_case_environment").val();
 
         $.ajax({
             url: "/interface/run",
             method: "POST",
             data: {
+                "setting": setting,
                 "interface_url": url,
                 "interface_method": method,
                 "interface_header":  header,

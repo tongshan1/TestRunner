@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block page_header %}
-    新增运行环境
+    {{ title }}运行环境
 {% endblock %}
 
 {% block content %}
@@ -13,9 +13,6 @@
     <div class="card mb-3">
         <div class="card-body">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    新增运行环境
-                </div>
                 <div class="panel-body">
                     <form role="form" action="#" method="post">
                         {{ form.csrf_token }}
@@ -27,15 +24,17 @@
                                 <button type="button" class="btn btn-success" id="add_variable">添加变量</button>
                             </div>
                             <div class="panel-body">
-                                <div class="form-inline variable_field" style="margin-top: 10px">
-                                    {% for variable in form.value %}
-                                        {{ render_field(variable.key, class="form-control", size="50") }}
-                                        {{ render_field(variable.value, class="form-control", size="50") }}
+
+                                {% for variable in form.value %}
+                                    <div class="form-inline variable_field" style="margin-top: 10px">
+                                        {{ render_field(variable.key, class="form-control", size="40%") }}
+                                        {{ render_field(variable.value, class="form-control", size="40%") }}
                                         <button type="button" class="btn btn-danger delete_variable"
                                                 id="variable-{{ loop.index0 }}-remove">删除变量
                                         </button>
-                                    {% endfor %}
-                                </div>
+                                    </div>
+                                {% endfor %}
+
                             </div>
                         </div>
 

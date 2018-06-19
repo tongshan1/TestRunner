@@ -10,7 +10,7 @@ from app.logger import logger
 
 
 @register(api, "/runner_setting_list.html")
-def runner_setting():
+def runner_setting_list():
     runner_setting = SystemSetting.get_runner_setting()
     return render_template("setting/runner_setting_list.html", runner_setting=runner_setting)
 
@@ -20,9 +20,10 @@ def runner_setting_new():
     if request.method == "GET":
 
         form = SettingFrom()
-        return render_template("setting/runner_setting_new.html", form=form)
+        return render_template("setting/runner_setting_new.html", form=form, title=u"新增")
     else:
         form = SettingFrom(request.form)
+        target = request.referrer
         if form.validate():
             setting_obj = SystemSetting()
             setting_obj.key = form.key.data
@@ -35,7 +36,7 @@ def runner_setting_new():
             return redirect("/runner_setting_list.html")
         else:
             flash(form.errors, category='danger')
-            return render_template("setting/runner_setting_new.html", form=form)
+            return redirect(target)
 
 
 @register(api, "/setting/<setting_id>/setting_edit.html", methods=["GET", "POST"])
@@ -46,10 +47,11 @@ def runner_setting_edit(setting_id):
 
     if request.method == "GET":
         form = populate_setting(setting)
-        return render_template("setting/runner_setting_new.html", form=form)
+        return render_template("setting/runner_setting_new.html", form=form, title=u"更新")
     else:
         # 更新
         form = SettingFrom(request.form)
+        target = request.referrer
         if form.validate():
             setting.key = form.key.data
             setting.desc = form.desc.data
@@ -57,7 +59,22 @@ def runner_setting_edit(setting_id):
             db.session.add(setting)
             db.session.commit()
             flash(u'更新成功', category='success')
-            return redirect("/runner_setting_list.html")
         else:
             flash(form.errors, category='danger')
-            return render_template("setting/runner_setting_new.html", form=form)
+        return redirect(target)
+
+
+
+@register(api, "/setting/<setting_id>/default")
+def runner_setting_default(setting_id):
+
+    default_setting = SystemSetting.get_default_runner_setting()
+
+    for setting in default_setting:
+        setting.is_default = False
+        db.session.add(setting)
+    runner_setting = SystemSetting.get_by_id(setting_id)
+    runner_setting.is_default = True
+    db.session.add(runner_setting)
+    db.session.commit()
+    return success()

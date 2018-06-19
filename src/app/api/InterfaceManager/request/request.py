@@ -4,6 +4,7 @@ from requests.exceptions import (InvalidSchema, InvalidURL, MissingSchema,)
 from .util import replace_variable, str_to_dict
 from .response import ApiResponse, DictObj
 from app import logger
+from module.System_setting import SystemSetting
 
 
 class ApiRequest(object):
@@ -70,6 +71,12 @@ class ApiRequest(object):
         """
         # 替换path
         logger.debug("request kwargs"+str(kwargs))
+
+        # 获取运行环境 替换变量
+        runner_setting = kwargs.pop("runner_setting", "")
+        runner_setting = SystemSetting.get_by_id(runner_setting)
+        value = runner_setting.value
+
         path = replace_variable(path)
 
         for key in list(kwargs.keys()):
