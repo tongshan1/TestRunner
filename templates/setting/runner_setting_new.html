@@ -17,15 +17,46 @@
                     新增运行环境
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="{{ url_for('api.module_create') }}" method="post">
+                    <form role="form" action="#" method="post">
                         {{ form.csrf_token }}
-                        {{ render_field(form.setting_name, class="form-control", size="50") }}
-                        {{ render_field(form.setting_desc, class="form-control", size="50") }}
-                        {{ render_field(form.setting_variables) }}
+                        {{ render_field(form.key, class="form-control", size="50") }}
+                        {{ render_field(form.desc, class="form-control", size="50") }}
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                {{ form.value.label }}
+                                <button type="button" class="btn btn-success" id="add_variable">添加变量</button>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-inline variable_field" style="margin-top: 10px">
+                                    {% for variable in form.value %}
+                                        {{ render_field(variable.key, class="form-control", size="50") }}
+                                        {{ render_field(variable.value, class="form-control", size="50") }}
+                                        <button type="button" class="btn btn-danger delete_variable"
+                                                id="variable-{{ loop.index0 }}-remove">删除变量
+                                        </button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">提交</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block own_js %}
+    <script src="/static/js/test_runner/setting.js"></script>
+
+    <script>
+        $("#add_variable").on('click', function () {
+            $.add_field();
+        });
+        $(".delete_variable").on("click", function () {
+            var delete_item = $(this);
+            $.delete_field(delete_item)
+        });
+    </script>
 {% endblock %}
