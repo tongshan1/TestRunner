@@ -18,7 +18,6 @@ class SystemSetting(db.Model):
     type = Column(Integer, nullable=False)
     value = Column(JSON)
     is_default = Column(Boolean, default=False)
-    is_used = Column(Boolean, default=False)
     desc = Column(Text)
     is_active = Column(Boolean, default=True)
 
@@ -36,3 +35,6 @@ class SystemSetting(db.Model):
     @classmethod
     def get_by_id(cls, id):
         return cls.query.get(id)
+
+    def __repr__(self):
+        return self.key

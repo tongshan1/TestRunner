@@ -15,6 +15,15 @@ def runner_setting_list():
     return render_template("setting/runner_setting_list.html", runner_setting=runner_setting)
 
 
+def init_setting_value(value):
+    data = {}
+    for v in value:
+        key = v.get("key")
+        value = v.get("value")
+        data[key] = value
+    return data
+
+
 @register(api, "/runner_setting_new.html", methods=["GET", "POST"])
 def runner_setting_new():
     if request.method == "GET":
@@ -27,7 +36,7 @@ def runner_setting_new():
         if form.validate():
             setting_obj = SystemSetting()
             setting_obj.key = form.key.data
-            setting_obj.value = form.value.data
+            setting_obj.value = init_setting_value(form.value.data)
             setting_obj.desc = form.desc.data
             setting_obj.type = 1
             db.session.add(setting_obj)
@@ -55,14 +64,13 @@ def runner_setting_edit(setting_id):
         if form.validate():
             setting.key = form.key.data
             setting.desc = form.desc.data
-            setting.value = form.value.data
+            setting.value = init_setting_value(form.value.data)
             db.session.add(setting)
             db.session.commit()
             flash(u'更新成功', category='success')
         else:
             flash(form.errors, category='danger')
         return redirect(target)
-
 
 
 @register(api, "/setting/<setting_id>/default")

@@ -60,7 +60,11 @@ def count_pass(pass_cases, total_cases):
 
 @app_filter.app_template_filter("filter_group_latest_result")
 def filter_group_latest_result(group_id):
-    result = Report.get_latest_by_group_id(group_id).result
+    report = Report.get_latest_by_group_id(group_id)
+    if report is None:
+        result = None
+    else:
+        result = Report.get_latest_by_group_id(group_id).result
 
     if result is True:
         return '<span class="fa fa-smile-o fa-lg " style="color: green"></span>'
@@ -72,5 +76,9 @@ def filter_group_latest_result(group_id):
 
 @app_filter.app_template_filter("filter_group_latest_time")
 def filter_group_latest_time(group_id):
-    time = Report.get_latest_by_group_id(group_id).datachange_createtime
+    report = Report.get_latest_by_group_id(group_id)
+    if report is None:
+        time = u"尚未运行"
+    else:
+        time = report.datachange_createtime
     return time

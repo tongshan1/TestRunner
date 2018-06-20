@@ -13,11 +13,13 @@ $(document).ready(function () {
 
     $.api_request = function (l, url, method, header, query, param, verification) {
 
+        var setting = $("#test_case_environment").attr("value");
 
         $.ajax({
             url: "/interface/run",
             method: "POST",
             data: {
+                "setting": setting,
                 "interface_url": url,
                 "interface_method": method,
                 "interface_header": header,
@@ -54,7 +56,7 @@ $(document).ready(function () {
         var csrf_token = $("#csrf_token").val();
 
         $.ajax({
-            url: "/test_case",
+            url: "/test_case_add.html",
             method: "POST",
             data: {
                 "csrf_token": csrf_token,
@@ -91,6 +93,9 @@ $(document).ready(function () {
         var headers = new Object();
         var head_key = $(".key_header_table");
 
+        var query = new Object();
+        var query_key = $(".key_query_table");
+
         var form_data = new Object();
         var form_data_key = $(".key_form_data");
 
@@ -106,6 +111,12 @@ $(document).ready(function () {
 
         });
         headers = JSON.stringify(headers);
+
+        $(query_key).each(function () {
+            query[$(this).val()] = $(this).parent().next("td").children(".value_query_table").val()
+
+        });
+        query = JSON.stringify(query);
 
         $(form_data_key).each(function () {
             form_data[$(this).val()] = $(this).parent().next("td").children(".value_form_data").val()

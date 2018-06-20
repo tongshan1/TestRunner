@@ -36,10 +36,10 @@
                                 <th>用例集名称</th>
                                 <th>用例集类型</th>
                                 <th>所属模块</th>
+                                <th>运行环境</th>
                                 <th>用例集描述</th>
                                 <th>上次运行时间</th>
                                 <th>上次运行结果</th>
-                                <th>是否可用</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -49,10 +49,10 @@
                                     <td>{{ testcase_group.testcase_group_name }}</td>
                                     <td>{{ testcase_group.type }}</td>
                                     <td>{{ testcase_group.module }}</td>
+                                    <td>{{ testcase_group.runner_setting.key }}</td>
                                     <td>{{ testcase_group.testcase_desc }}</td>
                                     <td>{{ testcase_group.id | filter_group_latest_time }}</td>
                                     <td>{{ testcase_group.id | filter_group_latest_result |safe }}</td>
-                                    <td>{{ testcase_group.is_active }}</td>
                                     <td>
                                         <a class="testcase_group_edit btn btn-info" data-id="{{ testcase_group.id }}"
                                            href="/testcase_group/{{ testcase_group.id }}/test_group_edit.html">
@@ -81,7 +81,7 @@
          aria-hidden="true" data-display="{{ modal_display }}">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form role="form" action="/test_group" method="post">
+                <form role="form" action="#" method="POST">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="myModalLabel">新增用例集</h4>
@@ -91,8 +91,8 @@
                         {{ render_field(form.testcase_group_name, class="form-control", placeholder="用例集名称", size="50") }}
                         {{ render_field(form.module, class="form-control") }}
                         {{ render_field(form.type, class="form-control") }}
+                        {{ render_field(form.runner_setting, class="form-control") }}
                         {{ render_field(form.testcase_desc, class="form-control", size="50") }}
-                        {{ render_field(form.is_active, class="form-control") }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

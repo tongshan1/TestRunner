@@ -367,16 +367,16 @@
 
             if (data_type == "form-data") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"], api_data["query"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"],api_data["query"], api_data["form_data"]);
 
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"], api_data["query"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"],api_data["query"], api_data["urlencoded_data"]);
 
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText(), api_data["query"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"],api_data["query"], editor.getText());
 
             }
         });

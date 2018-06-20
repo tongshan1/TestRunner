@@ -18,7 +18,7 @@ $(document).ready(function(){
         param = $.init_request_data(param);
         query = $.init_request_data(query);
 
-        var setting = $("#test_case_environment").val();
+        var setting = $("#test_case_environment").attr("value");
 
         $.ajax({
             url: "/interface/run",

@@ -27,10 +27,10 @@ def populate_setting(setting_obj):
         setting_form.value.pop_entry()
 
     value = setting_obj.value
-    for v in value:
+    for k, v in value.items():
         value_form = ValueForm()
-        value_form.key = v.get("key")
-        value_form.value = v.get("value")
+        value_form.key = k
+        value_form.value = v
 
         setting_form.value.append_entry(value_form)
 
