@@ -75,6 +75,7 @@ def str_to_dict(str):
 
 
 class TestInterfaceCaseFrom(Form):
+    testcase_body_type = ""
     interface_url = StringField(u'接口url', [length(min=0), data_required(message=u'接口url不能为空')])
     testcase_name = StringField(u'接口名称', [data_required(message=u'接口名不能为空')])
     module = QuerySelectField(u"所属模块", query_factory=get_all_module)
@@ -105,15 +106,19 @@ def populate_interface_testcase(interface_testcase_obj):
         form.testcase_verification.pop_entry()
 
     testcase_header = str_to_dict(interface_testcase_obj.testcase_header)
+
     for k, v in testcase_header.items():
         header_form = HeaderForm()
         header_form.key = k
         header_form.value = v
 
+        if k == "Content-type":
+            form.testcase_header_type = v
+
         form.testcase_header.append_entry(header_form)
 
-    if len(form.testcase_header) == 0:
-        form.testcase_query.append_entry()
+    if not testcase_header:
+        form.testcase_header.append_entry()
 
     testcase_query = str_to_dict(interface_testcase_obj.testcase_query)
     for k, v in testcase_query.items():
@@ -122,7 +127,8 @@ def populate_interface_testcase(interface_testcase_obj):
         query_form.value = v
 
         form.testcase_query.append_entry(query_form)
-    if len(form.testcase_query) == 0:
+
+    if not testcase_query:
         form.testcase_query.append_entry()
 
     testcase_body = str_to_dict(interface_testcase_obj.testcase_body)
@@ -133,6 +139,9 @@ def populate_interface_testcase(interface_testcase_obj):
 
         form.testcase_body.append_entry(body_form)
 
+    if not testcase_body:
+        form.testcase_body.append_entry()
+
     testcase_verification = str_to_dict(interface_testcase_obj.testcase_verification)
     for k, v in testcase_verification.items():
         verification_form = VerificationForm()
@@ -141,8 +150,7 @@ def populate_interface_testcase(interface_testcase_obj):
         verification_form.save = v[1]
 
         form.testcase_verification.append_entry(verification_form)
-
-    if len(form.testcase_verification) == 0:
-        form.testcase_query.append_entry()
+    if not testcase_verification:
+        form.testcase_verification.append_entry()
 
     return form

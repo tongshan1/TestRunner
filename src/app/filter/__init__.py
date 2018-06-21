@@ -11,11 +11,6 @@ from .interface_filter import str_json
 from .interface_filter import set_form_data
 from .interface_filter import set_urlencoded_data
 from .interface_filter import set_json_data
-
-
-# # 注册自定义过滤器
-# env = app.jinja_env
-# env.filters['filter_result'] = filter_result
-# env.filters['filter_testcase_result'] = filter_testcase_result
-# env.filters['filter_testcase_class'] = filter_testcase_class
-# # env.filters["count_pass"] = count_pass
+from .test_case_filter import set_test_case_form_data
+from .test_case_filter import set_test_case_json_data
+from .test_case_filter import set_test_case_urlencoded_data

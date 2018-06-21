@@ -38,8 +38,10 @@
                 <hr/>
 
                 <div class="form-inline">
-                    {{ form.testcase_method(class="btn btn-primary form-control") }}
-                    {{ form.interface_url(class="form-control", size="85%") }}
+                    <div class="btn-group">
+                        {{ form.testcase_method(class="btn btn-primary form-control") }}
+                        {{ form.interface_url(class="form-control", size="50%") }}
+                    </div>
 
                     <div class="btn-group">
                         <button class="btn btn-outline btn-primary ladda-button" type="button"
@@ -98,7 +100,7 @@
                             </div>
                         {% endfor %}
                         <div class="btn-gruop">
-                            <button class="btn btn-success add_field" data-target="header_field">
+                            <button class="btn btn-success add_field" data-target="header_field" id="add_header">
                                 <span class="fa fa-plus-circle fa-fw"></span>
                             </button>
                         </div>
@@ -116,7 +118,7 @@
                             </div>
                         {% endfor %}
                         <div class="btn-gruop">
-                            <button class="btn btn-success add_field" data-target="query_field">
+                            <button class="btn btn-success add_field" data-target="query_field" id="add_query">
                                 <span class="fa fa-plus-circle fa-fw"></span>
                             </button>
                         </div>
@@ -140,14 +142,14 @@
                                 </li>
                                 <li class="body_type" id="JSON_data_select">
                                     <a data-toggle="tab" href="#panel-json-data"
-                                       id="urlencoded_data_a">
+                                       id="JSON_data_a">
                                         JSON(application/json)
                                     </a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" contenteditable="true" id="panel-form-data">
-                                    {% for body in form.testcase_body %}
+                                    {% for body in form.testcase_body | set_test_case_form_data(form.testcase_body_type) %}
                                         <div class="form-inline form-data_field" style="margin-top: 10px">
                                             <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
                                                    name="testcase_body-{{ loop.index0 }}-require"/>
@@ -161,13 +163,13 @@
                                         </div>
                                     {% endfor %}
                                     <div class="btn-gruop">
-                                        <button class="btn btn-success add_field" data-target="form-data_field">
+                                        <button class="btn btn-success add_field" data-target="form-data_field" id="add_form-data_field">
                                             <span class="fa fa-plus-circle fa-fw"></span>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" contenteditable="true" id="panel-urlencoded-data">
-                                    {% for body in form.testcase_body %}
+                                    {% for body in form.testcase_body | set_test_case_urlencoded_data(form.testcase_body_type) %}
                                         <div class="form-inline urlencoded-data_field" style="margin-top: 10px">
                                             <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
                                                    name="testcase_body-{{ loop.index0 }}-require"/>
@@ -181,7 +183,7 @@
                                         </div>
                                     {% endfor %}
                                     <div class="btn-gruop">
-                                        <button class="btn btn-success add_field" data-target="urlencoded-data_field">
+                                        <button class="btn btn-success add_field" data-target="urlencoded-data_field" id="add_urlencoded-data_field">
                                             <span class="fa fa-plus-circle fa-fw"></span>
                                         </button>
                                     </div>
@@ -238,6 +240,7 @@
     <script src="/static/vendor/ladda/spin.min.js"></script>
     <script src="/static/vendor/ladda/ladda.min.js"></script>
     <script src="/static/js/test_runner/util.js"></script>
+    <script src="/static/js/test_runner/test_case_interface.js"></script>
 
     <script>
         // create the editor
@@ -247,22 +250,27 @@
             mode: 'code',
             ace: ace
         };
+        var data = {{ form.testcase_body | set_test_case_json_data(form.testcase_body_type) }};
         var editor = new JSONEditor(container, options);
 
-        $('#module').on('change', function (e) {
+        $('#module').on('change', function () {
             var module_id = $(this).find("option:selected").val();
-            $.get_interface_by_module(module_id, $.load_interface)
+            $.get_interface_by_module(module_id);
+        });
+
+        $("#interface").on("change", function(){
+
+            var interface_id = $(this).find("option:selected").val();
+            $.load_interface(interface_id, editor);
         });
 
         {#    添加字段#}
-
         $(".add_field").on("click", function () {
 
             var field_class = $(this).attr("data-target");
             var field = $("." + field_class + ":last");
             $.add_field(field);
         });
-
         {#        删除字段#}
 
         $(".delete_field").on("click", function () {

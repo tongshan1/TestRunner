@@ -1,7 +1,7 @@
 {% extends "blank.html" %}
 
 {% block title %}
-    add new test case
+    add test case
 {% endblock %}
 
 {% block own_css %}
@@ -14,121 +14,58 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span12">
 
                 <div class="form-inline">
-                    <label class="control-label">用例名称:</label>
-                    <input type="text" class="form-control" id="test_case_name" name="test_case_name" placeholder="用例名称"
-                           style="width: 30%">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
-                    &nbsp;&nbsp;
-                    <div class="form-group">
-                        <label class="control-label">用例模版: </label>
+                    {{ render_field(form.testcase_name, class="form-control", placeholder="用例集名称", size="50") }}
+                    {{ form.csrf_token }}
+                    {{ render_field(form.module, class="btn btn-primary form-control") }}
+                    <select class="btn btn-primary form-control" name="interface" id="interface">
+                        <option>无</option>
+                    </select>
 
-                        <div class="btn-group">
-                            <button id="dLabel" style="width: 100px" name="interface_method" type="button"
-                                    class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                <span id='test_case_module' value="test">无</span>
-                                <span class="caret"></span>
-                            </button>
-
-                            <ul class="dropdown-menu test_case_module_menu" aria-labelledby="dLabel">
-                                {% for module in modules %}
-                                    <li value="{{ module.id }}">{{ module.module_name }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    &nbsp;&nbsp;
-                    <div class="form-group">
-
-                        <div class="btn-group">
-                            <button id="dLabel" style="width: 100px" name="interface_method" type="button"
-                                    class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                <span id='test_case_module_interface'>无</span>
-                                <span class="caret"></span>
-                            </button>
-
-                            <ul class="dropdown-menu test_case_module_interface_menu" aria-labelledby="dLabel">
-
-
-                            </ul>
-
-
-                        </div>
-
-                    </div>
-
-                    &nbsp;&nbsp;
                     <div class="form-group">
                         <label class="control-label">当前环境: </label>
+                        <select name="setting_runner" id="setting_runner" class="btn btn-primary form-control">
+                            {% for setting in runner_setting %}
+                                <option value="{{ setting.id }}">{{ setting.key }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <hr/>
 
-                        <div class="btn-group">
-                            <button id="dLabel" style="width: 100px" name="interface_environment" type="button"
-                                    class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                <span id='test_case_environment' value="test">无</span>
-                                <span class="caret"></span>
-                            </button>
-
-                            <ul class="dropdown-menu test_case_environment_menu" aria-labelledby="dLabel">
-                                {% for setting in runner_setting %}
-                                    <li value="{{ setting.id }}">{{ setting.key }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                <div class="form-inline">
+                    <div class="btn-group">
+                        {{ form.testcase_method(class="btn btn-primary form-control") }}
+                        {{ form.interface_url(class="form-control", size="50%") }}
                     </div>
 
-                </div>
-            </div>
-            <hr/>
-
-            <div class="form-group">
-                <div class="btn-group">
-                    <button id="dLabel" style="width: 100px" name="interface_method" type="button"
-                            class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                        <span id='test_case_method'>GET</span>
-                        <span class="caret"></span>
-                    </button>
-
-                    <ul class="dropdown-menu test_case_method_menu" aria-labelledby="dLabel">
-                        <li>GET</li>
-                        <li>POST</li>
-                        <li>PUT</li>
-                        <li>DELETE</li>
-                        <li>PATCH</li>
-                        <li>HEAD</li>
-                        <li>OPTIONS</li>
-                    </ul>
-
-                    <div class="input-group">
-                        <input class="form-control" type="text" style="width: 500px" placeholder="输入url"
-                               id="test_case_url"/>
-
-                        <div class="btn-group">
-                            <button class="btn btn-outline btn-primary ladda-button" type="button" style="width: 100px"
-                                    id="test_test_case" data-style="zoom-in">
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-primary ladda-button" type="button"
+                                style="width: 100px"
+                                id="test_test_case" data-style="zoom-in">
                                 <span class="ladda-label">
                                     SEND <span class="fa fa-paper-plane-o fa-fw"></span>
                                 </span>
 
-                            </button>
-                            <button class="btn btn-outline btn-success" type="button" style="width: 100px"
-                                    id="add_test_case">
-                                SAVE <span class="fa fa-floppy-o  fa-fw"></span>
-                            </button>
-                        </div>
+                        </button>
+                        <button class="btn btn-outline btn-success" type="button" style="width: 100px"
+                                id="add_test_case">
+                            SAVE <span class="fa fa-floppy-o  fa-fw"></span>
+                        </button>
+                        <button class="btn btn-outline btn-danger" type="button" style="width: 100px"
+                                id="ret_test_case">
+                            CANCEL <span class="fa fa-floppy-o  fa-fw"></span>
+                        </button>
                     </div>
 
                 </div>
 
             </div>
+            <hr/>
             <div class="alert alert-warning">
                 通过{$key$}的形式来传递变量。key是你要传递的变量名。例：在上个接口的Verification保存你要传递的变量（变量不需要验证只需要传递时value不需填），key 填key1
                 ，在后续接口中可以使用{$key1$}来获取保存下来的变量
@@ -151,53 +88,38 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-header">
-                        <table class="table table-hover" id="header_table">
-                            <thead>
-                            <tr class="info">
-                                <th style="width: 50px">required</th>
-                                <th>key</th>
-                                <th>value</th>
-                                <th>description</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
+                        {% for header in form.testcase_header %}
+                            <div class="form-inline header_field" style="margin-top: 10px">
+                                <input type="checkbox" id="testcase_header-{{ loop.index0 }}-require"
+                                       name="testcase_header-{{ loop.index0 }}-require"/>
+                                {{ render_field(header.key, class="form-control", size="40%") }}
+                                {{ render_field(header.value, class="form-control", size="40%") }}
+                                <button type="button" class="btn btn-danger delete_field"
+                                        id="header-{{ loop.index0 }}-remove" data-target="header_field">删除变量
+                                </button>
+                            </div>
+                        {% endfor %}
                         <div class="btn-gruop">
-                            <button class="btn btn-success" id="add_headers">
+                            <button class="btn btn-success add_field" data-target="header_field">
                                 <span class="fa fa-plus-circle fa-fw"></span>
-                            </button>
-                            <button class="btn btn-danger" id="del_headers">
-                                <span class="fa fa-minus fa-fw"></span>
                             </button>
                         </div>
                     </div>
                     <div class="tab-pane" id="panel-query">
-                        <table class="table table-hover" id="query_table">
-                            <thead>
-                            <tr class="warning">
-                                <th style="width: 50px">required</th>
-                                <th>key</th>
-                                <th>value</th>
-                                <th>description</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {#                                <tr>#}
-                            {#                                    <td><input type="checkbox" class="require_query_table" checked></td>#}
-                            {#                                    <td><input type="text" class="form-control key_query_table"></td>#}
-                            {#                                    <td><input type="text" class="form-control value_query_table"></td>#}
-                            {#                                    <td><input type="text" class="form-control description_query_table"></td>#}
-                            {#                                </tr>tr#}
-                            </tbody>
-                        </table>
+                        {% for query in form.testcase_query %}
+                            <div class="form-inline query_field" style="margin-top: 10px">
+                                <input type="checkbox" id="testcase_query-{{ loop.index0 }}-require"
+                                       name="testcase_query-{{ loop.index0 }}-require"/>
+                                {{ render_field(query.key, class="form-control", size="40%") }}
+                                {{ render_field(query.value, class="form-control", size="40%") }}
+                                <button type="button" class="btn btn-danger delete_field"
+                                        id="variable-{{ loop.index0 }}-remove" data-target="query_field">删除变量
+                                </button>
+                            </div>
+                        {% endfor %}
                         <div class="btn-gruop">
-                            <button class="btn btn-success" id="add_query">
+                            <button class="btn btn-success add_field" data-target="query_field">
                                 <span class="fa fa-plus-circle fa-fw"></span>
-                            </button>
-                            <button class="btn btn-danger" id="del_query">
-                                <span class="fa fa-minus fa-fw"></span>
                             </button>
                         </div>
                     </div>
@@ -227,48 +149,42 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" contenteditable="true" id="panel-form-data">
-                                    <table class="table table-hover" id="form_data">
-                                        <thead>
-                                        <tr class="warning">
-                                            <th style="width: 50px">required</th>
-                                            <th>key</th>
-                                            <th>value</th>
-                                            <th>description</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success" id="add_form_data">
+                                    {% for body in form.testcase_body | set_test_case_form_data(form.testcase_body_type) %}
+                                        <div class="form-inline form-data_field" style="margin-top: 10px">
+                                            <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
+                                                   name="testcase_body-{{ loop.index0 }}-require"/>
+                                            {{ render_field(body.key, class="form-control", size="40%") }}
+                                            {{ render_field(body.value, class="form-control", size="40%") }}
+                                            <button type="button" class="btn btn-danger delete_field"
+                                                    id="variable-{{ loop.index0 }}-remove"
+                                                    data-target="form-data_field">
+                                                删除变量
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                    <div class="btn-gruop">
+                                        <button class="btn btn-success add_field" data-target="form-data_field">
                                             <span class="fa fa-plus-circle fa-fw"></span>
-                                        </button>
-                                        <button class="btn btn-danger" id="del_form_data">
-                                            <span class="fa fa-minus fa-fw"></span>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" contenteditable="true" id="panel-urlencoded-data">
-                                    <table class="table table-hover" id="urlencoded_data">
-                                        <thead>
-                                        <tr class="success">
-                                            <th style="width: 50px">required</th>
-                                            <th>key</th>
-                                            <th>value</th>
-                                            <th>description</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success" id="add_urlencoded_data">
+                                    {% for body in form.testcase_body | set_test_case_urlencoded_data(form.testcase_body_type) %}
+                                        <div class="form-inline urlencoded-data_field" style="margin-top: 10px">
+                                            <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
+                                                   name="testcase_body-{{ loop.index0 }}-require"/>
+                                            {{ render_field(body.key, class="form-control", size="40%") }}
+                                            {{ render_field(body.value, class="form-control", size="40%") }}
+                                            <button type="button" class="btn btn-danger delete_field"
+                                                    id="variable-{{ loop.index0 }}-remove"
+                                                    data-target="urlencoded-data_field">
+                                                删除变量
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                    <div class="btn-gruop">
+                                        <button class="btn btn-success add_field" data-target="urlencoded-data_field">
                                             <span class="fa fa-plus-circle fa-fw"></span>
-                                        </button>
-                                        <button class="btn btn-danger" id="del_urlencoded_data">
-                                            <span class="fa fa-minus fa-fw"></span>
                                         </button>
                                     </div>
                                 </div>
@@ -281,25 +197,19 @@
 
                     </div>
                     <div class="tab-pane" id="panel-verification">
-                        <table class="table table-hover" id="verification_data">
-                            <thead>
-                            <tr class="danger">
-                                <th style="width: 50px">save</th>
-                                <th>key</th>
-                                <th>value</th>
-                                <th>description</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                        <div class="btn-group">
-                            <button class="btn btn-success" id="add_verification_data">
+                        {% for verification in form.testcase_verification %}
+                            <div class="form-inline verification_field" style="margin-top: 10px">
+                                {{ render_field(verification.save) }}
+                                {{ render_field(verification.key, class="form-control", size="40%") }}
+                                {{ render_field(verification.value, class="form-control", size="40%") }}
+                                <button type="button" class="btn btn-danger delete_field"
+                                        id="variable-{{ loop.index0 }}-remove" data-target="verification_field">删除变量
+                                </button>
+                            </div>
+                        {% endfor %}
+                        <div class="btn-gruop">
+                            <button class="btn btn-success add_field" data-target="verification_field">
                                 <span class="fa fa-plus-circle fa-fw"></span>
-                            </button>
-                            <button class="btn btn-danger" id="del_verification_data">
-                                <span class="fa fa-minus fa-fw"></span>
                             </button>
                         </div>
                     </div>
@@ -322,13 +232,14 @@
 
 {% endblock %}
 
+
 {% block own_js %}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
     <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
     <script src="/static/vendor/ladda/spin.min.js"></script>
     <script src="/static/vendor/ladda/ladda.min.js"></script>
-    <script src="/static/js/test_runner/test_case.js"></script>
+    <script src="/static/js/test_runner/util.js"></script>
 
     <script>
         // create the editor
@@ -338,136 +249,30 @@
             mode: 'code',
             ace: ace
         };
+        var data = {{ form.testcase_body | set_test_case_json_data(form.testcase_body_type) }};
         var editor = new JSONEditor(container, options);
 
-        $('.test_case_module_menu').on('click', function (e) {
-
-            var $target = $(e.target);
-            $target.is('li') && $('#test_case_module').text($target.text()) && $('#test_case_module').attr("value", $target.val());
-            $.get_interface_by_module($target.val(), $.load_interface)
+        $('#module').on('change', function (e) {
+            var module_id = $(this).find("option:selected").val();
+            $.get_interface_by_module(module_id, $.load_interface)
         });
 
-        $('.test_case_module_interface_menu').on('click', function (e) {
-            var $target = $(e.target);
-            $target.is('li') && $('#test_case_module_interface').text($target.text());
-            $.get_interface_by_id($target.attr("value"), $.load_interface_info, editor)
+        {#    添加字段#}
 
+        $(".add_field").on("click", function () {
+
+            var field_class = $(this).attr("data-target");
+            var field = $("." + field_class + ":last");
+            $.add_field(field);
         });
 
-        $('.test_case_environment_menu').on('click', function (e) {
-            var $target = $(e.target);
-            $target.is('li') && $('#test_case_environment').text($target.text()) && $('#test_case_environment').attr("value", $target.val());;
+        {#        删除字段#}
 
-        });
-
-        $('.test_case_method_menu').on('click', function (e) {
-            var $target = $(e.target);
-            $target.is('li') && $('#test_case_method').text($target.text())
-        });
-
-        $("#add_verification_data").click(function () {
-            $.table_add_tr("verification_data", "", "", "");
-        });
-
-        $("#del_verification_data").click(function () {
-            $.table_delete_tr("verification_data");
-        });
-
-        $("#add_form_data").click(function () {
-            $.table_add_tr("form_data", "", "", "");
-        });
-
-        $("#del_form_data").click(function () {
-            $.table_delete_tr("form_data");
-        });
-
-        $("#add_urlencoded_data").click(function () {
-            $.table_add_tr("urlencoded_data", "", "", "");
-        });
-
-        $("#del_urlencoded_data").click(function () {
-            $.table_delete_tr("urlencoded_data");
-        });
-
-        $("#add_query").click(function () {
-            $.table_add_tr("query_table", "", "", "");
-        });
-
-        $("#del_query").click(function () {
-            $.table_delete_tr("query_table");
-        });
-
-
-        $("#add_headers").click(function () {
-            $.table_add_tr("header_table", "", "", "");
-        });
-
-        $("#del_headers").click(function () {
-
-            $.table_delete_tr("header_table");
-        });
-
-
-        $("#form_data_select").click(function () {
-
-            $.set_header_type("application/form-data")
-        });
-
-        $("#urlencoded_data_select").click(function () {
-
-            $.set_header_type("application/x-www-form-urlencoded")
-        });
-
-        $("#JSON_data_select").click(function () {
-
-            $.set_header_type("application/json")
-        });
-
-        var l = Ladda.create(document.getElementById('test_test_case'));
-
-        $("#test_test_case").click(function () {
-            var api_data = $.get_api_data();
-            var data_type = $.trim($(".active.body_type").text());
-
-            l.start();
-
-            if (data_type == "form-data") {
-
-                $.api_request(l, api_data["test_case_url"], api_data["test_case_method"], api_data["headers"],api_data["query"], api_data["form_data"], api_data["verification_data"]);
-
-            }
-            if (data_type == "x-www-form-urlencoded") {
-
-                $.api_request(l, api_data["test_case_url"], api_data["test_case_method"], api_data["headers"],api_data["query"], api_data["urlencoded_data"], api_data["verification_data"]);
-            }
-            if (data_type == "JSON(application/json)") {
-
-                $.api_request(l, api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["query"], editor.getText(), api_data["verification_data"]);
-
-            }
-        });
-
-        $("#add_test_case").click(function () {
-            var api_data = $.get_api_data();
-            var data_type = $.trim($(".active.body_type").text());
-
-
-            if (data_type == "form-data") {
-
-                $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["form_data"], api_data["verification_data"]);
-            }
-            if (data_type == "x-www-form-urlencoded") {
-                $.test_case_save(api_data["test_case_name"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], api_data["urlencoded_data"], api_data["verification_data"]);
-            }
-            if (data_type == "JSON(application/json)") {
-
-
-                $.test_case_save(api_data["test_case_names"], api_data["module_id"], api_data["test_case_url"], api_data["test_case_method"], api_data["headers"], editor.getText(), api_data["verification_data"]);
-
-
-            }
-        });
-
+        $(".delete_field").on("click", function () {
+            var field_class = $(this).attr("data-target");
+            var fields = $("." + field_class);
+            $.delete_field($(this), fields)
+        })
 
     </script>
 

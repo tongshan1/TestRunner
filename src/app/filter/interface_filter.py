@@ -18,24 +18,6 @@ def str_json(data):
     return []
 
 
-@app_filter.app_template_filter("set_form_data")
-def set_form_data(data, interface_headers):
-    """
-    设置body
-    :param data:
-    :return:
-    """
-    try:
-        data = json.loads(data)
-        headers = json.loads(interface_headers)
-
-        for header in headers:
-            if header["name"] == "Content-type" and header["value"] == "application/x-www-form-urlencoded":
-                return data
-    except Exception:
-        logger.error("data 转化失败")
-    return []
-
 
 @app_filter.app_template_filter("set_urlencoded_data")
 def set_urlencoded_data(data, interface_headers):
