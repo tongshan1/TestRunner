@@ -16,9 +16,9 @@ from flask_wtf.csrf import generate_csrf
 
 @register(api, "/test_case_add.html", methods=["GET", "POST"])
 def test_case_add():
+    form = TestInterfaceCaseFrom()
     if request.method == 'GET':
-        return render_template("test_cases/test_case_add.html", modules=get_all_modules(), csrf_token=generate_csrf(),
-                               runner_setting=SystemSetting.get_runner_setting())
+        return render_template("test_cases/test_case.html", form=form, runner_setting=SystemSetting.get_runner_setting(), title=u"添加")
     else:
         test_case_from = TestCaseFrom()
         if test_case_from.validate_on_submit():
@@ -45,8 +45,8 @@ def testcase_edit(testcase_id):
     if request.method == "GET":
         testcase = TestInterfacecase.get_by_id(testcase_id)
         form = populate_interface_testcase(testcase)
-        return render_template("test_cases/test_case_edit.html", form=form,
-                               runner_setting=SystemSetting.get_runner_setting())
+        return render_template("test_cases/test_case.html", form=form,
+                               runner_setting=SystemSetting.get_runner_setting(), title=u"编辑")
 
 
 @register(api, "/testcase/module/<module_id>")

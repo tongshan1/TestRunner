@@ -1,7 +1,7 @@
 {% extends "blank.html" %}
 
 {% block title %}
-    edit test case
+    test case
 {% endblock %}
 
 {% block own_css %}
@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block page_header %}
-    编辑用例
+    {{ title }}用例
 {% endblock %}
 
 {% block content %}
@@ -57,8 +57,8 @@
                             SAVE <span class="fa fa-floppy-o  fa-fw"></span>
                         </button>
                         <button class="btn btn-outline btn-danger" type="button" style="width: 100px"
-                                id="ret_test_case">
-                            CANCEL <span class="fa fa-floppy-o  fa-fw"></span>
+                                id="ret_test_case" onclick="javascript:history.back(-1);">
+                            CANCEL <span class="fa fa-times-circle fa-fw"></span>
                         </button>
                     </div>
 
@@ -148,7 +148,7 @@
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane fade in active" contenteditable="true" id="panel-form-data">
+                                <div class="tab-pane fade in active" id="panel-form-data">
                                     {% for body in form.testcase_body | set_test_case_form_data(form.testcase_body_type) %}
                                         <div class="form-inline form-data_field" style="margin-top: 10px">
                                             <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
@@ -168,7 +168,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" contenteditable="true" id="panel-urlencoded-data">
+                                <div class="tab-pane fade"  id="panel-urlencoded-data">
                                     {% for body in form.testcase_body | set_test_case_urlencoded_data(form.testcase_body_type) %}
                                         <div class="form-inline urlencoded-data_field" style="margin-top: 10px">
                                             <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
@@ -188,7 +188,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" contenteditable="true" id="panel-json-data">
+                                <div class="tab-pane fade" id="panel-json-data">
 
                                     <div id="jsoneditor" style="height: 300px;"></div>
                                 </div>
