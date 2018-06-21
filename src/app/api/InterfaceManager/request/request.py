@@ -91,11 +91,10 @@ class ApiRequest(object):
         logger.debug("send with kwargs: ================")
         logger.debug(kwargs)
         logger.debug("==================================")
-        return self.session.request(method, url, **kwargs)
-        # try:
-        #
-        #     return self.session.request(method, url, **kwargs)
-        # except (MissingSchema, InvalidSchema, InvalidURL) as e:
-        #     print(e)
+        try:
+
+            return self.session.request(method, url, **kwargs)
+        except (MissingSchema, InvalidSchema, InvalidURL) as e:
+            print(e)
 
 api_request = ApiRequest()

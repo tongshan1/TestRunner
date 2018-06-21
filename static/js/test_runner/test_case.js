@@ -203,8 +203,6 @@ $(document).ready(function () {
     };
 
     $.get_interface_by_module = function (module_id, load_data) {
-        var interfaces;
-
         $.ajax({
             url: "/interface/module/" + module_id,
             method: "GET",
@@ -214,7 +212,6 @@ $(document).ready(function () {
             }
         });
 
-        return interfaces
     };
 
     $.load_interface_info = function (interface, json_editor) {

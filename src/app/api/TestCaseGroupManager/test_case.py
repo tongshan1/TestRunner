@@ -8,6 +8,7 @@ from app.handler import register, success, fail
 from app.api.ModuleManager.module import get_all_modules
 from module.Testcase import TestInterfacecase
 from app.form.test_case_from import TestCaseFrom
+from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase
 from module.System_setting import SystemSetting
 from schema.testcase import TestCaseSchema
 from flask_wtf.csrf import generate_csrf
@@ -37,6 +38,15 @@ def test_case_add():
         else:
             print(test_case_from.errors)
             return fail(2, error=test_case_from.errors)
+
+
+@register(api, "/testcase/<testcase_id>/test_case_edit.html", methods=["GET", "POST"])
+def testcase_edit(testcase_id):
+    if request.method == "GET":
+        testcase = TestInterfacecase.get_by_id(testcase_id)
+        form = populate_interface_testcase(testcase)
+        return render_template("test_cases/test_case_edit.html", form=form,
+                               runner_setting=SystemSetting.get_runner_setting())
 
 
 @register(api, "/testcase/module/<module_id>")

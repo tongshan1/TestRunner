@@ -1,6 +1,5 @@
 from wtforms_alchemy import ModelForm
 from wtforms_alchemy.fields import StringField, QuerySelectField
-from wtforms.fields import BooleanField
 from wtforms.validators import length, data_required
 
 from module.Testcasegroup import Testcasegroup, TestCaseType
