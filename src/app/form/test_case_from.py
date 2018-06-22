@@ -31,28 +31,36 @@ Method = {
 
 
 class HeaderForm(Form):
-    meta = {'csrf': False}
     key = StringField(u'变量名')
     value = StringField(u'变量值')
+
+    def __init__(self, csrf_enabled=False, *args, **kwargs):
+        super(HeaderForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
 
 
 class BodyForm(Form):
-    meta = {'csrf': False}
     key = StringField(u'变量名')
     value = StringField(u'变量值')
+
+    def __init__(self, csrf_enabled=False, *args, **kwargs):
+        super(BodyForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
 
 
 class QueryForm(Form):
-    meta = {'csrf': False}
     key = StringField(u'变量名')
     value = StringField(u'变量值')
+
+    def __init__(self, csrf_enabled=False, *args, **kwargs):
+        super(QueryForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
 
 
 class VerificationForm(Form):
-    meta = {'csrf': False}
     key = StringField(u'变量名')
     value = StringField(u'变量值')
     save = BooleanField(u"保存")
+
+    def __init__(self, csrf_enabled=False, *args, **kwargs):
+        super(VerificationForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
 
 
 def get_all_module():
@@ -82,7 +90,8 @@ class TestInterfaceCaseFrom(Form):
     testcase_method = SelectField(u"接口方法", choices=get_method())
     testcase_header = FieldList(FormField(HeaderForm), min_entries=1)
     testcase_query = FieldList(FormField(QueryForm), min_entries=1)
-    testcase_body = FieldList(FormField(BodyForm), min_entries=1)
+    testcase_data = FieldList(FormField(BodyForm), min_entries=1)
+    testcase_json = StringField()
     testcase_verification = FieldList(FormField(VerificationForm), min_entries=1)
 
 
@@ -99,8 +108,8 @@ def populate_interface_testcase(interface_testcase_obj):
     while len(form.testcase_query) > 0:
         form.testcase_query.pop_entry()
 
-    while len(form.testcase_body) > 0:
-        form.testcase_body.pop_entry()
+    while len(form.testcase_data) > 0:
+        form.testcase_data.pop_entry()
 
     while len(form.testcase_verification) > 0:
         form.testcase_verification.pop_entry()
@@ -137,10 +146,10 @@ def populate_interface_testcase(interface_testcase_obj):
         body_form.key = k
         body_form.value = v
 
-        form.testcase_body.append_entry(body_form)
+        form.testcase_data.append_entry(body_form)
 
     if not testcase_body:
-        form.testcase_body.append_entry()
+        form.testcase_data.append_entry()
 
     testcase_verification = str_to_dict(interface_testcase_obj.testcase_verification)
     for k, v in testcase_verification.items():

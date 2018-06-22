@@ -1,21 +1,15 @@
 $(document).ready(function () {
 
-    $.api_request = function (l, url, method, header, query, param, verification) {
+    $.api_request = function (editor) {
 
-        var setting = $("#test_case_environment").attr("value");
+        var form_data = $.get_form_data(editor);
+
+        console.log(form_data);
 
         $.ajax({
-            url: "/interface/run",
+            url: "/testcase/run",
             method: "POST",
-            data: {
-                "setting": setting,
-                "interface_url": url,
-                "interface_method": method,
-                "interface_header": header,
-                "interface_query": query,
-                "interface_body": param,
-                "testcase_verification": verification
-            },
+            data: form_data,
             success: function (data) {
                 try {
                     var container = document.getElementById('test_case_response');
@@ -33,6 +27,25 @@ $(document).ready(function () {
                 }
 
                 l.stop();
+            }
+
+        });
+
+
+    };
+
+    $.api_save = function (editor) {
+
+        var form_data = $.get_form_data(editor);
+
+
+        $.ajax({
+            url: "#",
+            method: "POST",
+            data: form_data,
+            success: function (data) {
+                alert(data.ret);
+
             }
 
         });
@@ -113,27 +126,10 @@ $(document).ready(function () {
         }
 
         // set body
-        var add_urlencoded_data_field = $("#add_urlencoded-data_field");
-        $.remove_field("urlencoded-data_field", add_urlencoded_data_field);
-        var body = $.parseJSON(data.interface_body);
-        if (header_Content_type == "" || header_Content_type == "application/x-www-form-urlencoded") {
-
-            for (var i = 0; i < body.length; i++) {
-
-                var input = $.set_field("urlencoded-data_field", add_urlencoded_data_field);
-                input[0].value = body[i].name;
-                input[1].value = body[i].value;
-            }
-
-            var body_type = $("#urlencoded_data_a");
-            body_type.click()
-
-        }
-
         var add_form_data_field = $("#add_form-data_field");
         $.remove_field("form-data_field", add_form_data_field);
-        if (header_Content_type == "application/form-data") {
-
+        var body = $.parseJSON(data.interface_body);
+        if (header_Content_type != "application/json") {
             for (var i = 0; i < body.length; i++) {
 
                 var input = $.set_field("form-data_field", add_form_data_field);
@@ -144,15 +140,20 @@ $(document).ready(function () {
             var body_type = $("#form_data_a");
             body_type.click()
 
-        }
+        }else{
 
-        if (header_Content_type == "application/json") {
+            var json_data = new Object();
 
-            editor.setText(body);
+            for (var i = 0; i < body.length; i++) {
+                json_data[body[i].name] = body[i].value
+            }
+
+            console.log(json_data);
+
+            editor.setText(JSON.stringify(json_data));
 
             var body_type = $("#JSON_data_a");
             body_type.click()
-
         }
 
 
@@ -180,8 +181,6 @@ $(document).ready(function () {
         var input_key = field.find(":input")[1];
         var input_value = field.find(":input")[2];
 
-        console.log(input_key);
-
         if (input_key.value != "" || input_value.value != "") {
 
             add_button.click();
@@ -191,6 +190,29 @@ $(document).ready(function () {
         for(var i=0; i<fields.length-1; i++){
             fields[i].remove()
         }
+
+    };
+
+    $.get_form_data = function(editor){
+
+        var form_data = $("#test_case_form").serializeArray();
+        var type_select = $(".body_type.active").attr("id");
+        var data_type = new Object();
+        data_type["name"] = "data_type";
+        data_type["value"] = type_select;
+
+
+        form_data.push(data_type);
+        if(type_select == "JSON_data_select"){
+
+            var json = new Object();
+            var json_data = editor.getText();
+            json["name"] = "testcase_json";
+            json["value"] = json_data;
+            form_data.push(json)
+
+        }
+        return form_data
 
     }
 

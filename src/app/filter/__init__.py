@@ -11,6 +11,5 @@ from .interface_filter import str_json
 from .interface_filter import set_form_data
 from .interface_filter import set_urlencoded_data
 from .interface_filter import set_json_data
-from .test_case_filter import set_test_case_form_data
 from .test_case_filter import set_test_case_json_data
-from .test_case_filter import set_test_case_urlencoded_data
+from .test_case_filter import set_test_case_data

@@ -14,8 +14,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row-fluid">
+    <div class="row-fluid">
+        <form id="test_case_form" action="#" method="post">
             <div class="span12">
 
                 <div class="form-inline">
@@ -68,7 +68,7 @@
             <hr/>
             <div class="alert alert-warning">
                 通过{$key$}的形式来传递变量。key是你要传递的变量名。例：在上个接口的Verification保存你要传递的变量（变量不需要验证只需要传递时value不需填），key 填key1
-                ，在后续接口中可以使用{$key1$}来获取保存下来的变量
+                ，在后续接口中可以使用{$key1$}来获取保存下来的变量。可在在system setting 中设置，方法相同。
             </div>
             <hr/>
             <div class="tabbable tabs-below" id="tabs-857406">
@@ -100,7 +100,8 @@
                             </div>
                         {% endfor %}
                         <div class="btn-gruop">
-                            <button class="btn btn-success add_field" data-target="header_field" id="add_header">
+                            <button class="btn btn-success add_field" data-target="header_field" id="add_header"
+                                    type="button">
                                 <span class="fa fa-plus-circle fa-fw"></span>
                             </button>
                         </div>
@@ -118,7 +119,8 @@
                             </div>
                         {% endfor %}
                         <div class="btn-gruop">
-                            <button class="btn btn-success add_field" data-target="query_field" id="add_query">
+                            <button class="btn btn-success add_field" data-target="query_field" id="add_query"
+                                    type="button">
                                 <span class="fa fa-plus-circle fa-fw"></span>
                             </button>
                         </div>
@@ -131,25 +133,19 @@
                                 <li class="active body_type" id="form_data_select">
                                     <a data-toggle="tab" href="#panel-form-data"
                                        id="form_data_a">
-                                        form-data
-                                    </a>
-                                </li>
-                                <li class="body_type" id="urlencoded_data_select">
-                                    <a data-toggle="tab" href="#panel-urlencoded-data"
-                                       id="urlencoded_data_a">
-                                        x-www-form-urlencoded
+                                        data
                                     </a>
                                 </li>
                                 <li class="body_type" id="JSON_data_select">
                                     <a data-toggle="tab" href="#panel-json-data"
                                        id="JSON_data_a">
-                                        JSON(application/json)
+                                        JSON
                                     </a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="panel-form-data">
-                                    {% for body in form.testcase_body | set_test_case_form_data(form.testcase_body_type) %}
+                                    {% for body in form.testcase_data | set_test_case_data(form.testcase_header_type) %}
                                         <div class="form-inline form-data_field" style="margin-top: 10px">
                                             <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
                                                    name="testcase_body-{{ loop.index0 }}-require"/>
@@ -163,27 +159,8 @@
                                         </div>
                                     {% endfor %}
                                     <div class="btn-gruop">
-                                        <button class="btn btn-success add_field" data-target="form-data_field" id="add_form-data_field">
-                                            <span class="fa fa-plus-circle fa-fw"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade"  id="panel-urlencoded-data">
-                                    {% for body in form.testcase_body | set_test_case_urlencoded_data(form.testcase_body_type) %}
-                                        <div class="form-inline urlencoded-data_field" style="margin-top: 10px">
-                                            <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
-                                                   name="testcase_body-{{ loop.index0 }}-require"/>
-                                            {{ render_field(body.key, class="form-control", size="40%") }}
-                                            {{ render_field(body.value, class="form-control", size="40%") }}
-                                            <button type="button" class="btn btn-danger delete_field"
-                                                    id="variable-{{ loop.index0 }}-remove"
-                                                    data-target="urlencoded-data_field">
-                                                删除变量
-                                            </button>
-                                        </div>
-                                    {% endfor %}
-                                    <div class="btn-gruop">
-                                        <button class="btn btn-success add_field" data-target="urlencoded-data_field" id="add_urlencoded-data_field">
+                                        <button class="btn btn-success add_field" data-target="form-data_field"
+                                                id="add_form-data_field" type="button">
                                             <span class="fa fa-plus-circle fa-fw"></span>
                                         </button>
                                     </div>
@@ -225,10 +202,10 @@
                 </div>
 
             </div>
+        </form>
+    </div>
 
-        </div>
-    </div>
-    </div>
+
 
 {% endblock %}
 
@@ -250,15 +227,15 @@
             mode: 'code',
             ace: ace
         };
-        var data = {{ form.testcase_body | set_test_case_json_data(form.testcase_body_type) }};
-        var editor = new JSONEditor(container, options);
+        var data = {{ form.testcase_data | set_test_case_json_data(form.testcase_header_type)|safe }};
+        var editor = new JSONEditor(container, options, data);
 
         $('#module').on('change', function () {
             var module_id = $(this).find("option:selected").val();
             $.get_interface_by_module(module_id);
         });
 
-        $("#interface").on("change", function(){
+        $("#interface").on("change", function () {
 
             var interface_id = $(this).find("option:selected").val();
             $.load_interface(interface_id, editor);
@@ -277,6 +254,17 @@
             var field_class = $(this).attr("data-target");
             var fields = $("." + field_class);
             $.delete_field($(this), fields)
+        });
+
+        var l = Ladda.create(document.getElementById('test_test_case'));
+        // request api
+        $("#test_test_case").on("click", function () {
+            $.api_request(editor, l);
+        });
+
+        // add api
+        $("#add_test_case").on("click", function(){
+            $.api_save(editor);
         })
 
     </script>

@@ -58,7 +58,7 @@ def interface_edit(interface_id):
     interface_obj = Interface.get_by_id(interface_id)
     if request.method == "GET":
         return render_template("interface/edit.html", interface=interface_obj, csrf_token=generate_csrf(),
-                               modules=get_all_modules())
+                               modules=get_all_modules(), runner_setting=SystemSetting.get_runner_setting())
     else:
         interface_form = InterfaceFrom(request.form)
         if interface_form.validate():
@@ -78,6 +78,7 @@ def interface_list():
 
 @register(api, "/interface/run", methods=["POST"])
 def interface_request():
+
     runner_setting = request.form.get("setting")
     interface_url = request.form.get("interface_url")
     interface_method = request.form.get("interface_method")

@@ -29,6 +29,7 @@ class ApiRequest(object):
         note = ""
         response = ""
         testcase_verification = ""
+
         try:
             method, path, kwargs = self.__init_request(method, path, **kwargs)
 
