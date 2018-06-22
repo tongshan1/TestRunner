@@ -44,7 +44,12 @@ $(document).ready(function () {
             method: "POST",
             data: form_data,
             success: function (data) {
-                alert(data.ret);
+                if(data.ret ==1){
+                    alert("添加成功");
+                    window.location.reload();
+                }else{
+                    alert(data.error)
+                }
 
             }
 
