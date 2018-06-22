@@ -3,6 +3,7 @@ import requests
 from requests.exceptions import (InvalidSchema, InvalidURL, MissingSchema,)
 from .util import replace_variable, str_to_dict
 from .response import ApiResponse, DictObj
+from app import logger
 
 
 class ApiRequest(object):
@@ -28,8 +29,8 @@ class ApiRequest(object):
         note = ""
         response = ""
         testcase_verification = ""
-        try:
 
+        try:
             method, path, kwargs = self.__init_request(method, path, **kwargs)
 
             if "testcase_verification" in kwargs.keys():
@@ -37,14 +38,15 @@ class ApiRequest(object):
 
             if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "application/json":
 
-                response = self._send_request_safe_mode(method, path, json=kwargs["data"])
+                json = kwargs.pop("data", None)
+                response = self._send_request_safe_mode(method, path, json=json, **kwargs)
             else:
 
                 response = self._send_request_safe_mode(method, path, **kwargs)
 
             api_response = ApiResponse(response)
             response = response.text
-
+            logger.debug("get response" + response)
             if testcase_verification != "":
                 result = api_response.validate(testcase_verification)
             else:
@@ -53,6 +55,8 @@ class ApiRequest(object):
             result_one.result = result
             result_one.note = note
         except Exception as e:
+
+            logger.error(e)
 
             result_one.result = 2
             result_one.note = str(e)
@@ -65,13 +69,18 @@ class ApiRequest(object):
         :return:
         """
         # 替换path
-        path = replace_variable(path)
-        print(kwargs)
+        logger.debug("request kwargs"+str(kwargs))
+
+        # 获取运行环境 替换变量
+        runner_setting = kwargs.pop("runner_setting", "")
+
+        path = replace_variable(runner_setting, path)
+
         for key in list(kwargs.keys()):
             if kwargs[key] in [None,  "", {}, '{"":""}', '{}']:
                 kwargs.pop(key)
             else:
-                kwargs[key] = str_to_dict(replace_variable(kwargs[key]))
+                kwargs[key] = str_to_dict(replace_variable(runner_setting, kwargs[key]))
 
         return method, path, kwargs
 
@@ -80,12 +89,13 @@ class ApiRequest(object):
         Send a HTTP request, and catch any exception that might occur due to connection problems.
         Safe mode has been removed from requests 1.x.
         """
+        logger.debug("send with kwargs: ================")
+        logger.debug(kwargs)
+        logger.debug("==================================")
+        try:
 
-        return self.session.request(method, url, **kwargs)
-        # try:
-        #
-        #     return self.session.request(method, url, **kwargs)
-        # except (MissingSchema, InvalidSchema, InvalidURL) as e:
-        #     print(e)
+            return self.session.request(method, url, **kwargs)
+        except (MissingSchema, InvalidSchema, InvalidURL) as e:
+            print(e)
 
 api_request = ApiRequest()

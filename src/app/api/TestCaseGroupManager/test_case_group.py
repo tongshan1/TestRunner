@@ -18,26 +18,23 @@ def get_all_testc_case_group():
     return testcase_group
 
 
-@register(api, "/testcase_group.html", methods=["GET"])
+@register(api, "/testcase_group.html", methods=["GET", "POST"])
 def testcase_group():
-    return render_template("test_cases/test_group.html", form=TestCaseGroupForm(), testcase_groups=Testcasegroup.get_all())
-
-
-@register(api, "/test_group", methods=["POST"])
-def testcase_group_add():
-    testcase_group_form = TestCaseGroupForm(request.form)
-
-    if testcase_group_form.validate():
-        testcase_group_obj = Testcasegroup()
-        testcase_group_form.populate_obj(testcase_group_obj)
-        db.session.add(testcase_group_obj)
-        db.session.commit()
-        flash(u'添加成功', category='success')
-        return redirect("/testcase_group.html")
+    if request.method == "GET":
+        return render_template("test_cases/test_group.html", form=TestCaseGroupForm(), testcase_groups=Testcasegroup.get_all())
     else:
-        flash(u'添加失败', category='danger')
-        return render_template("test_cases/test_group.html", form=testcase_group_form,
-                               testcase_groups=get_all_testc_case_group())
+        testcase_group_form = TestCaseGroupForm(request.form)
+        target = request.referrer
+        if testcase_group_form.validate():
+            testcase_group_obj = Testcasegroup()
+            testcase_group_form.populate_obj(testcase_group_obj)
+            db.session.add(testcase_group_obj)
+            db.session.commit()
+            flash(u'添加成功', category='success')
+        else:
+            flash(u'添加失败', category='danger')
+
+        return redirect(target)
 
 
 @register(api, "/testcase_group/<id>/test_group_edit.html", methods=["GET"])

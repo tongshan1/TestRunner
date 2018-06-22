@@ -6,10 +6,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 # from celery import Celery
 from jac.contrib.flask import JAC
+from .logger import logger
 
-
+logger = logger
 db = SQLAlchemy()
-
 app = Flask(__name__, root_path=ROOT_PATH)
 
 

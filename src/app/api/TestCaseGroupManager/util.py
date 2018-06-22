@@ -20,3 +20,8 @@ def get_testcase_by_group_id(group_id):
             testcase = TestInterfacecase.query.get(testcase_id)
             testcases[testcase_testgroup.id] = testcase
     return testcases
+
+
+def get_setting_runner_by_group_id(group_id):
+    return Testcasegroup.get_by_id(group_id).runner_setting_id
+

@@ -36,4 +36,4 @@ class Module(db.Model):
 
     @classmethod
     def get_by_name(cls, module_name):
-        return cls.query.flter_by(module_name=module_name)
+        return cls.query.filter_by(module_name=module_name).all()

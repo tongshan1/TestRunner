@@ -31,8 +31,37 @@
                         {% endfor %}
                     </select>
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}" id="csrf_token"/>
+
+
+                    &nbsp;&nbsp;
+                    <div class="form-group">
+                        <label class="control-label">当前环境: </label>
+
+                        <div class="btn-group">
+                            <button id="dLabel" style="width: 100px" name="interface_environment" type="button"
+                                    class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                <span id='test_case_environment' value="">无</span>
+                                <span class="caret"></span>
+                            </button>
+
+                            <ul class="dropdown-menu test_case_environment_menu" aria-labelledby="dLabel">
+                                {% for setting in runner_setting %}
+                                    <li value="{{ setting.id }}">{{ setting.key }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <br/>
+                <hr/>
+
+                <div class="form-inline">
+                    <label class="control-label">接口描述:</label>
+                    <input type="text" class="form-control" id="interface_desc" name="interface_desc"
+                           placeholder="接口描述" style="width: 30%">
+                </div>
+
+                <hr/>
 
                 <div class="form-group">
                     <div class="btn-group">
@@ -43,7 +72,7 @@
                             <span class="caret"></span>
                         </button>
 
-                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <ul class="dropdown-menu test_case_method_menu" aria-labelledby="dLabel">
                             <li>GET</li>
                             <li>POST</li>
                             <li>PUT</li>
@@ -126,14 +155,16 @@
                                     <th style="width: 50px">required</th>
                                     <th>key</th>
                                     <th>value</th>
+                                    <th>description</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><input type="checkbox" class="require_query_table" checked></td>
-                                    <td><input type="text" class="form-control key_query_table" disabled></td>
-                                    <td><input type="text" class="form-control value_query_table" disabled></td>
-                                </tr>
+                                {#                                <tr>#}
+                                {#                                    <td><input type="checkbox" class="require_query_table" checked></td>#}
+                                {#                                    <td><input type="text" class="form-control key_query_table"></td>#}
+                                {#                                    <td><input type="text" class="form-control value_query_table"></td>#}
+                                {#                                    <td><input type="text" class="form-control description_query_table"></td>#}
+                                {#                                </tr>#}
                                 </tbody>
                             </table>
                             <div class="btn-gruop">
@@ -174,14 +205,16 @@
                                                 <th style="width: 50px">required</th>
                                                 <th>key</th>
                                                 <th>value</th>
+                                                <th>description</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td><input type="checkbox" class="require_form_data" checked></td>
-                                                <td><input type="text" class="form-control key_form_data"></td>
-                                                <td><input type="text" class="form-control value_form_data"></td>
-                                            </tr>
+                                            {#                                            <tr>#}
+                                            {#                                                <td><input type="checkbox" class="require_form_data" checked></td>#}
+                                            {#                                                <td><input type="text" class="form-control key_form_data"></td>#}
+                                            {#                                                <td><input type="text" class="form-control value_form_data"></td>#}
+                                            {#                                                <td><input type="text" class="form-control description_form_data"></td>#}
+                                            {#                                            </tr>#}
                                             </tbody>
                                         </table>
                                         <div class="btn-group">
@@ -200,14 +233,17 @@
                                                 <th style="width: 50px">required</th>
                                                 <th>key</th>
                                                 <th>value</th>
+                                                <th>description</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td><input type="checkbox" class="require_urlencoded_data" checked></td>
-                                                <td><input type="text" class="form-control key_urlencoded_data"></td>
-                                                <td><input type="text" class="form-control value_urlencoded_data"></td>
-                                            </tr>
+                                            {#                                            <tr>#}
+                                            {#                                                <td><input type="checkbox" class="require_urlencoded_data" checked></td>#}
+                                            {#                                                <td><input type="text" class="form-control key_urlencoded_data"></td>#}
+                                            {#                                                <td><input type="text" class="form-control value_urlencoded_data"></td>#}
+                                            {#                                                <td><input type="text" class="form-control description_urlencoded_data">#}
+                                            {#                                                </td>#}
+                                            {#                                            </tr>#}
                                             </tbody>
                                         </table>
                                         <div class="btn-group">
@@ -266,9 +302,22 @@
         var editor = new JSONEditor(container, options);
 
 
-        $('.dropdown-menu').on('click', function (e) {
+        $('.test_case_method_menu').on('click', function (e) {
             var $target = $(e.target);
             $target.is('li') && $('#interface_method').text($target.text())
+        });
+
+        $('.test_case_environment_menu').on('click', function (e) {
+            var $target = $(e.target);
+            $target.is('li') && $('#test_case_environment').text($target.text()) && $('#test_case_environment').attr("value", $target.val());
+        });
+
+        $("#add_query").click(function () {
+            $.table_add_tr("query_table");
+        });
+
+        $("#del_query").click(function () {
+            $.table_delete_tr("query_table");
         });
 
         $("#add_form_data").click(function () {
@@ -318,16 +367,16 @@
 
             if (data_type == "form-data") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"],api_data["query"], api_data["form_data"]);
 
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"],api_data["query"], api_data["urlencoded_data"]);
 
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_request(l, api_data["interface_url"], api_data["interface_method"], api_data["headers"],api_data["query"], editor.getText());
 
             }
         });
@@ -339,14 +388,14 @@
 
             if (data_type == "form-data") {
 
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["form_data"]);
+                $.api_save(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], api_data["form_data"]);
             }
             if (data_type == "x-www-form-urlencoded") {
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["urlencoded_data"]);
+                $.api_save(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], api_data["urlencoded_data"]);
             }
             if (data_type == "JSON(application/json)") {
 
-                $.api_save(api_data["interface_name"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], editor.getText());
+                $.api_save(api_data["interface_name"], api_data["interface_desc"], api_data["module_id"], api_data["interface_url"], api_data["interface_method"], api_data["headers"], api_data["query"], editor.getText());
                 {##}
                 {#            alert(data3)#}
 

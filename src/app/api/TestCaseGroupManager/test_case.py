@@ -7,39 +7,101 @@ from app.api import api
 from app.handler import register, success, fail
 from app.api.ModuleManager.module import get_all_modules
 from module.Testcase import TestInterfacecase
-from app.form.test_case_from import TestCaseFrom
+from app.form.test_case_from import TestInterfaceCaseFrom
+from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase
+from module.System_setting import SystemSetting
 from schema.testcase import TestCaseSchema
-from flask_wtf.csrf import generate_csrf
+from app.api.InterfaceManager.request.request import api_request
 
 
-@register(api, "/test_case", methods=["GET", "POST"])
+def init_field_data(field):
+    data = {}
+    for v in field:
+        key = v.get("key")
+        value = v.get("value")
+        data[key] = value
+    return data
+
+
+def init_verification_data(verification):
+    data = {}
+    for v in verification:
+        i = []
+        key = v.get("key")
+        i.append(v.get("value"))
+        i.append(v.get("save"))
+        data[key] = i
+    return data
+
+
+@register(api, "/test_case_add.html", methods=["GET", "POST"])
 def test_case_add():
     if request.method == 'GET':
-        return render_template("test_cases/test_case_add.html", modules=get_all_modules(), csrf_token=generate_csrf())
+        form = TestInterfaceCaseFrom()
+        return render_template("test_cases/test_case.html", form=form, runner_setting=SystemSetting.get_runner_setting(), title=u"添加")
     else:
-        test_case_from = TestCaseFrom()
-        if test_case_from.validate_on_submit():
-            test_case = TestInterfacecase(
-                interface_url=test_case_from.interface_url.data,
-                testcase_name=test_case_from.testcase_name.data,
-                module_id=test_case_from.module_id.data,
-                testcase_method=test_case_from.testcase_method.data,
-                testcase_header=test_case_from.testcase_header.data,
-                testcase_body=test_case_from.testcase_body.data,
-                is_active=test_case_from.is_active.data,
-                testcase_verification=test_case_from.testcase_verification.data
-            )
-            db.session.add(test_case)
+        form = TestInterfaceCaseFrom(request.form)
+        data_type = request.form.get("data_type")
+
+        if form.validate():
+            test_case_obj = TestInterfacecase()
+            test_case_obj.interface_url= form.interface_url.data
+            test_case_obj.testcase_name = form.testcase_name.data
+            test_case_obj.testcase_method = form.testcase_method.data
+            test_case_obj.module = form.module.data
+            test_case_obj.testcase_header = init_field_data(form.testcase_header.data)
+            test_case_obj.testcase_query = init_field_data(form.testcase_query.data)
+            if (data_type == "JSON_data_select"):
+                test_case_body = form.testcase_json.data
+            else:
+                test_case_body = init_field_data(form.testcase_data.data)
+            test_case_obj.testcase_body = test_case_body
+            test_case_obj.testcase_verification = init_verification_data(form.testcase_verification.data)
+            db.session.add(test_case_obj)
             db.session.commit()
             return success()
         else:
-            print(test_case_from.errors)
-            return fail(2, error=test_case_from.errors)
+            print(form.errors)
+            return fail(2, error=form.errors)
+
+
+@register(api, "/testcase/run", methods=["POST"])
+def testcase_request():
+
+    data_type = request.form.get("data_type")
+    runner_setting = request.form.get("setting_runner")
+    form = TestInterfaceCaseFrom(request.form)
+
+    if(data_type == "JSON_data_select"):
+        test_case_body = form.testcase_json.data
+    else:
+        test_case_body = init_field_data(form.testcase_data.data)
+
+    interface_url = form.interface_url.data
+    testcase_method = form.testcase_method.data
+    testcase_header = init_field_data(form.testcase_header.data)
+    testcase_query = init_field_data(form.testcase_query.data)
+    testcase_verification = init_verification_data(form.testcase_verification.data)
+
+    response, result = api_request.request(testcase_method, interface_url, headers=testcase_header,
+                                           data=test_case_body, testcase_verification=testcase_verification,
+                                           params=testcase_query, runner_setting=runner_setting)
+
+    return response
+
+
+@register(api, "/testcase/<testcase_id>/test_case_edit.html", methods=["GET", "POST"])
+def testcase_edit(testcase_id):
+    if request.method == "GET":
+        testcase = TestInterfacecase.get_by_id(testcase_id)
+        form = populate_interface_testcase(testcase)
+        return render_template("test_cases/test_case.html", form=form,
+                               runner_setting=SystemSetting.get_runner_setting(), title=u"编辑")
 
 
 @register(api, "/testcase/module/<module_id>")
 def get_testcase_by_module(module_id):
-    testcases = TestInterfacecase.query.filter(TestInterfacecase.module_id==module_id).all()
+    testcases = TestInterfacecase.query.filter(TestInterfacecase.module_id == module_id).all()
     testcases = TestCaseSchema(many=True).dumps(testcases)
 
     return testcases

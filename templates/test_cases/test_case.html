@@ -1,0 +1,272 @@
+{% extends "blank.html" %}
+
+{% block title %}
+    test case
+{% endblock %}
+
+{% block own_css %}
+    <link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/vendor/ladda/ladda-themeless.min.css">
+{% endblock %}
+
+{% block page_header %}
+    {{ title }}用例
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <form id="test_case_form" action="#" method="post">
+            <div class="span12">
+
+                <div class="form-inline">
+                    {{ render_field(form.testcase_name, class="form-control", placeholder="用例集名称", size="50") }}
+                    {{ form.csrf_token }}
+                    {{ render_field(form.module, class="btn btn-primary form-control") }}
+                    <select class="btn btn-primary form-control" name="interface" id="interface">
+                        <option>无</option>
+                    </select>
+
+                    <div class="form-group">
+                        <label class="control-label">当前环境: </label>
+                        <select name="setting_runner" id="setting_runner" class="btn btn-primary form-control">
+                            {% for setting in runner_setting %}
+                                <option value="{{ setting.id }}">{{ setting.key }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <hr/>
+
+                <div class="form-inline">
+                    <div class="btn-group">
+                        {{ form.testcase_method(class="btn btn-primary form-control") }}
+                        {{ form.interface_url(class="form-control", size="50%") }}
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-primary ladda-button" type="button"
+                                style="width: 100px"
+                                id="test_test_case" data-style="zoom-in">
+                                <span class="ladda-label">
+                                    SEND <span class="fa fa-paper-plane-o fa-fw"></span>
+                                </span>
+
+                        </button>
+                        <button class="btn btn-outline btn-success" type="button" style="width: 100px"
+                                id="add_test_case">
+                            SAVE <span class="fa fa-floppy-o  fa-fw"></span>
+                        </button>
+                        <button class="btn btn-outline btn-danger" type="button" style="width: 100px"
+                                id="ret_test_case" onclick="javascript:history.back(-1);">
+                            CANCEL <span class="fa fa-times-circle fa-fw"></span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+            <hr/>
+            <div class="alert alert-warning">
+                通过{$key$}的形式来传递变量。key是你要传递的变量名。例：在上个接口的Verification保存你要传递的变量（变量不需要验证只需要传递时value不需填），key 填key1
+                ，在后续接口中可以使用{$key1$}来获取保存下来的变量。可在在system setting 中设置，方法相同。
+            </div>
+            <hr/>
+            <div class="tabbable tabs-below" id="tabs-857406">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#panel-header" data-toggle="tab">Headers</a>
+                    </li>
+                    <li>
+                        <a href="#panel-query" data-toggle="tab">Query</a>
+                    </li>
+                    <li>
+                        <a href="#panel-body" data-toggle="tab">Body</a>
+                    </li>
+                    <li>
+                        <a href="#panel-verification" data-toggle="tab">Verification</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="panel-header">
+                        {% for header in form.testcase_header %}
+                            <div class="form-inline header_field" style="margin-top: 10px">
+                                <input type="checkbox" id="testcase_header-{{ loop.index0 }}-require"
+                                       name="testcase_header-{{ loop.index0 }}-require"/>
+                                {{ render_field(header.key, class="form-control", size="40%") }}
+                                {{ render_field(header.value, class="form-control", size="40%") }}
+                                <button type="button" class="btn btn-danger delete_field"
+                                        id="header-{{ loop.index0 }}-remove" data-target="header_field">删除变量
+                                </button>
+                            </div>
+                        {% endfor %}
+                        <div class="btn-gruop">
+                            <button class="btn btn-success add_field" data-target="header_field" id="add_header"
+                                    type="button">
+                                <span class="fa fa-plus-circle fa-fw"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="panel-query">
+                        {% for query in form.testcase_query %}
+                            <div class="form-inline query_field" style="margin-top: 10px">
+                                <input type="checkbox" id="testcase_query-{{ loop.index0 }}-require"
+                                       name="testcase_query-{{ loop.index0 }}-require"/>
+                                {{ render_field(query.key, class="form-control", size="40%") }}
+                                {{ render_field(query.value, class="form-control", size="40%") }}
+                                <button type="button" class="btn btn-danger delete_field"
+                                        id="variable-{{ loop.index0 }}-remove" data-target="query_field">删除变量
+                                </button>
+                            </div>
+                        {% endfor %}
+                        <div class="btn-gruop">
+                            <button class="btn btn-success add_field" data-target="query_field" id="add_query"
+                                    type="button">
+                                <span class="fa fa-plus-circle fa-fw"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="panel-body">
+
+                        <div class="tabbable" id="tabs-518269"><!-- Only required for left/right tabs -->
+                            <ul class="nav nav-pills">
+
+                                <li class="active body_type" id="form_data_select">
+                                    <a data-toggle="tab" href="#panel-form-data"
+                                       id="form_data_a">
+                                        data
+                                    </a>
+                                </li>
+                                <li class="body_type" id="JSON_data_select">
+                                    <a data-toggle="tab" href="#panel-json-data"
+                                       id="JSON_data_a">
+                                        JSON
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="panel-form-data">
+                                    {% for body in form.testcase_data | set_test_case_data(form.testcase_header_type) %}
+                                        <div class="form-inline form-data_field" style="margin-top: 10px">
+                                            <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
+                                                   name="testcase_body-{{ loop.index0 }}-require"/>
+                                            {{ render_field(body.key, class="form-control", size="40%") }}
+                                            {{ render_field(body.value, class="form-control", size="40%") }}
+                                            <button type="button" class="btn btn-danger delete_field"
+                                                    id="variable-{{ loop.index0 }}-remove"
+                                                    data-target="form-data_field">
+                                                删除变量
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                    <div class="btn-gruop">
+                                        <button class="btn btn-success add_field" data-target="form-data_field"
+                                                id="add_form-data_field" type="button">
+                                            <span class="fa fa-plus-circle fa-fw"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="panel-json-data">
+
+                                    <div id="jsoneditor" style="height: 300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="panel-verification">
+                        {% for verification in form.testcase_verification %}
+                            <div class="form-inline verification_field" style="margin-top: 10px">
+                                {{ render_field(verification.save) }}
+                                {{ render_field(verification.key, class="form-control", size="40%") }}
+                                {{ render_field(verification.value, class="form-control", size="40%") }}
+                                <button type="button" class="btn btn-danger delete_field"
+                                        id="variable-{{ loop.index0 }}-remove" data-target="verification_field">删除变量
+                                </button>
+                            </div>
+                        {% endfor %}
+                        <div class="btn-gruop">
+                            <button class="btn btn-success add_field" data-target="verification_field">
+                                <span class="fa fa-plus-circle fa-fw"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Response
+                </div>
+                <div class="panel-body" id="test_case_response" style="height: 300px">
+                    response
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block own_js %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
+    <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
+    <script src="/static/vendor/ladda/spin.min.js"></script>
+    <script src="/static/vendor/ladda/ladda.min.js"></script>
+    <script src="/static/js/test_runner/util.js"></script>
+    <script src="/static/js/test_runner/test_case_interface.js"></script>
+
+    <script>
+        // create the editor
+        var container = document.getElementById('jsoneditor');
+        var options = {
+            modes: ['text', 'code', 'tree', 'form', 'view'],
+            mode: 'code',
+            ace: ace
+        };
+        var data = {{ form.testcase_data | set_test_case_json_data(form.testcase_header_type)|safe }};
+        var editor = new JSONEditor(container, options, data);
+
+        $('#module').on('change', function () {
+            var module_id = $(this).find("option:selected").val();
+            $.get_interface_by_module(module_id);
+        });
+
+        $("#interface").on("change", function () {
+
+            var interface_id = $(this).find("option:selected").val();
+            $.load_interface(interface_id, editor);
+        });
+
+        {#    添加字段#}
+        $(".add_field").on("click", function () {
+
+            var field_class = $(this).attr("data-target");
+            var field = $("." + field_class + ":last");
+            $.add_field(field);
+        });
+        {#        删除字段#}
+
+        $(".delete_field").on("click", function () {
+            var field_class = $(this).attr("data-target");
+            var fields = $("." + field_class);
+            $.delete_field($(this), fields)
+        });
+
+        var l = Ladda.create(document.getElementById('test_test_case'));
+        // request api
+        $("#test_test_case").on("click", function () {
+            $.api_request(editor, l);
+        });
+
+        // add api
+        $("#add_test_case").on("click", function(){
+            $.api_save(editor);
+        })
+
+    </script>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from app.api.InterfaceManager.request.request import api_request
-from app.api.TestCaseGroupManager.util import get_testcase_by_group_id
+from app.api.TestCaseGroupManager.util import get_testcase_by_group_id, get_setting_runner_by_group_id
 from module.Report import Result, Report
 from app import db
 
@@ -25,6 +25,7 @@ class AllTests():
         :return:
         """
         test_cases = get_testcase_by_group_id(test_group_id)
+        runner_setting = get_setting_runner_by_group_id(test_group_id)
         report = Report(testgroup_id=test_group_id)
         total = 0
         success = 0
@@ -42,7 +43,7 @@ class AllTests():
             testcase_body = test_case.testcase_body
             testcase_verification = test_case.testcase_verification
 
-            response, result_one = api_request.request(method, url, headers=testcase_header, data=testcase_body, testcase_verification=testcase_verification)
+            response, result_one = api_request.request(method, url, headers=testcase_header, data=testcase_body, testcase_verification=testcase_verification, runner_setting=runner_setting)
             result = Result(report.id, testcase_testgroup_id, result_one.result, str(result_one.note))
             db.session.add(result)
 
