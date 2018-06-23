@@ -47,15 +47,16 @@
 {% endblock %}
 
 {% block own_js %}
-    <script src="/static/js/test_runner/setting.js"></script>
+    <script src="/static/js/test_runner/util.js"></script>
 
     <script>
         $("#add_variable").on('click', function () {
-            $.add_field();
+            var variable = $(".variable_field:last");
+            $.add_field(variable);
         });
         $(".delete_variable").on("click", function () {
-            var delete_item = $(this);
-            $.delete_field(delete_item)
+            var variable = $(".variable_field");
+            $.delete_field($(this), variable)
         });
     </script>
 {% endblock %}

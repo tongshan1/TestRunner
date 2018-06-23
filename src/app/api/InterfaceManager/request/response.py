@@ -1,5 +1,6 @@
 from .util import set_variable
 
+
 class DictObj(dict):
     def __init__(self):
         dict.__init__(self)
@@ -53,7 +54,11 @@ class ApiResponse(DictObj):
         return str(self.data)
 
     def get_value_by_key(self, key):
-        return eval("self.data."+key)
+
+        if not key:
+            return
+        tmp = "self.data."+key
+        return eval(tmp)
 
     def validate(self, verification):
         """

@@ -9,12 +9,12 @@ def set_test_case_data(testcase_data, type):
     :param data:
     :return:
     """
-    data = testcase_data
-    if type != "application/json":
-        data.pop_entry()
-        data.append_entry()
+    # data = testcase_data
+    # if type != "application/json":
+    #     data.pop_entry()
+    #     data.append_entry()
 
-    return data
+    return testcase_data
 
 
 @app_filter.app_template_filter("set_test_case_json_data")

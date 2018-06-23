@@ -1,33 +1,11 @@
-import json
 
 from flask_wtf import Form
-from wtforms import StringField, BooleanField, IntegerField, FieldList, FormField, SelectField
+from wtforms import StringField, BooleanField, FieldList, FormField, SelectField
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms.validators import length, data_required
-from module.Module import Module
 from app.logger import logger
-
-
-class TestCaseFrom(Form):
-    interface_url = StringField('interface_url', [length(min=0), data_required(message=u'接口url不能为空')])
-    testcase_name = StringField('testcase_name', [data_required(message=u'接口名不能为空')])
-    module_id = IntegerField("module_id", [data_required(message=u'所属某块不能为空')])
-    testcase_method = StringField('testcase_method',
-                                  [length(min=0, max=100), data_required(message=u'testcase_method不能为空')])
-    testcase_header = StringField('testcase_header')
-    testcase_body = StringField('testcase_body')
-    testcase_verification = StringField('testcase_verification')
-    is_active = BooleanField('is_active')
-
-Method = {
-    "GET": "GET",
-    "POST": "POST",
-    "PUT": "PUT",
-    "DELETE": "DELETE",
-    "PATCH": "PATCH",
-    "HEAD": "HEAD",
-    "OPTIONS": "OPTIONS"
-}
+from module.System_setting import SystemSetting
+from .util import Method, str_to_dict, get_all_module
 
 
 class HeaderForm(Form):
@@ -63,23 +41,13 @@ class VerificationForm(Form):
         super(VerificationForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
 
 
-def get_all_module():
-    return Module.get_all()
-
-
 def get_method():
     method = [(key, value) for key, value in Method.items()]
     return method
 
 
-def str_to_dict(str):
-    try:
-
-        return json.loads(str)
-    except ValueError:
-        return {}
-    except TypeError:
-        return {}
+def get_runner_setting():
+    return SystemSetting.get_runner_setting()
 
 
 class TestInterfaceCaseFrom(Form):
@@ -87,6 +55,7 @@ class TestInterfaceCaseFrom(Form):
     interface_url = StringField(u'接口url', [length(min=0), data_required(message=u'接口url不能为空')])
     testcase_name = StringField(u'接口名称', [data_required(message=u'接口名不能为空')])
     module = QuerySelectField(u"所属模块", query_factory=get_all_module)
+    runner_setting = QuerySelectField(u"当前环境", query_factory=get_runner_setting)
     testcase_method = SelectField(u"接口方法", choices=get_method())
     testcase_header = FieldList(FormField(HeaderForm), min_entries=1)
     testcase_query = FieldList(FormField(QueryForm), min_entries=1)
@@ -122,7 +91,7 @@ def populate_interface_testcase(interface_testcase_obj):
         header_form.value = v
 
         if k == "Content-type":
-            form.testcase_header_type = v
+            form.testcase_body_type = v
 
         form.testcase_header.append_entry(header_form)
 

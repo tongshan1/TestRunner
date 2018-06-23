@@ -11,8 +11,6 @@ class Variable(dict):
 
 
 variable = Variable()
-variable["ts"] = "1527055281"
-variable["hash"] = "15215b8b123c9e7ed2bc858eb398606bdcfe76133f7d98fa832022523298dbc0s"
 
 
 def replace_variable(runner_setting, tmp):
