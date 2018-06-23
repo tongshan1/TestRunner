@@ -69,7 +69,7 @@ def test_case_add():
 def testcase_request():
 
     data_type = request.form.get("data_type")
-    runner_setting = request.form.get("setting_runner")
+    runner_setting = request.form.get("runner_setting")
     form = TestInterfaceCaseFrom(request.form)
 
     if(data_type == "JSON_data_select"):

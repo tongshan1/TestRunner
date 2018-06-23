@@ -4,37 +4,104 @@ from flask_wtf.csrf import generate_csrf
 
 from app import db
 from app.api import api
-from app.api.ModuleManager.module import get_all_modules
 from app.handler import register, success, fail
-from app.form.interface_form import InterfaceFrom
+from app.form.interface_form import InterfaceFrom, populate_interface
 from app.logger import logger
 
 from module.Interface import Interface
-from module.System_setting import SystemSetting
 from schema.interface import InterfaceSchema
 from .request.request import api_request
 from .utils.insert_swagger import insert_data
 
 
-@register(api, "/interface.html", methods=['GET'])
+def init_field_data(field):
+    data = {}
+    for v in field:
+        data["name"] = v.get("key")
+        data["value"] = v.get("value")
+        data["description"] = v.get("description")
+    return data
+
+
+@register(api, "/interface.html", methods=['GET', "POST"])
 def interface():
-    return render_template("interface/new.html", csrf_token=generate_csrf(), modules=get_all_modules(),
-                           runner_setting=SystemSetting.get_runner_setting())
-
-
-@register(api, "/interface", methods=["POST"])
-def interface_add():
-    interface_form = InterfaceFrom(request.form)
-
-    logger.error(request.form)
-    if interface_form.validate():
-        interface_obj = Interface()
-        interface_form.populate_obj(interface_obj)
-        db.session.add(interface_obj)
-        db.session.commit()
-        return success()
+    if request.method == "GET":
+        form = InterfaceFrom()
+        return render_template("interface/interface.html", title=u"添加", form=form)
     else:
-        return fail(2, error=str(interface_form.errors))
+        form = InterfaceFrom(request.form)
+        if form.validate():
+            interface_obj = Interface()
+            interface_obj.interface_url = form.interface_url.data
+            interface_obj.interface_name = form.interface_name.data
+            interface_obj.module = form.module.data
+            interface_obj.interface_method = form.interface_method.data
+            interface_obj.interface_desc = form.interface_desc.data
+            interface_obj.interface_header = init_field_data(form.interface_header.data)
+            interface_obj.interface_query = init_field_data(form.interface_query.data)
+
+            data_type = request.form.get("data_type")
+            if data_type == "JSON_data_select":
+                interface_obj.interface_body = form.interface_json.data
+            else:
+                interface_obj.interface_body = init_field_data(form.interface_data.data)
+
+            db.session.add(interface_obj)
+            db.session.commit()
+            return success()
+        else:
+            logger.error(form.errors)
+            return fail(2, error=form.errors)
+
+
+@register(api, "/interface/<interface_id>/edit.html", methods=["GET", "POST"])
+def interface_edit(interface_id):
+    interface_obj = Interface.get_by_id(interface_id)
+    form = populate_interface(interface_obj)
+    if request.method == "GET":
+        return render_template("interface/interface.html", title=u"编辑", form=form)
+    else:
+        interface_form = InterfaceFrom(request.form)
+        if interface_form.validate():
+            interface_obj = Interface.get_by_id(interface_id)
+            interface_form.populate_obj(interface_obj)
+            db.session.add(interface_obj)
+            db.session.commit()
+            return success()
+        else:
+            return fail(2, error=str(interface_form.errors))
+
+
+def init_run_field_data(field):
+    data = {}
+    for v in field:
+        data[v.get("key")] = v.get("value")
+    return data
+
+
+@register(api, "/interface/run", methods=["POST"])
+def interface_request():
+
+    form = InterfaceFrom(request.form)
+
+    runner_setting = form.runner_setting.data.id
+    interface_url = form.interface_url.data
+    interface_method = form.interface_method.data
+    interface_header = init_run_field_data(form.interface_header.data)
+    data_type = request.form.get("data_type")
+    if data_type == "JSON_data_select":
+        interface_body = form.interface_json.data
+    else:
+        interface_body = init_run_field_data(form.interface_data.data)
+
+    interface_query = init_run_field_data(form.interface_query.data)
+
+    response, result = api_request.request(interface_method, interface_url, headers=interface_header,
+                                           data=interface_body, params=interface_query, runner_setting=runner_setting)
+
+    logger.error(response)
+
+    return response
 
 
 @register(api, "/interface/module/<module_id>")
@@ -52,46 +119,9 @@ def interface_by_id(interface_id):
 
     return interface_obj
 
-
-@register(api, "/interface/<interface_id>/edit", methods=["GET", "POST"])
-def interface_edit(interface_id):
-    interface_obj = Interface.get_by_id(interface_id)
-    if request.method == "GET":
-        return render_template("interface/edit.html", interface=interface_obj, csrf_token=generate_csrf(),
-                               modules=get_all_modules(), runner_setting=SystemSetting.get_runner_setting())
-    else:
-        interface_form = InterfaceFrom(request.form)
-        if interface_form.validate():
-            interface_obj = Interface.get_by_id(interface_id)
-            interface_form.populate_obj(interface_obj)
-            db.session.add(interface_obj)
-            db.session.commit()
-            return success()
-        else:
-            return fail(2, error=str(interface_form.errors))
-
-
 @register(api, "/interface_list.html", methods=["GET"])
 def interface_list():
     return render_template("interface/list.html", interfaces=Interface.get_all_oder_by_module())
-
-
-@register(api, "/interface/run", methods=["POST"])
-def interface_request():
-
-    runner_setting = request.form.get("setting")
-    interface_url = request.form.get("interface_url")
-    interface_method = request.form.get("interface_method")
-    interface_header = request.form.get("interface_header")
-    interface_body = request.form.get("interface_body")
-    interface_query = request.form.get("interface_query")
-    testcase_verification = request.form.get("testcase_verification")
-
-    response, result = api_request.request(interface_method, interface_url, headers=interface_header,
-                                           data=interface_body, testcase_verification=testcase_verification,
-                                           params=interface_query, runner_setting=runner_setting)
-
-    return response
 
 
 def allowed_file(filename):

@@ -18,7 +18,6 @@ def str_json(data):
     return []
 
 
-
 @app_filter.app_template_filter("set_urlencoded_data")
 def set_urlencoded_data(data, interface_headers):
     """

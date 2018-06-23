@@ -28,7 +28,34 @@ class ApiRequest(object):
         result_one = DictObj()
         note = ""
         response = ""
-        testcase_verification = ""
+        testcase_verification = {}
+
+        # method, path, kwargs = self.__init_request(method, path, **kwargs)
+        #
+        # if "testcase_verification" in kwargs.keys():
+        #     testcase_verification = kwargs.pop("testcase_verification")
+        #
+        # if "headers" in kwargs.keys() and kwargs["headers"].get("Content-type") == "application/json":
+        #
+        #     json = kwargs.pop("data", None)
+        #     response = self._send_request_safe_mode(method, path, json=json, **kwargs)
+        # else:
+        #
+        #     response = self._send_request_safe_mode(method, path, **kwargs)
+        #
+        # api_response = ApiResponse(response)
+        # response = response.text
+        # logger.debug("get response" + response)
+        # if testcase_verification != {}:
+        #     logger.error(testcase_verification)
+        #     result = api_response.validate(testcase_verification)
+        # else:
+        #     result = 1
+        #
+        # result_one.result = result
+        # result_one.note = note
+        #
+        # return response, result_one
 
         try:
             method, path, kwargs = self.__init_request(method, path, **kwargs)

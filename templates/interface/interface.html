@@ -1,38 +1,37 @@
 {% extends "blank.html" %}
 
 {% block title %}
-    test case
+    interface
 {% endblock %}
 
 {% block own_css %}
     <link href="/static/vendor/jquery/jsoneditor.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/vendor/ladda/ladda-themeless.min.css">
+
+
 {% endblock %}
 
 {% block page_header %}
-    {{ title }}用例
+    {{ title }}新接口
 {% endblock %}
 
 {% block content %}
+
     <div class="row-fluid">
-        <form id="test_case_form" action="#" method="post">
+        <form id="interface_form" action="#" method="post">
             <div class="span12">
 
                 <div class="form-inline">
-                    {{ render_field(form.testcase_name, class="form-control", placeholder="用例集名称", size="50") }}
+                    {{ render_field(form.interface_name, class="form-control", placeholder="接口名称", size="50") }}
                     {{ form.csrf_token }}
                     {{ render_field(form.module, class="btn btn-primary form-control") }}
-                    <select class="btn btn-primary form-control" name="interface" id="interface">
-                        <option>无</option>
-                    </select>
-
                     {{ render_field(form.runner_setting, class="btn btn-primary form-control") }}
                 </div>
                 <hr/>
 
                 <div class="form-inline">
                     <div class="btn-group">
-                        {{ form.testcase_method(class="btn btn-primary form-control") }}
+                        {{ form.interface_method(class="btn btn-primary form-control") }}
                         {{ form.interface_url(class="form-control", size="50%") }}
                     </div>
 
@@ -59,9 +58,9 @@
 
             </div>
             <hr/>
+
             <div class="alert alert-warning">
-                通过{$key$}的形式来传递变量。key是你要传递的变量名。例：在上个接口的Verification保存你要传递的变量（变量不需要验证只需要传递时value不需填），key 填key1
-                ，在后续接口中可以使用{$key1$}来获取保存下来的变量。可在在system setting 中设置，方法相同。
+                {{ render_field(form.interface_desc, class="form-control") }}
             </div>
             <hr/>
             <div class="tabbable tabs-below" id="tabs-857406">
@@ -75,18 +74,16 @@
                     <li>
                         <a href="#panel-body" data-toggle="tab">Body</a>
                     </li>
-                    <li>
-                        <a href="#panel-verification" data-toggle="tab">Verification</a>
-                    </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-header">
-                        {% for header in form.testcase_header %}
+                        {% for header in form.interface_header %}
                             <div class="form-inline header_field" style="margin-top: 10px">
                                 <input type="checkbox" id="testcase_header-{{ loop.index0 }}-require"
                                        name="testcase_header-{{ loop.index0 }}-require"/>
                                 {{ render_field(header.key, class="form-control", size="40%") }}
                                 {{ render_field(header.value, class="form-control", size="40%") }}
+                                {{ render_field(header.desc, class="form-control", size="40%") }}
                                 <button type="button" class="btn btn-danger delete_field"
                                         id="header-{{ loop.index0 }}-remove" data-target="header_field">删除变量
                                 </button>
@@ -100,12 +97,13 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="panel-query">
-                        {% for query in form.testcase_query %}
+                        {% for query in form.interface_query %}
                             <div class="form-inline query_field" style="margin-top: 10px">
                                 <input type="checkbox" id="testcase_query-{{ loop.index0 }}-require"
                                        name="testcase_query-{{ loop.index0 }}-require"/>
                                 {{ render_field(query.key, class="form-control", size="40%") }}
                                 {{ render_field(query.value, class="form-control", size="40%") }}
+                                {{ render_field(query.desc, class="form-control", size="40%") }}
                                 <button type="button" class="btn btn-danger delete_field"
                                         id="variable-{{ loop.index0 }}-remove" data-target="query_field">删除变量
                                 </button>
@@ -138,12 +136,13 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="panel-form-data">
-                                    {% for body in form.testcase_data | set_test_case_data(form.testcase_body_type) %}
+                                    {% for body in form.interface_data | set_test_case_data(form.interface_body_type) %}
                                         <div class="form-inline form-data_field" style="margin-top: 10px">
                                             <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
                                                    name="testcase_body-{{ loop.index0 }}-require"/>
                                             {{ render_field(body.key, class="form-control", size="40%") }}
                                             {{ render_field(body.value, class="form-control", size="40%") }}
+                                            {{ render_field(body.desc, class="form-control", size="40%") }}
                                             <button type="button" class="btn btn-danger delete_field"
                                                     id="variable-{{ loop.index0 }}-remove"
                                                     data-target="form-data_field">
@@ -166,23 +165,6 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane" id="panel-verification">
-                        {% for verification in form.testcase_verification %}
-                            <div class="form-inline verification_field" style="margin-top: 10px">
-                                {{ render_field(verification.save) }}
-                                {{ render_field(verification.key, class="form-control", size="40%") }}
-                                {{ render_field(verification.value, class="form-control", size="40%") }}
-                                <button type="button" class="btn btn-danger delete_field"
-                                        id="variable-{{ loop.index0 }}-remove" data-target="verification_field">删除变量
-                                </button>
-                            </div>
-                        {% endfor %}
-                        <div class="btn-gruop">
-                            <button class="btn btn-success add_field" data-target="verification_field">
-                                <span class="fa fa-plus-circle fa-fw"></span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
             <hr/>
@@ -190,7 +172,7 @@
                 <div class="panel-heading">
                     Response
                 </div>
-                <div class="panel-body" id="test_case_response" style="height: 300px">
+                <div class="panel-body" id="interface_response" style="height: 300px">
                     response
                 </div>
 
@@ -198,21 +180,19 @@
         </form>
     </div>
 
-
-
 {% endblock %}
 
-
 {% block own_js %}
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
     <script src="/static/vendor/jquery/jsoneditor-minimalist.js"></script>
     <script src="/static/vendor/ladda/spin.min.js"></script>
     <script src="/static/vendor/ladda/ladda.min.js"></script>
+    <script src="/static/js/test_runner/textares_auto_size.js"></script>
     <script src="/static/js/test_runner/util.js"></script>
-    <script src="/static/js/test_runner/test_case_interface.js"></script>
+    <script src="/static/js/test_runner/interface.js"></script>
 
     <script>
+
         // create the editor
         var container = document.getElementById('jsoneditor');
         var options = {
@@ -220,19 +200,8 @@
             mode: 'code',
             ace: ace
         };
-        var data = {{ form.testcase_data | set_test_case_json_data(form.testcase_body_type)|safe }};
+        var data = {{ form.interface_data | set_test_case_json_data(form.interface_body_type)|safe }};
         var editor = new JSONEditor(container, options, data);
-
-        $('#module').on('change', function () {
-            var module_id = $(this).find("option:selected").val();
-            $.get_interface_by_module(module_id);
-        });
-
-        $("#interface").on("change", function () {
-
-            var interface_id = $(this).find("option:selected").val();
-            $.load_interface(interface_id, editor);
-        });
 
         {#    添加字段#}
         $(".add_field").on("click", function () {
@@ -249,17 +218,15 @@
             $.delete_field($(this), fields)
         });
 
-        var l = Ladda.create(document.getElementById('test_test_case'));
-        // request api
-        $("#test_test_case").on("click", function () {
-            $.api_request(editor, l);
-        });
-
-        // add api
-        $("#add_test_case").on("click", function(){
+        // 保存interface
+        $("#add_test_case").on("click", function () {
             $.api_save(editor);
+        });
+        // 保存interface
+        $("#test_test_case").on("click", function () {
+            $.api_request(editor);
         })
-
     </script>
+
 
 {% endblock %}
