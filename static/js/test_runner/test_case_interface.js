@@ -11,19 +11,13 @@ $(document).ready(function () {
             method: "POST",
             data: form_data,
             success: function (data) {
+                var response = $("#test_case_response");
                 try {
-                    var container = document.getElementById('test_case_response');
-
-                    container.innerHTML = "";
-
-                    var options = {
-                        mode: 'view'
-                    };
-                    var editor = new JSONEditor(container, options, JSON.parse(data));
-
-                    editor.expandAll();
-                } catch (SyntaxError) {
-                    alert("请求失败！")
+                    var out = JSON.stringify(JSON.parse(data), null, 2);
+                    response.text(out);
+                    //l.stop();
+                }catch (SyntaxError) {
+                    response.text(data)
                 }
 
                 l.stop();

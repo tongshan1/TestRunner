@@ -24,9 +24,7 @@
                     <th>接口名称</th>
                     <th>接口URL</th>
                     <th>接口方法</th>
-{#                    <th>接口header</th>#}
-{#                    <th>接口query</th>#}
-{#                    <th>接口body</th>#}
+
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -38,11 +36,8 @@
                         <td>{{ interface.interface_name }}</td>
                         <td>{{ interface.interface_url }}</td>
                         <td>{{ interface.interface_method }}</td>
-{#                        <td>{{ interface.interface_header }}</td>#}
-{#                        <td>{{ interface.interface_query }}</td>#}
-{#                        <td>{{ interface.interface_body }}</td>#}
                         <td><a id="interface_modify" class="btn btn-primary" href="/interface/{{ interface.id }}/edit.html">编辑</a>&nbsp;&nbsp;
-                            <button id="interface_delete" class="btn btn-primary">删除</button>
+                            <button class="btn btn-primary interface_delete" data-id="{{ interface.id }}">删除</button>
                         </td>
 
                     </tr>
@@ -101,12 +96,24 @@
     <script src="/static/vendor/datatables-responsive/dataTables.responsive.js"></script>
 
     <script>
-
-        $(document).ready(function () {
-            $('#dataTable').DataTable({
-                responsive: true
-            });
+        // 格式化header body query verification
+        $(".out_pre").each(function(){
+            var in_json = $(this).text();
+            console.log(in_json);
+            var out_json = JSON.stringify(JSON.parse(in_json), null, 2);
+            $(this).text(out_json)
         });
+
+        $('#dataTable').DataTable({
+            responsive: true
+        });
+
+        // 删除接口
+        $(".interface_delete").on("click", function(){
+
+        });
+
+
 
     </script>
 {% endblock %}

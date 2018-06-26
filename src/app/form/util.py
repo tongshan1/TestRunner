@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
+from module.Testcasegroup import TestCaseType
 from module.Module import Module
+from module.System_setting import SystemSetting
 
 Method = {
     "GET": "GET",
@@ -29,3 +31,11 @@ def str_to_dict(tmp):
 
 def get_all_module():
     return Module.get_all()
+
+
+def get_types():
+    return TestCaseType.get_all()
+
+
+def get_runner_setting():
+    return SystemSetting.get_runner_setting()

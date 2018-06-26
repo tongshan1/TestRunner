@@ -99,8 +99,6 @@ def interface_request():
     response, result = api_request.request(interface_method, interface_url, headers=interface_header,
                                            data=interface_body, params=interface_query, runner_setting=runner_setting)
 
-    logger.error(response)
-
     return response
 
 
@@ -119,9 +117,18 @@ def interface_by_id(interface_id):
 
     return interface_obj
 
+
 @register(api, "/interface_list.html", methods=["GET"])
 def interface_list():
     return render_template("interface/list.html", interfaces=Interface.get_all_oder_by_module())
+
+
+@register(api, "/interface/<interface_id>/delete", methods=["DELETE"])
+def interface_delete(interface_id):
+    interface_obj = Interface.get_by_id(interface_id)
+    interface_obj.is_active = False
+    db.session.add(interface_obj)
+    db.session.commit()
 
 
 def allowed_file(filename):

@@ -73,7 +73,7 @@ class ApiRequest(object):
 
             api_response = ApiResponse(response)
             response = response.text
-            logger.debug("get response" + response)
+            logger.debug("get response" + response.text)
             if testcase_verification != "":
                 result = api_response.validate(testcase_verification)
             else:
@@ -119,10 +119,13 @@ class ApiRequest(object):
         logger.debug("send with kwargs: ================")
         logger.debug(kwargs)
         logger.debug("==================================")
-        try:
 
-            return self.session.request(method, url, **kwargs)
-        except (MissingSchema, InvalidSchema, InvalidURL) as e:
-            print(e)
+        return self.session.request(method, url, **kwargs)
+        # try:
+        #
+        #     return self.session.request(method, url, **kwargs)
+        # except (MissingSchema, InvalidSchema, InvalidURL) as e:
+        #     logger.error(e)
+        #     return e
 
 api_request = ApiRequest()

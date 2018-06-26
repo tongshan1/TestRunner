@@ -1,6 +1,3 @@
-/**
- * Created by tongshan on 2018/5/10.
- */
 $(document).ready(function(){
 
     $.add_test_case = function(){

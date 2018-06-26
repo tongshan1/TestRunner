@@ -5,9 +5,7 @@ from flask import render_template, request
 from app import db
 from app.api import api
 from app.handler import register, success, fail
-from app.api.ModuleManager.module import get_all_modules
 from module.Testcase import TestInterfacecase
-from app.form.test_case_from import TestInterfaceCaseFrom
 from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase
 from module.System_setting import SystemSetting
 from schema.testcase import TestCaseSchema
@@ -92,11 +90,34 @@ def testcase_request():
 
 @register(api, "/testcase/<testcase_id>/test_case_edit.html", methods=["GET", "POST"])
 def testcase_edit(testcase_id):
+    test_case_obj = TestInterfacecase.get_by_id(testcase_id)
     if request.method == "GET":
-        testcase = TestInterfacecase.get_by_id(testcase_id)
-        form = populate_interface_testcase(testcase)
+        form = populate_interface_testcase(test_case_obj)
         return render_template("test_cases/test_case.html", form=form,
                                runner_setting=SystemSetting.get_runner_setting(), title=u"编辑")
+    else:
+        form = TestInterfaceCaseFrom(request.form)
+        data_type = request.form.get("data_type")
+
+        if form.validate():
+            test_case_obj.interface_url = form.interface_url.data
+            test_case_obj.testcase_name = form.testcase_name.data
+            test_case_obj.testcase_method = form.testcase_method.data
+            test_case_obj.module = form.module.data
+            test_case_obj.testcase_header = init_field_data(form.testcase_header.data)
+            test_case_obj.testcase_query = init_field_data(form.testcase_query.data)
+            if (data_type == "JSON_data_select"):
+                test_case_body = form.testcase_json.data
+            else:
+                test_case_body = init_field_data(form.testcase_data.data)
+            test_case_obj.testcase_body = test_case_body
+            test_case_obj.testcase_verification = init_verification_data(form.testcase_verification.data)
+            db.session.add(test_case_obj)
+            db.session.commit()
+            return success()
+        else:
+            print(form.errors)
+            return fail(2, error=form.errors)
 
 
 @register(api, "/testcase/module/<module_id>")

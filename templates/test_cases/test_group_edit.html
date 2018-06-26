@@ -18,7 +18,7 @@
         <div class="panel-heading">
             用例基本信息
         </div>
-        <form action="/testgroup/{{ form._obj.id }}/update" method="post">
+        <form action="#" method="post">
             <div class="panel-body">
 
                 <div class="form-inline">
@@ -27,8 +27,10 @@
                     {{ render_field(form.module, class="form-control") }}
                     {{ render_field(form.type, class="form-control") }}
                     {{ render_field(form.runner_setting, class="form-control") }}
-                    {{ render_field(form.testcase_desc, class="form-control", size="50") }}
                 </div>
+                <hr/>
+                {{ render_field(form.testcase_desc, class="form-control") }}
+
             </div>
             <div class="panel-footer">
                 <button type="submit" class="btn btn-primary">更新</button>
@@ -49,9 +51,10 @@
                     <th>用例名称</th>
                     <th>请求url</th>
                     <th>请求headers</th>
+                    <th>请求query</th>
                     <th>请求body</th>
+                    <th>请求query</th>
                     <th>验证点</th>
-                    <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -61,9 +64,10 @@
                         <td><input type="checkbox" class="test_case_check" value="{{ key }}"></td>
                         <td>{{ testcase.testcase_name }}</td>
                         <td>{{ testcase.interface_url }}</td>
-                        <td>{{ testcase.testcase_header }}</td>
-                        <td>{{ testcase.testcase_body }}</td>
-                        <td>{{ testcase.testcase_verification }}</td>
+                        <td><pre class="out_pre">{{ testcase.testcase_header|tojson }}</pre></td>
+                        <td><pre class="out_pre">{{ testcase.testcase_query |tojson}}</pre></td>
+                        <td><pre class="out_pre">{{ testcase.testcase_body |tojson}}</pre></td>
+                        <td><pre class="out_pre">{{ testcase.testcase_verification|tojson }}</pre></td>
                         <td></td>
                         <td>
                             <a class="btn btn-primary" href="/testcase/{{ testcase.id }}/test_case_edit.html">编辑</a>
@@ -77,10 +81,11 @@
 
         </div>
         <div class="panel-footer">
-            <btton class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal" data-placement="top" title="Tooltip on top">
-                <span class="fa fa-plus-circle" ></span></button>
+            <btton class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal" data-placement="top"
+                   title="Tooltip on top">
+                <span class="fa fa-plus-circle"></span></button>
             </btton>
-            <button class="btn btn-info ladda-button" id="run_case" data-id="{{ form._obj.id }}"  data-style="zoom-in">
+            <button class="btn btn-info ladda-button" id="run_case" data-id="{{ form._obj.id }}" data-style="zoom-in">
                 <span class="fa fa-chevron-circle-right ladda-label"></span>
             </button>
 
@@ -170,8 +175,18 @@
 {% block own_js %}
     <script src="/static/vendor/ladda/spin.min.js"></script>
     <script src="/static/vendor/ladda/ladda.min.js"></script>
+    <script src="/static/js/test_runner/textares_auto_size.js"></script>
     <script src="/static/js/test_runner/test_case_details.js"></script>
     <script>
+
+        // 格式化header body query verification
+        $(".out_pre").each(function(){
+            var in_json = $(this).text();
+            console.log(in_json);
+            var out_json = JSON.stringify(JSON.parse(in_json), null, 2);
+            $(this).text(out_json)
+        });
+
         $('.test_case_module_menu').on('click', function (e) {
             var $target = $(e.target);
             $target.is('li') && $('#test_case_module').text($target.text()) && $('#test_case_module').attr("value", $target.val());
