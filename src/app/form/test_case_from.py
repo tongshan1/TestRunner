@@ -132,3 +132,61 @@ def populate_interface_testcase(interface_testcase_obj):
         form.testcase_verification.append_entry()
 
     return form
+
+
+def populate_interface(interface_obj):
+    form = TestInterfaceCaseFrom()
+    form.interface_url.data = interface_obj.interface_url
+    form.module.data = interface_obj.module
+    form.testcase_method.data = interface_obj.interface_method
+
+    while len(form.testcase_header) > 0:
+        form.testcase_header.pop_entry()
+
+    while len(form.testcase_query) > 0:
+        form.testcase_query.pop_entry()
+
+    while len(form.testcase_data) > 0:
+        form.testcase_data.pop_entry()
+
+    while len(form.testcase_verification) > 0:
+        form.testcase_verification.pop_entry()
+
+    testcase_header = interface_obj.interface_header
+
+    for header in testcase_header:
+        header_form = HeaderForm()
+        header_form.key = header.get("name")
+        header_form.value = header.get("value")
+
+        if header.get("name") == "Content-type":
+            form.testcase_body_type = header.get("value")
+
+        form.testcase_header.append_entry(header_form)
+
+    if not testcase_header:
+        form.testcase_header.append_entry()
+
+    testcase_query = interface_obj.interface_query
+    for query in testcase_query:
+        query_form = QueryForm()
+        query_form.key = query.get("name")
+        query_form.value = query.get("value")
+
+        form.testcase_query.append_entry(query_form)
+
+    if not testcase_query:
+        form.testcase_query.append_entry()
+
+    testcase_body = interface_obj.interface_body
+    for body in testcase_body:
+        body_form = BodyForm()
+        body_form.key = body.get("name")
+        body_form.value = body.get("value")
+
+        form.testcase_data.append_entry(body_form)
+
+    if not testcase_body:
+        form.testcase_data.append_entry()
+
+    return form

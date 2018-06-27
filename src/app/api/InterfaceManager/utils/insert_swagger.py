@@ -54,7 +54,7 @@ def init_parameters(parameters):
             body.append(parameter)
             logger.error(body)
 
-    return {"headers": json.dumps(headers, ensure_ascii=False), "body": json.dumps(body, ensure_ascii=False), "query": json.dumps(query, ensure_ascii=False)}
+    return {"headers": headers, "body": body, "query":query}
 
 
 def insert_data(file):

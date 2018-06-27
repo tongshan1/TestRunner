@@ -74,7 +74,7 @@ def populate_interface(interface_obj):
     while len(form.interface_data) > 0:
         form.interface_data.pop_entry()
 
-    headers = str_to_dict(interface_obj.interface_header)
+    headers = interface_obj.interface_header
 
     for header in headers:
         header_form = HeaderForm()
@@ -90,7 +90,7 @@ def populate_interface(interface_obj):
     if not headers:
         form.interface_header.append_entry()
 
-    query = str_to_dict(interface_obj.interface_query)
+    query = interface_obj.interface_query
     for q in query:
         query_form = QueryForm()
         query_form.key = q.get("name")
@@ -102,7 +102,7 @@ def populate_interface(interface_obj):
     if not query:
         form.interface_query.append_entry()
 
-    body = str_to_dict(interface_obj.interface_body)
+    body = interface_obj.interface_body
     for b in body:
         body_form = BodyForm()
         body_form.key = b.get("name")

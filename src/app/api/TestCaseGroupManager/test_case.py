@@ -6,8 +6,9 @@ from app import db
 from app.api import api
 from app.handler import register, success, fail
 from module.Testcase import TestInterfacecase
-from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase
 from module.System_setting import SystemSetting
+from module.Interface import Interface
+from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase, populate_interface
 from schema.testcase import TestCaseSchema
 from app.api.InterfaceManager.request.request import api_request
 
@@ -34,11 +35,16 @@ def init_verification_data(verification):
 
 @register(api, "/test_case_add.html", methods=["GET", "POST"])
 def test_case_add():
+    interface_id = request.args.get("interface_id")
+    form = TestInterfaceCaseFrom()
+    if interface_id:
+        interface_obj = Interface.get_by_id(interface_id)
+        form = populate_interface(interface_obj)
     if request.method == 'GET':
-        form = TestInterfaceCaseFrom()
         return render_template("test_cases/test_case.html", form=form, runner_setting=SystemSetting.get_runner_setting(), title=u"添加")
     else:
         form = TestInterfaceCaseFrom(request.form)
+
         data_type = request.form.get("data_type")
 
         if form.validate():

@@ -36,8 +36,12 @@
                         <td>{{ interface.interface_name }}</td>
                         <td>{{ interface.interface_url }}</td>
                         <td>{{ interface.interface_method }}</td>
-                        <td><a id="interface_modify" class="btn btn-primary" href="/interface/{{ interface.id }}/edit.html">编辑</a>&nbsp;&nbsp;
-                            <button class="btn btn-primary interface_delete" data-id="{{ interface.id }}">删除</button>
+                        <td>
+                            <div class="btn-group">
+                            <a id="interface_modify" class="btn btn-primary" href="/interface/{{ interface.id }}/edit.html">编辑</a>
+                            <a class="btn btn-success" href="/test_case_add.html?interface_id={{ interface.id }}">添加用例</a>
+                            <button class="btn btn-danger interface_delete" data-id="{{ interface.id }}">删除</button>
+                            </div>
                         </td>
 
                     </tr>
@@ -46,8 +50,7 @@
             </table>
         </div>
         <div class="panel-footer">
-            <a class="btn btn-primary" href="/interface.html"> 新增</a>
-            <a class="btn btn-danger" class="delete_interface"> 删除</a>
+            <a class="btn btn-success" href="/interface.html"> 新增</a>
         </div>
     </div>
 
@@ -111,9 +114,24 @@
         // 删除接口
         $(".interface_delete").on("click", function(){
 
+            var interface_id = $(this).attr("data-id");
+
+            $.ajax({
+            url: "/interface/"+interface_id+"/delete",
+            method: "DELETE",
+            success: function(data){
+                if (data.ret == 1){
+                    alert("删除成功！");
+                    window.location.reload();
+                }else{
+                    alert(data.error);
+                }
+            }
+
         });
 
 
+        });
 
     </script>
 {% endblock %}

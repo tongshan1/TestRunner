@@ -36,7 +36,7 @@ $(document).ready(function(){
             success: function(data){
                 if (data.ret == 1){
                     alert("添加成功！");
-                    window.location.href = "/interface_list.html";
+                    window.location.reload();
                 }else{
                     alert(data.error);
                 }
@@ -50,12 +50,14 @@ $(document).ready(function(){
     $.get_form_data = function(editor){
 
         var form_data = $("#interface_form").serializeArray();
+        console.log(form_data);
         var type_select = $(".body_type.active").attr("id");
         var data_type = new Object();
         data_type["name"] = "data_type";
         data_type["value"] = type_select;
 
         form_data.push(data_type);
+
         if(type_select == "JSON_data_select"){
 
             var json = new Object();

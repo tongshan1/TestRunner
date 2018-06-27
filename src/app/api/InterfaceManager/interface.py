@@ -15,12 +15,14 @@ from .utils.insert_swagger import insert_data
 
 
 def init_field_data(field):
-    data = {}
+    field_data = []
     for v in field:
+        data = {}
         data["name"] = v.get("key")
         data["value"] = v.get("value")
-        data["description"] = v.get("description")
-    return data
+        data["description"] = v.get("desc")
+        field_data.append(data)
+    return field_data
 
 
 @register(api, "/interface.html", methods=['GET', "POST"])
@@ -61,15 +63,27 @@ def interface_edit(interface_id):
     if request.method == "GET":
         return render_template("interface/interface.html", title=u"编辑", form=form)
     else:
-        interface_form = InterfaceFrom(request.form)
-        if interface_form.validate():
+        form = InterfaceFrom(request.form)
+        data_type = request.form.get("data_type")
+        if form.validate():
             interface_obj = Interface.get_by_id(interface_id)
-            interface_form.populate_obj(interface_obj)
+            interface_obj.interface_name = form.interface_name.data
+            interface_obj.module = form.module.data
+            interface_obj.interface_url = form.interface_url.data
+            interface_obj.interface_desc = form.interface_desc.data
+            interface_obj.interface_header = init_field_data(form.interface_header.data)
+            interface_obj.interface_query = init_field_data(form.interface_query.data)
+
+            logger.error(form.interface_data.data)
+            if data_type == "JSON_data_select":
+                interface_obj.interface_body = form.interface_json.data
+            else:
+                interface_obj.interface_body = init_field_data(form.interface_data.data)
             db.session.add(interface_obj)
             db.session.commit()
             return success()
         else:
-            return fail(2, error=str(interface_form.errors))
+            return fail(2, error=str(form.errors))
 
 
 def init_run_field_data(field):
@@ -129,6 +143,7 @@ def interface_delete(interface_id):
     interface_obj.is_active = False
     db.session.add(interface_obj)
     db.session.commit()
+    return success()
 
 
 def allowed_file(filename):
