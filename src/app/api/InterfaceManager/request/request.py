@@ -73,7 +73,7 @@ class ApiRequest(object):
 
             api_response = ApiResponse(response)
             response = response.text
-            logger.debug("get response" + response.text)
+            logger.debug("get response" + response)
             if testcase_verification != "":
                 result = api_response.validate(testcase_verification)
             else:

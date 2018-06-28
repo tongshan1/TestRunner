@@ -1,6 +1,4 @@
-import os
-from flask import request, redirect, render_template, flash, url_for, send_from_directory, current_app
-from flask_wtf.csrf import generate_csrf
+from flask import request, redirect, render_template, flash, url_for, current_app
 
 from app import db
 from app.api import api

@@ -38,7 +38,8 @@ $(document).ready(function(){
                     alert("添加成功！");
                     window.location.reload();
                 }else{
-                    alert(data.error);
+                    console.log(data);
+                    alert(JSON.stringify(data.error));
                 }
             }
 

@@ -149,9 +149,6 @@ def populate_interface(interface_obj):
     while len(form.testcase_data) > 0:
         form.testcase_data.pop_entry()
 
-    while len(form.testcase_verification) > 0:
-        form.testcase_verification.pop_entry()
-
     testcase_header = interface_obj.interface_header
 
     for header in testcase_header:

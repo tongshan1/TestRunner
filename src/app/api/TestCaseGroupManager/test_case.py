@@ -11,6 +11,7 @@ from module.Interface import Interface
 from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase, populate_interface
 from schema.testcase import TestCaseSchema
 from app.api.InterfaceManager.request.request import api_request
+from app.logger import logger
 
 
 def init_field_data(field):
@@ -65,7 +66,7 @@ def test_case_add():
             db.session.commit()
             return success()
         else:
-            print(form.errors)
+            logger.error(form.errors)
             return fail(2, error=form.errors)
 
 
@@ -122,7 +123,7 @@ def testcase_edit(testcase_id):
             db.session.commit()
             return success()
         else:
-            print(form.errors)
+            logger.error(form.errors)
             return fail(2, error=form.errors)
 
 
