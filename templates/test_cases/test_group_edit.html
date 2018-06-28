@@ -58,18 +58,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for key, testcase in tescases.items() %}
+                {% for testcase_testgroup in testcase_testgroups %}
                     <tr>
-                        <td><input type="checkbox" class="test_case_check" value="{{ key }}"></td>
-                        <td>{{ testcase.testcase_name }}</td>
-                        <td>{{ testcase.interface_url }}</td>
-                        <td><pre class="out_pre">{{ testcase.testcase_header|tojson }}</pre></td>
-                        <td><pre class="out_pre">{{ testcase.testcase_query |tojson}}</pre></td>
-                        <td><pre class="out_pre">{{ testcase.testcase_body |tojson}}</pre></td>
-                        <td><pre class="out_pre">{{ testcase.testcase_verification|tojson }}</pre></td>
+                        <td><input type="checkbox" class="test_case_check" value="{{ testcase_testgroup.id }}"></td>
+                        <td>{{ testcase_testgroup.testcase.testcase_name}}</td>
+                        <td>{{ testcase_testgroup.testcase.interface_url }}</td>
+                        <td><pre class="out_pre">{{ testcase_testgroup.testcase.testcase_header|tojson }}</pre></td>
+                        <td><pre class="out_pre">{{ testcase_testgroup.testcase.testcase_query |tojson}}</pre></td>
+                        <td><pre class="out_pre">{{ testcase_testgroup.testcase.testcase_body |tojson}}</pre></td>
+                        <td><pre class="out_pre">{{ testcase_testgroup.testcase.testcase_verification|tojson }}</pre></td>
                         <td>
-                            <a class="btn btn-primary" href="/testcase/{{ testcase.id }}/test_case_edit.html">编辑</a>
-                            <button class="btn btn-danger delete_case" value="{{ key }}">删除</button>
+                            <a class="btn btn-primary" href="/testcase/{{ testcase_testgroup.testcase_id }}/test_case_edit.html">编辑</a>
+                            <button class="btn btn-danger delete_case" value="{{ testcase_testgroup.id }}">删除</button>
                         </td>
                     </tr>
                 {% endfor %}

@@ -31,8 +31,8 @@ class Testcase_testgroup(db.Model):
 
     @property
     def testcase(self):
-        if self.testcase_group.id == 1:
-            return TestInterfacecase.query.get(self.testcase_id)
+
+        return TestInterfacecase.query.get(self.testcase_id)
 
     @testcase.setter
     def testcase(self, testcase):

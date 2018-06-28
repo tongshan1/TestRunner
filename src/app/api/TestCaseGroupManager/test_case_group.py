@@ -38,9 +38,9 @@ def testcase_group_edit(test_group_id):
         testcase_group = Testcasegroup.get_by_id(test_group_id)
 
         testcase_group_from = TestCaseGroupForm(obj=testcase_group)
-        testcases = get_testcase_by_group_id(test_group_id)
+        testcase_testgroups = get_testcase_by_group_id(test_group_id)
 
-        return render_template("test_cases/test_group_edit.html", form=testcase_group_from, tescases=testcases,
+        return render_template("test_cases/test_group_edit.html", form=testcase_group_from, testcase_testgroups=testcase_testgroups,
                             modules=get_all_modules(), csrf_token=generate_csrf())
     else:
         form = TestCaseGroupForm(request.form)
