@@ -4,15 +4,25 @@ from module.Testcasegroup import TestCaseType
 from module.Module import Module
 from module.System_setting import SystemSetting
 
-Method = {
-    "GET": "GET",
-    "POST": "POST",
-    "PUT": "PUT",
-    "DELETE": "DELETE",
-    "PATCH": "PATCH",
-    "HEAD": "HEAD",
-    "OPTIONS": "OPTIONS"
-}
+Method = [
+    ("GET", "GET"),
+    ("POST", "POST"),
+    ("PUT", "PUT"),
+    ("DELETE", "DELETE"),
+    ("PATCH", "PATCH"),
+    ("HEAD", "HEAD"),
+    ("OPTIONS", "OPTIONS")
+]
+
+Type = [
+    ("None", "None"),
+    ("int", "Integer"),
+    ("str", "String"),
+    ("float", "Float"),
+    ("list", "List"),
+    ("dict", "Dict"),
+
+]
 
 
 def str_to_dict(tmp):

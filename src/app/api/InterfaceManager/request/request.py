@@ -80,7 +80,7 @@ class ApiRequest(object):
                 result = 1
 
             result_one.result = result
-            result_one.note = note
+            result_one.note = response
         except Exception as e:
 
             logger.error(e)

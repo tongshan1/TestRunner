@@ -11,6 +11,7 @@ class Variable(dict):
 
 
 variable = Variable()
+variable["pin"] = "000000"
 
 
 def replace_variable(runner_setting, tmp):
@@ -23,8 +24,8 @@ def replace_variable(runner_setting, tmp):
     if type(tmp) != str:
         tmp = str(tmp)
 
-    regex = re.compile("\{\$(.+?)\$\}")
-    keys = regex.findall(tmp)
+    regex_param = re.compile("\{\$(.+?)\$\}")
+    keys = regex_param.findall(tmp)
 
     runner_setting = SystemSetting.get_by_id(runner_setting)
     variable_in_setting = runner_setting.value
@@ -36,19 +37,28 @@ def replace_variable(runner_setting, tmp):
         if setting_value is not None:
             value = setting_value
 
-        func_value = replace_variable_plugin(key)
-        if func_value is not None:
-            value = func_value
-
         variable_value = variable.get(key, None)
         if variable_value is not None:
             value = variable_value
 
         if value is not None:
-
             tmp = tmp.replace("{$"+key+"$}", value)
         else:
             logger.error("没有设置该变量：{0}".format(key))
+
+    logger.error(tmp)
+    regex_func = re.compile("\(\$(.+?)\$\)")
+    keys = regex_func.findall(tmp)
+    logger.error(keys)
+
+    for key in keys:
+        func_value = replace_variable_plugin(key)
+        if func_value is not None:
+            tmp = tmp.replace("($"+key+"$)", func_value)
+        else:
+            logger.error("没有设置该变量：{0}".format(key))
+
+    logger.error(tmp)
     return tmp
 
 
@@ -60,15 +70,16 @@ def replace_variable_plugin(func_value):
     """
 
     try:
-        if "(" not in func_value:
-            return None
         name = func_value[:func_value.index("(")]
-        print(name)
         regex = re.compile("\((.+?)\)")
         param = regex.findall(func_value)
         if hasattr(plugin, name):
             func = getattr(plugin, name)
-            return func(*param)
+            if param:
+                param = param[0].split(",")
+                return func(*param)
+            else:
+                return func()
         else:
             logger.error("找不到{0}".format(func_value))
             return ""

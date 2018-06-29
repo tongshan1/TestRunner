@@ -3,7 +3,7 @@ from wtforms import StringField, BooleanField, FieldList, SelectField, TextAreaF
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms.validators import length, data_required
 from module.System_setting import SystemSetting
-from .util import Method, str_to_dict, get_all_module
+from .util import Method, get_all_module
 
 
 class HeaderForm(Form):
@@ -33,11 +33,6 @@ class QueryForm(Form):
         super(QueryForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
 
 
-def get_method():
-    method = [(key, value) for key, value in Method.items()]
-    return method
-
-
 def get_runner_setting():
     return SystemSetting.get_runner_setting()
 
@@ -46,7 +41,7 @@ class InterfaceFrom(Form):
     interface_body_type = ""
     interface_name = StringField(u'接口名称', [length(min=0, max=200),data_required(message= u'接口名不能为空')])
     interface_url = StringField(u'接口url', [length(min=0), data_required(message= u'接口url不能为空')])
-    interface_method = SelectField(u"接口方法", choices=get_method())
+    interface_method = SelectField(u"接口方法", choices=Method)
     runner_setting = QuerySelectField(u"当前环境", query_factory=get_runner_setting)
     module = QuerySelectField(u"所属模块", query_factory=get_all_module)
     interface_header = FieldList(FormField(HeaderForm), min_entries=1)

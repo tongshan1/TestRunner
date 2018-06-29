@@ -35,16 +35,16 @@ class AllTests():
         db.session.add(report)
         db.session.commit()
 
-        for testcase_testgroup_id, test_case in test_cases.items():
+        for test_case in test_cases:
             total +=1
-            url = test_case.interface_url
-            method = test_case.testcase_method
-            testcase_header = test_case.testcase_header
-            testcase_body = test_case.testcase_body
-            testcase_verification = test_case.testcase_verification
+            url = test_case.testcase.interface_url
+            method = test_case.testcase.testcase_method
+            testcase_header = test_case.testcase.testcase_header
+            testcase_body = test_case.testcase.testcase_body
+            testcase_verification = test_case.testcase.testcase_verification
 
             response, result_one = api_request.request(method, url, headers=testcase_header, data=testcase_body, testcase_verification=testcase_verification, runner_setting=runner_setting)
-            result = Result(report.id, testcase_testgroup_id, result_one.result, str(result_one.note))
+            result = Result(report.id, test_case.id, result_one.result, result_one.note)
             db.session.add(result)
 
             if result_one.result == 1:

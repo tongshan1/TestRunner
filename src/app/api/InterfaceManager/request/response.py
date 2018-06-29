@@ -77,12 +77,14 @@ class ApiResponse(DictObj):
 
             # 如果需要保存
             if value[1]:
-
                 set_variable(key, self.get_value_by_key(key))
 
+            v_type = value[2]
             # 验证值
-            if value[0] is None:
+            if v_type == "None":
                 continue
+
+
             if real_value != value[0]:
                 result = 3
 

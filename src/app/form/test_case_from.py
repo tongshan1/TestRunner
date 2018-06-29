@@ -3,9 +3,8 @@ from flask_wtf import Form
 from wtforms import StringField, BooleanField, FieldList, FormField, SelectField
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms.validators import length, data_required
-from app.logger import logger
 from module.System_setting import SystemSetting
-from .util import Method, str_to_dict, get_all_module
+from .util import Method, Type, str_to_dict, get_all_module
 
 
 class HeaderForm(Form):
@@ -36,14 +35,10 @@ class VerificationForm(Form):
     key = StringField(u'变量名')
     value = StringField(u'变量值')
     save = BooleanField(u"保存")
+    v_type = SelectField(u"类型", coerce=str, choices=Type)
 
     def __init__(self, csrf_enabled=False, *args, **kwargs):
         super(VerificationForm, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
-
-
-def get_method():
-    method = [(key, value) for key, value in Method.items()]
-    return method
 
 
 def get_runner_setting():
@@ -56,7 +51,7 @@ class TestInterfaceCaseFrom(Form):
     testcase_name = StringField(u'接口名称', [data_required(message=u'接口名不能为空')])
     module = QuerySelectField(u"所属模块", query_factory=get_all_module)
     runner_setting = QuerySelectField(u"当前环境", query_factory=get_runner_setting)
-    testcase_method = SelectField(u"接口方法", choices=get_method())
+    testcase_method = SelectField(u"接口方法", choices=Method)
     testcase_header = FieldList(FormField(HeaderForm), min_entries=1)
     testcase_query = FieldList(FormField(QueryForm), min_entries=1)
     testcase_data = FieldList(FormField(BodyForm), min_entries=1)
@@ -83,7 +78,7 @@ def populate_interface_testcase(interface_testcase_obj):
     while len(form.testcase_verification) > 0:
         form.testcase_verification.pop_entry()
 
-    testcase_header = str_to_dict(interface_testcase_obj.testcase_header)
+    testcase_header = interface_testcase_obj.testcase_header
 
     for k, v in testcase_header.items():
         header_form = HeaderForm()
@@ -98,7 +93,7 @@ def populate_interface_testcase(interface_testcase_obj):
     if not testcase_header:
         form.testcase_header.append_entry()
 
-    testcase_query = str_to_dict(interface_testcase_obj.testcase_query)
+    testcase_query = interface_testcase_obj.testcase_query
     for k, v in testcase_query.items():
         query_form = QueryForm()
         query_form.key = k
@@ -109,7 +104,7 @@ def populate_interface_testcase(interface_testcase_obj):
     if not testcase_query:
         form.testcase_query.append_entry()
 
-    testcase_body = str_to_dict(interface_testcase_obj.testcase_body)
+    testcase_body = interface_testcase_obj.testcase_body
     for k, v in testcase_body.items():
         body_form = BodyForm()
         body_form.key = k
@@ -120,12 +115,13 @@ def populate_interface_testcase(interface_testcase_obj):
     if not testcase_body:
         form.testcase_data.append_entry()
 
-    testcase_verification = str_to_dict(interface_testcase_obj.testcase_verification)
+    testcase_verification = interface_testcase_obj.testcase_verification
     for k, v in testcase_verification.items():
         verification_form = VerificationForm()
         verification_form.key = k
         verification_form.value = v[0]
         verification_form.save = v[1]
+        verification_form.v_type = v[2]
 
         form.testcase_verification.append_entry(verification_form)
     if not testcase_verification:
