@@ -80,12 +80,26 @@ class ApiResponse(DictObj):
                 set_variable(key, self.get_value_by_key(key))
 
             v_type = value[2]
+            v_value = value[0]
             # 验证值
             if v_type == "None":
                 continue
 
-
-            if real_value != value[0]:
+            # 转换类型
+            try:
+                if v_type == "str":
+                    v_value = str(v_value)
+                if v_type == "int":
+                    v_value = int(v_value)
+                if v_type == "float":
+                    v_value = float(v_value)
+                if v_type == "list":
+                    v_value = list(v_value)
+                if v_type == "dict":
+                    v_value = dict(v_value)
+                if real_value != v_value:
+                    result = 3
+            except ValueError:
                 result = 3
 
         return result

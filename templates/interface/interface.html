@@ -136,7 +136,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="panel-form-data">
-                                    {% for body in form.interface_data | set_test_case_data(form.interface_body_type) %}
+                                    {% for body in form.interface_data %}
                                         <div class="form-inline form-data_field" style="margin-top: 10px">
                                             <input type="checkbox" id="testcase_body-{{ loop.index0 }}-require"
                                                    name="testcase_body-{{ loop.index0 }}-require"/>
@@ -200,7 +200,7 @@
             mode: 'code',
             ace: ace
         };
-        var data = {{ form.interface_data | set_test_case_json_data(form.interface_body_type)|safe }};
+        var data = {{ form.interface_json.data|safe }};
         var editor = new JSONEditor(container, options, data);
 
         {#    添加字段#}

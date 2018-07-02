@@ -84,7 +84,7 @@ class Report(db.Model):
 
     @classmethod
     def all(cls):
-        return cls.query.all()
+        return cls.query.order_by(cls.datachange_createtime.desc()).all()
 
     @classmethod
     def get_by_id(cls, id):

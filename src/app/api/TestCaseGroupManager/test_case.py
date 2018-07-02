@@ -30,6 +30,7 @@ def init_verification_data(verification):
         key = v.get("key")
         i.append(v.get("value"))
         i.append(v.get("save"))
+        i.append(v.get("v_type"))
         data[key] = i
     return data
 
@@ -68,6 +69,12 @@ def test_case_add():
         else:
             logger.error(form.errors)
             return fail(2, error=form.errors)
+
+
+@register(api, "/test_case_list.html", methods=["GET", "POST"])
+def test_case_list():
+    testcases = TestInterfacecase.get_all()
+    return render_template("test_cases/test_case_list.html", testcases=testcases)
 
 
 @register(api, "/testcase/run", methods=["POST"])

@@ -98,15 +98,22 @@ def populate_interface(interface_obj):
         form.interface_query.append_entry()
 
     body = interface_obj.interface_body
-    for b in body:
-        body_form = BodyForm()
-        body_form.key = b.get("name")
-        body_form.value = b.get("value")
-        body_form.desc = b.get("description")
 
-        form.interface_data.append_entry(body_form)
+    if form.interface_body_type == "application/json":
+        form.interface_json.data = body
 
-    if not body:
         form.interface_data.append_entry()
+    else:
+        for b in body:
+            body_form = BodyForm()
+            body_form.key = b.get("name")
+            body_form.value = b.get("value")
+            body_form.desc = b.get("description")
+
+            form.interface_data.append_entry(body_form)
+
+        form.interface_json.data = {}
+        if not body:
+            form.interface_data.append_entry()
 
     return form

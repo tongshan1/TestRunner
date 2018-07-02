@@ -63,7 +63,7 @@ def build_data(data):
             # operationId
             name = data.get('operationId')
             if name in ["", None]:
-                name = "{}_{}".format(method, endpoint.repaceall("/", "_"))
+                name = "{}_{}".format(method, endpoint.replace("/", "_"))
             operationId[(endpoint, method)] = name
 
             # tags

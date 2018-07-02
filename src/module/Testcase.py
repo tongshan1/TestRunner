@@ -32,7 +32,7 @@ class TestInterfacecase(db.Model):
 
     @classmethod
     def get_all(cls):
-        return cls.query.all()
+        return cls.query.filter_by(is_active=True).all()
 
     @classmethod
     def get_by_id(cls, id):

@@ -24,7 +24,7 @@ class SystemSetting(db.Model):
     @classmethod
     def get_runner_setting(cls):
         try:
-            return cls.query.filter_by(type=1).order_by().all()
+            return cls.query.filter_by(type=1).order_by(cls.is_default==True).all()
         except NoResultFound:
             return []
 

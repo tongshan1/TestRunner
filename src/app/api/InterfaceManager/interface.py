@@ -1,3 +1,5 @@
+
+import json
 from flask import request, redirect, render_template, flash, url_for, current_app
 
 from app import db
@@ -42,7 +44,7 @@ def interface():
 
             data_type = request.form.get("data_type")
             if data_type == "JSON_data_select":
-                interface_obj.interface_body = form.interface_json.data
+                interface_obj.interface_body = json.loads(form.interface_json.data)
             else:
                 interface_obj.interface_body = init_field_data(form.interface_data.data)
 
@@ -74,7 +76,7 @@ def interface_edit(interface_id):
 
             logger.error(form.interface_data.data)
             if data_type == "JSON_data_select":
-                interface_obj.interface_body = form.interface_json.data
+                interface_obj.interface_body = json.loads(form.interface_json.data)
             else:
                 interface_obj.interface_body = init_field_data(form.interface_data.data)
             db.session.add(interface_obj)

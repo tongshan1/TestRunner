@@ -4,7 +4,7 @@ from wtforms import StringField, BooleanField, FieldList, FormField, SelectField
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms.validators import length, data_required
 from module.System_setting import SystemSetting
-from .util import Method, Type, str_to_dict, get_all_module
+from .util import Method, Type, get_all_module, str_to_dict
 
 
 class HeaderForm(Form):
@@ -105,15 +105,20 @@ def populate_interface_testcase(interface_testcase_obj):
         form.testcase_query.append_entry()
 
     testcase_body = interface_testcase_obj.testcase_body
-    for k, v in testcase_body.items():
-        body_form = BodyForm()
-        body_form.key = k
-        body_form.value = v
 
-        form.testcase_data.append_entry(body_form)
-
-    if not testcase_body:
+    if form.testcase_body_type == "application/json":
+        form.testcase_json.data = testcase_body
         form.testcase_data.append_entry()
+    else:
+        for k, v in testcase_body.items():
+            body_form = BodyForm()
+            body_form.key = k
+            body_form.value = v
+
+            form.testcase_data.append_entry(body_form)
+        form.testcase_json.data = {}
+        if not testcase_body:
+            form.testcase_data.append_entry()
 
     testcase_verification = interface_testcase_obj.testcase_verification
     for k, v in testcase_verification.items():
@@ -172,14 +177,23 @@ def populate_interface(interface_obj):
         form.testcase_query.append_entry()
 
     testcase_body = interface_obj.interface_body
-    for body in testcase_body:
-        body_form = BodyForm()
-        body_form.key = body.get("name")
-        body_form.value = body.get("value")
 
-        form.testcase_data.append_entry(body_form)
-
-    if not testcase_body:
+    if form.testcase_body_type == "application/json":
+        json_data = {}
+        for body in testcase_body:
+            json_data[body.get("name")] = body.get("value")
+        form.testcase_json.data = json_data
         form.testcase_data.append_entry()
+    else:
+        for body in testcase_body:
+            body_form = BodyForm()
+            body_form.key = body.get("name")
+            body_form.value = body.get("value")
+
+            form.testcase_data.append_entry(body_form)
+        form.testcase_json.data = {}
+
+        if not testcase_body:
+            form.testcase_data.append_entry()
 
     return form

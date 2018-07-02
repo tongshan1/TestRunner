@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import six
 import json
 import yaml
-from collections import OrderedDict
 
 from module.Module import Module
 from module.Interface import Interface
@@ -13,7 +11,7 @@ from app.logger import logger
 
 def get_data(file):
     if file.filename.endswith(".json"):
-        data = json.loads(file.read())
+        data = json.loads(file.read().decode("utf-8"))
     else:
         data = yaml.safe_load(file.read())
     return data

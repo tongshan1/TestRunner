@@ -4,12 +4,15 @@
 from config import config, ROOT_PATH
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# from celery import Celery
+from celery import Celery
 from jac.contrib.flask import JAC
 from .logger import logger
 
 logger = logger
 db = SQLAlchemy()
+celery = Celery()
+
+
 app = Flask(__name__, root_path=ROOT_PATH)
 
 

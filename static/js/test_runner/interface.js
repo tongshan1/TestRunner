@@ -63,7 +63,8 @@ $(document).ready(function(){
 
             var json = new Object();
             var json_data = editor.getText();
-            json["name"] = "testcase_json";
+            console.log(json_data);
+            json["name"] = "interface_json";
             json["value"] = json_data;
             form_data.push(json)
 
