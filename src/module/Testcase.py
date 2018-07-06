@@ -12,7 +12,7 @@ class TestInterfacecase(db.Model):
     id = Column(BigInteger, primary_key=True)
     interface_url = Column(String, nullable=False)
     testcase_name = Column(String, nullable=False)
-    module_id= Column(BigInteger, nullable=False)
+    module_id = Column(BigInteger, nullable=False)
     testcase_method = Column(String, nullable=False)
     testcase_header = Column(JSON)
     testcase_query = Column(JSON)
@@ -48,14 +48,6 @@ class TestUIcase(db.Model):
     datachange_createtime = Column(DateTime(True), server_default=func.now())
     datachange_lasttime = Column(DateTime(True), index=True, onupdate=func.now())
 
-    def __init__(self, interface_id, testcase_name, testcase_header, testcase_body, testcase_response,
-                 is_active=True, datachange_createtime=None, datachange_lasttime=None, **kwargs):
-        kwargs["testcase_name"] = testcase_name
-        kwargs["is_active"] = is_active
-        kwargs["datachange_createtime"] = datachange_createtime
-        kwargs["datachange_lasttime"] = datachange_lasttime
-
-        super().__init__(**kwargs)
 
     @property
     def module(self):
@@ -64,4 +56,3 @@ class TestUIcase(db.Model):
     @module.setter
     def module(self, module):
         self.module_id = module.id
-

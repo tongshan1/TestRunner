@@ -1,6 +1,5 @@
 import re
 import ast
-from module.System_setting import SystemSetting
 import plugin
 from app.logger import logger
 
@@ -27,8 +26,8 @@ def replace_variable(runner_setting, tmp):
     regex_param = re.compile("\{\$(.+?)\$\}")
     keys = regex_param.findall(tmp)
 
-    runner_setting = SystemSetting.get_by_id(runner_setting)
     variable_in_setting = runner_setting.value
+
     for key in keys:
         value = None
 

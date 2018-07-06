@@ -40,7 +40,7 @@ $(document).ready(function () {
             success: function (data) {
                 if(data.ret ==1){
                     alert("添加成功");
-                    window.location.reload();
+                    //window.location.reload();
                 }else{
                     console.log(data);
                     alert(JSON.stringify(data.error));
