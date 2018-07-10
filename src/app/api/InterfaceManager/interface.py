@@ -1,6 +1,6 @@
 
 import json
-from flask import request, redirect, render_template, flash, url_for, current_app
+from flask import request, redirect, render_template, flash, current_app
 
 from app import db
 from app.api import api
@@ -10,8 +10,8 @@ from app.logger import logger
 
 from module.Interface import Interface
 from schema.interface import InterfaceSchema
-from .request.request import api_request
-from .utils.insert_swagger import insert_data
+from utils.request.request import api_request
+from utils.swagger.insert_swagger import insert_data
 
 
 def init_field_data(field):

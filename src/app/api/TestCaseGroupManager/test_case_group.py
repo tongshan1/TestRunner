@@ -5,12 +5,14 @@ from module.Testcasegroup import Testcasegroup
 from module.Testcase_testgroup import Testcase_testgroup
 from app.api import api
 from app.handler import register, success, fail
+from app import logger
 from app.form.testcase_group_form import TestCaseGroupForm
 from app.form.testcase_testgoup_from import TestCaseTestGroupForm
 from app.api.ModuleManager.module import get_all_modules
 from flask_wtf.csrf import generate_csrf
 from .util import get_testcase_by_group_id
-from .TestCase.all_tests import AllTests
+from tasks.run_test_cases import run_interface_case
+
 
 
 @register(api, "/testcase_group.html", methods=["GET", "POST"])
@@ -90,7 +92,9 @@ def testcase_testgroup_delete(id):
 @register(api, "/testgroup/<test_group_id>/run", methods=["POST"])
 def testgroup_run(test_group_id):
 
-    all_test = AllTests()
-    all_test.run_case(test_group_id)
+    run_interface_case.apply_async(
+        args=[test_group_id]
+    )
+
 
     return success()

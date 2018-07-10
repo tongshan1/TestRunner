@@ -1,19 +1,8 @@
 # -*- coding: utf-8 -*-
-
+from kombu import Exchange, Queue
 from celery import Celery
 
 _celery = None
-
-"""
-单纯的异步执行
-func.delay(1,2)
-
-特定的时间执行
-http://docs.celeryproject.org/en/master/userguide/calling.html#eta-and-countdown
-from datetime import datetime, timedelta
-after_one_minute = datetime.utcnow() + timedelta(minutes=1)
-func.apply_async((2, 2), eta=after_one_minute)
-"""
 
 
 def init_celery(config):
@@ -23,7 +12,10 @@ def init_celery(config):
     _celery = celery
     celery.conf.update(
 
-        CELERY_QUEUES=(),
+        CELERY_QUEUES=(
+            Queue('cases', Exchange('interface_case'), routing_key="default"),
+
+        ),
         CELERY_DEFAULT_QUEUE='celery',
         CELERY_DEFAULT_ROUTING_KEY='default',
         CELERY_DEFAULT_EXCHANGE_TYPE='direct',

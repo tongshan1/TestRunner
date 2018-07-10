@@ -10,7 +10,6 @@ class Variable(dict):
 
 
 variable = Variable()
-variable["pin"] = "000000"
 
 
 def replace_variable(runner_setting, tmp):

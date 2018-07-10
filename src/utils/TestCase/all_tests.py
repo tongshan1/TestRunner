@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
-from app.api.InterfaceManager.request.request import api_request
 from app.api.TestCaseGroupManager.util import get_testcase_by_group_id, get_setting_runner_by_group_id
 from module.Report import Result, Report
+from utils.request.request import api_request
 from app import db
 
 

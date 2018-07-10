@@ -10,7 +10,7 @@ from module.System_setting import SystemSetting
 from module.Interface import Interface
 from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase, populate_interface
 from schema.testcase import TestCaseSchema
-from app.api.InterfaceManager.request.request import api_request
+from utils.request.request import api_request
 from app.logger import logger
 
 
