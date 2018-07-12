@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from flask import request, redirect, flash, render_template
+
 from app import db
-from module.Module import Module
-from app.api import api
+from app.module.Module import Module
+from app.views import api
 from app.form.module_form import ModuleForm
 from app.handler import register
+
 
 def get_all_modules():
     return Module.query.all()

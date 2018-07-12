@@ -1,18 +1,17 @@
 from flask import redirect, render_template, flash, request
+from flask_wtf.csrf import generate_csrf
 
 from app import db
-from module.Testcasegroup import Testcasegroup
-from module.Testcase_testgroup import Testcase_testgroup
-from app.api import api
+from app.module.Testcasegroup import Testcasegroup
+from app.module.Testcase_testgroup import Testcase_testgroup
+from app.views import api
 from app.handler import register, success, fail
-from app import logger
 from app.form.testcase_group_form import TestCaseGroupForm
 from app.form.testcase_testgoup_from import TestCaseTestGroupForm
-from app.api.ModuleManager.module import get_all_modules
-from flask_wtf.csrf import generate_csrf
+from app.views.ModuleManager.module import get_all_modules
+from app.logger import logger
 from .util import get_testcase_by_group_id
-from tasks.run_test_cases import run_interface_case
-
+from app.tasks.test_cases import run_interface_case
 
 
 @register(api, "/testcase_group.html", methods=["GET", "POST"])
@@ -92,9 +91,22 @@ def testcase_testgroup_delete(id):
 @register(api, "/testgroup/<test_group_id>/run", methods=["POST"])
 def testgroup_run(test_group_id):
 
-    run_interface_case.apply_async(
-        args=[test_group_id]
-    )
+    task = run_interface_case.apply_async(args=[test_group_id])
+
+    return success({"task_id": task.id})
 
 
-    return success()
+@register(api, "/testgroup/<task_id>/status")
+def testgroup_status(task_id):
+
+    task = run_interface_case.AsyncResult(task_id)
+
+    if task.state == "PENDING":
+        return success({'state': task.state, 'current': 0, 'total': 1})
+    elif task.state == "PROGRESS":
+        return success({'state': task.state, 'current': task.info.get("current"), 'total': task.info.get("total")})
+    else:
+        return success({'state': task.state, 'current': 1, 'total': 1})
+
+
+

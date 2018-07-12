@@ -1,15 +1,14 @@
-
 import json
+
 from flask import request, redirect, render_template, flash, current_app
 
 from app import db
-from app.api import api
+from app.views import api
 from app.handler import register, success, fail
 from app.form.interface_form import InterfaceFrom, populate_interface
 from app.logger import logger
-
-from module.Interface import Interface
-from schema.interface import InterfaceSchema
+from app.module import Interface
+from app.schema.interface import InterfaceSchema
 from utils.request.request import api_request
 from utils.swagger.insert_swagger import insert_data
 

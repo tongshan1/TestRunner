@@ -1,5 +1,5 @@
 from . import app_filter
-from module.Report import Report
+from app.module.Report import Report
 
 
 @app_filter.app_template_filter("filter_result")
@@ -72,6 +72,11 @@ def filter_group_latest_result(group_id):
         return '<span class="fa fa-frown-o fa-lg " style="color: red"></span>'
     else:
         return '<span class="fa fa-meh-o fa-lg "></span>'
+
+
+@app_filter.app_template_filter("filter_group_runner_status")
+def filter_group_runner_status(group_id):
+    pass
 
 
 @app_filter.app_template_filter("filter_group_latest_time")

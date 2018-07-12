@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from wtforms_alchemy import ModelForm, ModelFieldList, QuerySelectField
-from module.Module import Module
-from module.Project import Project
+from wtforms_alchemy import ModelForm, QuerySelectField
+
+from app.module.Module import Module
+from app.module.Project import Project
 
 
 def get_projects():

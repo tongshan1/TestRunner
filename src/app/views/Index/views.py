@@ -1,9 +1,8 @@
-
 from flask import render_template
 
-from module.Interface import Interface
-from module.Testcase import TestInterfacecase
-from app.api import api
+from app.module.Interface import Interface
+from app.module.Testcase import TestInterfacecase
+from app.views import api
 from app.handler import register
 
 

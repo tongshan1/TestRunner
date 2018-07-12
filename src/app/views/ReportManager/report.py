@@ -1,7 +1,8 @@
-from flask import request, redirect, render_template
-from app.handler import register, success, fail
-from app.api import api
-from module.Report import Report, Result
+from flask import render_template
+
+from app.handler import register
+from app.views import api
+from app.module.Report import Report, Result
 
 
 def filter_result(result):

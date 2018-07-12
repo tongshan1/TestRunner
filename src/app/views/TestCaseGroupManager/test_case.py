@@ -3,13 +3,13 @@
 from flask import render_template, request
 
 from app import db
-from app.api import api
+from app.views import api
 from app.handler import register, success, fail
-from module.Testcase import TestInterfacecase
-from module.System_setting import SystemSetting
-from module.Interface import Interface
+from app.module.Testcase import TestInterfacecase
+from app.module.System_setting import SystemSetting
+from app.module.Interface import Interface
 from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase, populate_interface
-from schema.testcase import TestCaseSchema
+from app.schema.testcase import TestCaseSchema
 from utils.request.request import api_request
 from app.logger import logger
 

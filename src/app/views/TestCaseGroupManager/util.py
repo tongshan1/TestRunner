@@ -1,5 +1,6 @@
-from module.Testcasegroup import Testcasegroup
-from module.Testcase_testgroup import Testcase_testgroup
+from app.module.Testcasegroup import Testcasegroup
+from app.module.Testcase_testgroup import Testcase_testgroup
+from app.logger import logger
 
 
 def get_testcase_group(group_id):
@@ -14,5 +15,5 @@ def get_testcase_by_group_id(group_id):
 
 
 def get_setting_runner_by_group_id(group_id):
+    logger.error(type(Testcasegroup))
     return Testcasegroup.get_by_id(group_id).runner_setting_id
-

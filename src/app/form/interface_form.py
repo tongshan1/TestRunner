@@ -2,7 +2,8 @@ from flask_wtf import Form
 from wtforms import StringField, BooleanField, FieldList, SelectField, TextAreaField, FormField
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms.validators import length, data_required
-from module.System_setting import SystemSetting
+
+from app.module.System_setting import SystemSetting
 from .util import Method, get_all_module
 
 

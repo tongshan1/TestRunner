@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
-from module.Testcasegroup import TestCaseType
-from module.Module import Module
-from module.System_setting import SystemSetting
+
+from app.module.Testcasegroup import TestCaseType
+from app.module.Module import Module
+from app.module.System_setting import SystemSetting
 
 Method = [
     ("GET", "GET"),

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from app.api.TestCaseGroupManager.util import get_testcase_by_group_id, get_setting_runner_by_group_id
-from module.Report import Result, Report
+from app.views.TestCaseGroupManager.util import get_testcase_by_group_id, get_setting_runner_by_group_id
+from app.module.Report import Result, Report
 from utils.request.request import api_request
 from app import db
 
@@ -10,11 +10,11 @@ class AllTests():
     def __init__(self):
         pass
 
-    def run_case(self, test_group_id):
+    def run_case(self, task, test_group_id):
 
-        self.run_interface_case(test_group_id)
+        self.run_interface_case(task, test_group_id)
 
-    def run_interface_case(self, test_group_id):
+    def run_interface_case(self, task, test_group_id):
         """
         运行一次新建一个report
                 1 pass
@@ -26,7 +26,7 @@ class AllTests():
         test_cases = get_testcase_by_group_id(test_group_id)
         runner_setting = get_setting_runner_by_group_id(test_group_id)
         report = Report(testgroup_id=test_group_id)
-        total = 0
+        total = len(test_cases)
         success = 0
         fail = 0
         error = 0
@@ -35,7 +35,6 @@ class AllTests():
         db.session.commit()
 
         for test_case in test_cases:
-            total +=1
             url = test_case.testcase.interface_url
             method = test_case.testcase.testcase_method
             testcase_header = test_case.testcase.testcase_header
@@ -51,10 +50,13 @@ class AllTests():
                 success += 1
             if result_one.result == 2:
                 report_result = False
-                error +=1
+                error += 1
             if result_one.result == 3:
                 report_result = False
                 fail += 1
+
+            already_run = success+error+fail
+            task.update_state(state='PROGRESS', meta={'current': already_run, 'total': total})
 
         report.total = total
         report.success = success

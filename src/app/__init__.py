@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
 
-from config import config, ROOT_PATH
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cache import Cache
 from jac.contrib.flask import JAC
 from celery import Celery
+
+from config import config, ROOT_PATH
 from .logger import logger
 
 logger = logger
 db = SQLAlchemy()
-celery = Celery()
+celery = Celery(__name__, broker=config.CELERY_BROKER_URL)
 cache = Cache()
 
 
@@ -26,13 +27,12 @@ def create_app():
 
     JAC(app)
 
-    from tasks.celery import init_celery
-    init_celery(app.config)
+    celery.conf.update(app.config)
 
     from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    from app.api import api as api_blueprint
+    from app.views import api as api_blueprint
     app.register_blueprint(api_blueprint)
 
     from app.filter import app_filter as app_filter_blueprint

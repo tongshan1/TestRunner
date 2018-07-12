@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
+
 import yaml
 
-from module.Module import Module
-from module.Interface import Interface
+from app.module import Module
+from app.module import Interface
 from .schema_generator import build_data
 from app import db
 from app.logger import logger

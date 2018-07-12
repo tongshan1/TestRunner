@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import requests
-from requests.exceptions import (InvalidSchema, InvalidURL, MissingSchema,)
+
 from .util import replace_variable, str_to_dict
 from .response import ApiResponse, DictObj
 from app import logger
-from module.System_setting import SystemSetting
+from app.module.System_setting import SystemSetting
 
 
 class ApiRequest(object):

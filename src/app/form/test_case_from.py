@@ -1,10 +1,10 @@
-
 from flask_wtf import Form
 from wtforms import StringField, BooleanField, FieldList, FormField, SelectField
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms.validators import length, data_required
-from module.System_setting import SystemSetting
-from .util import Method, Type, get_all_module, str_to_dict
+
+from app.module.System_setting import SystemSetting
+from .util import Method, Type, get_all_module
 
 
 class HeaderForm(Form):

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from flask import request, redirect, flash, render_template
+
 from app import db
-from module.Project import Project
-from app.api import api
+from app.module.Project import Project
+from app.views import api
 from app.form.project_form import ProjectForm
 from app.handler import register
 

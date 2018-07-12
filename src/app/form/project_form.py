@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from wtforms_alchemy import ModelForm
-from module.Project import Project
+
+from app.module.Project import Project
 
 
 class ProjectForm(ModelForm):

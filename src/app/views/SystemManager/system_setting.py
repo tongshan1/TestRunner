@@ -1,12 +1,10 @@
 from flask import request, redirect, render_template, flash
-from app.handler import register, success, fail
-from app.api import api
+
+from app.handler import register, success
+from app.views import api
 from app import db
 from app.form.setting_form import SettingFrom, populate_setting
-
-from module.System_setting import SystemSetting
-
-from app.logger import logger
+from app.module.System_setting import SystemSetting
 
 
 @register(api, "/runner_setting_list.html")
