@@ -1,9 +1,10 @@
 from flask import redirect, render_template, flash, request
 from flask_wtf.csrf import generate_csrf
+from celery.result import AsyncResult
 
-from app import db
-from app.module.Testcasegroup import Testcasegroup
-from app.module.Testcase_testgroup import Testcase_testgroup
+from app import db, celery
+from app.module.TestCaseGroup import Testcasegroup
+from app.module.TestCaseTestGroup import Testcase_testgroup
 from app.views import api
 from app.handler import register, success, fail
 from app.form.testcase_group_form import TestCaseGroupForm
@@ -90,8 +91,7 @@ def testcase_testgroup_delete(id):
 
 @register(api, "/testgroup/<test_group_id>/run", methods=["POST"])
 def testgroup_run(test_group_id):
-
-    task = run_interface_case.apply_async(args=[test_group_id])
+    task = run_interface_case.delay(test_group_id)
 
     return success({"task_id": task.id})
 
@@ -99,14 +99,17 @@ def testgroup_run(test_group_id):
 @register(api, "/testgroup/<task_id>/status")
 def testgroup_status(task_id):
 
-    task = run_interface_case.AsyncResult(task_id)
+    task = AsyncResult(task_id, app=celery)
 
     if task.state == "PENDING":
         return success({'state': task.state, 'current': 0, 'total': 1})
     elif task.state == "PROGRESS":
         return success({'state': task.state, 'current': task.info.get("current"), 'total': task.info.get("total")})
     else:
-        return success({'state': task.state, 'current': 1, 'total': 1})
+
+        report_id = task.get()
+        logger.error(report_id)
+        return success({'state': task.state, 'current': 1, 'total': 1, 'report':report_id})
 
 
 

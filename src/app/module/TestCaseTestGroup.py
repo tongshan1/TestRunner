@@ -3,8 +3,8 @@
 from sqlalchemy import BigInteger, Column, BOOLEAN, DateTime, func
 from app import db
 
-from .Testcasegroup import Testcasegroup
-from .Testcase import TestInterfacecase, TestUIcase
+from .TestCaseGroup import Testcasegroup
+from .TestCase import TestInterfacecase, TestUIcase
 
 
 class Testcase_testgroup(db.Model):

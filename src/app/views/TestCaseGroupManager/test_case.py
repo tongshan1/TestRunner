@@ -5,8 +5,8 @@ from flask import render_template, request
 from app import db
 from app.views import api
 from app.handler import register, success, fail
-from app.module.Testcase import TestInterfacecase
-from app.module.System_setting import SystemSetting
+from app.module.TestCase import TestInterfacecase
+from app.module.SystemSetting import SystemSetting
 from app.module.Interface import Interface
 from app.form.test_case_from import TestInterfaceCaseFrom, populate_interface_testcase, populate_interface
 from app.schema.testcase import TestCaseSchema

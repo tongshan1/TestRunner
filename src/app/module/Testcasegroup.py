@@ -3,7 +3,7 @@
 from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, func, Integer
 from app import db
 from .Module import Module
-from .System_setting import SystemSetting
+from .SystemSetting import SystemSetting
 
 
 class TestCaseType(db.Model):

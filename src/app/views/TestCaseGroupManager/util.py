@@ -1,5 +1,5 @@
-from app.module.Testcasegroup import Testcasegroup
-from app.module.Testcase_testgroup import Testcase_testgroup
+from app.module.TestCaseGroup import Testcasegroup
+from app.module.TestCaseTestGroup import Testcase_testgroup
 from app.logger import logger
 
 

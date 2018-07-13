@@ -12,7 +12,7 @@ class AllTests():
 
     def run_case(self, task, test_group_id):
 
-        self.run_interface_case(task, test_group_id)
+        return self.run_interface_case(task, test_group_id)
 
     def run_interface_case(self, task, test_group_id):
         """
@@ -66,3 +66,5 @@ class AllTests():
 
         db.session.add(report)
         db.session.commit()
+
+        return report.id

@@ -4,7 +4,7 @@ import requests
 from .util import replace_variable, str_to_dict
 from .response import ApiResponse, DictObj
 from app import logger
-from app.module.System_setting import SystemSetting
+from app.module.SystemSetting import SystemSetting
 
 
 class ApiRequest(object):

@@ -3,7 +3,7 @@ from wtforms import StringField, BooleanField, FieldList, FormField, SelectField
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms.validators import length, data_required
 
-from app.module.System_setting import SystemSetting
+from app.module.SystemSetting import SystemSetting
 from .util import Method, Type, get_all_module
 
 

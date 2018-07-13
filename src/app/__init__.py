@@ -12,7 +12,7 @@ from .logger import logger
 
 logger = logger
 db = SQLAlchemy()
-celery = Celery(__name__, broker=config.CELERY_BROKER_URL)
+celery = Celery(__name__,  broker=config.CELERY_BROKER_URL)
 cache = Cache()
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import BigInteger, Column, String, BOOLEAN, DateTime, func
-from sqlalchemy.dialects.mysql.json import JSON
+from sqlalchemy.dialects.postgresql.json import JSON
 from app import db
 from .Module import Module
 

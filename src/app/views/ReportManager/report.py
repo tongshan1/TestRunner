@@ -18,10 +18,10 @@ def filter_result(result):
 
 @register(api, "/report.html", methods=["GET"])
 def report_all():
-    return render_template("report/report_list.html", reports=Report.all(), filter_result=filter_result)
+    return render_template("report/index.html", reports=Report.all(), filter_result=filter_result)
 
 
-@register(api, "/report/<report_id>/report_detail.html", methods=["GET"])
+@register(api, "/report/<report_id>/detail.html", methods=["GET"])
 def report_detail(report_id):
     report = Report.get_by_id(report_id)
     result = Result.get_by_report_id(report_id)
@@ -34,4 +34,4 @@ def report_detail(report_id):
         testcase_dict["testcase"] = testcase
         testcases.append(testcase_dict)
 
-    return render_template("report/report_detail.html", report=report, testcases=testcases)
+    return render_template("report/detail.html", report=report, testcases=testcases)

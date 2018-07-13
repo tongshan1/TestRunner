@@ -4,7 +4,7 @@ from app.handler import register, success
 from app.views import api
 from app import db
 from app.form.setting_form import SettingFrom, populate_setting
-from app.module.System_setting import SystemSetting
+from app.module.SystemSetting import SystemSetting
 
 
 @register(api, "/runner_setting_list.html")
