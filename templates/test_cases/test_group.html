@@ -1,7 +1,7 @@
 {% extends "blank.html" %}
 
 {% block title %}
-    test_groups
+    test groups manage
 {% endblock %}
 
 {% block page_header %}
@@ -38,6 +38,7 @@
                                 <th>所属模块</th>
                                 <th>运行环境</th>
                                 <th>用例集描述</th>
+                                <th>当前状态</th>
                                 <th>上次运行时间</th>
                                 <th>上次运行结果</th>
                                 <th>操作</th>
@@ -51,6 +52,7 @@
                                     <td>{{ testcase_group.module }}</td>
                                     <td>{{ testcase_group.runner_setting.key }}</td>
                                     <td>{{ testcase_group.testcase_desc }}</td>
+                                    <td>{{ testcase_group.id | filter_group_runner_status }}</td>
                                     <td>{{ testcase_group.id | filter_group_latest_time }}</td>
                                     <td>{{ testcase_group.id | filter_group_latest_result |safe }}</td>
                                     <td>
@@ -114,23 +116,16 @@
 
     <script>
 
-        // Create a new instance of ladda for the specified button
-        var l = Ladda.create(document.querySelector('.testcase_group_run'));
+        $(".testcase_group_run").on("click", function () {
 
 
-        var testcase_group_run = $(".testcase_group_run");
+            var group_id = $(this).attr("data-id");
 
-        testcase_group_run.on("click", function () {
-
-            l.start();
-
-            var group_id = testcase_group_run.attr("data-id");
             $.ajax({
                 "url": "/testgroup/" + group_id + "/run",
                 "method": "POST",
                 "success": function (data) {
 
-                    l.stop();
                 }
 
             })

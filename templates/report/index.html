@@ -1,7 +1,7 @@
 {% extends "blank.html" %}
 
 {% block title %}
-    test report
+    报告列表
 {% endblock %}
 
 {% block page_header %}
@@ -56,7 +56,7 @@
                                     <td>{{ report.fail }}</td>
                                     <td>{{ report.error }}</td>
                                     <td>
-                                        <a href="/report/{{ report.id }}/report_detail.html" class="btn btn-primary">查看详情</a>
+                                        <a href="/report/{{ report.id }}/detail.html" class="btn btn-primary">查看详情</a>
                                     </td>
 
                                 </tr>

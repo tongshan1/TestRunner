@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import json
+
 from flask import render_template, request
 
 from app import db
@@ -58,7 +60,7 @@ def test_case_add():
             test_case_obj.testcase_header = init_field_data(form.testcase_header.data)
             test_case_obj.testcase_query = init_field_data(form.testcase_query.data)
             if (data_type == "JSON_data_select"):
-                test_case_body = form.testcase_json.data
+                test_case_body = json.loads(form.testcase_json.data)
             else:
                 test_case_body = init_field_data(form.testcase_data.data)
             test_case_obj.testcase_body = test_case_body
@@ -85,7 +87,7 @@ def testcase_request():
     form = TestInterfaceCaseFrom(request.form)
 
     if(data_type == "JSON_data_select"):
-        test_case_body = form.testcase_json.data
+        test_case_body = json.loads(form.testcase_json.data)
     else:
         test_case_body = init_field_data(form.testcase_data.data)
 
@@ -121,7 +123,7 @@ def testcase_edit(testcase_id):
             test_case_obj.testcase_header = init_field_data(form.testcase_header.data)
             test_case_obj.testcase_query = init_field_data(form.testcase_query.data)
             if (data_type == "JSON_data_select"):
-                test_case_body = form.testcase_json.data
+                test_case_body = json.loads(form.testcase_json.data)
             else:
                 test_case_body = init_field_data(form.testcase_data.data)
             test_case_obj.testcase_body = test_case_body

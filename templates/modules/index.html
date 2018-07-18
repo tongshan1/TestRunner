@@ -14,7 +14,7 @@
         <div class="card-body">
             <div style="margin-bottom: 20px;">
                 <!-- 新增 -->
-                <a class="btn btn-primary" href="{{ url_for('api.module_new') }}">新增模块</a>
+                <a class="btn btn-primary" href="{{ url_for('views.module_new') }}">新增模块</a>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -47,7 +47,7 @@
                                     <td>{{ module.module_desc }}</td>
                                     <td>{{ module.is_active }}</td>
                                     <td>
-                                        <a href="{{ url_for('api.module_edit', id=module.id) }}"
+                                        <a href="{{ url_for('views.module_edit', id=module.id) }}"
                                            class="btn btn-primary">编辑</a>
                                     </td>
 

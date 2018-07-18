@@ -2692,7 +2692,7 @@ jQuery.event = {
 			// If event changes its type, use the special event handlers for the changed type
 			special = jQuery.event.special[ type ] || {};
 
-			// If selector defined, determine special event api type, otherwise given type
+			// If selector defined, determine special event views type, otherwise given type
 			type = ( selector ? special.delegateType : special.bindType ) || type;
 
 			// Update special based on newly reset type
@@ -6478,7 +6478,7 @@ jQuery.extend({
 var matched, browser;
 
 // Use of jQuery.browser is frowned upon.
-// More details: http://api.jquery.com/jQuery.browser
+// More details: http://views.jquery.com/jQuery.browser
 // jQuery.uaMatch maintained for back-compat
 jQuery.uaMatch = function( ua ) {
 	ua = ua.toLowerCase();

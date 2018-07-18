@@ -53,7 +53,7 @@ function _inheritsLoose(subClass, superClass) {
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v4.0.0): utils.js
+ * Bootstrap (v4.0.0): swagger.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -208,7 +208,7 @@ var Alert = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.alert';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var TRANSITION_DURATION = 150;
   var Selector = {
@@ -380,7 +380,7 @@ var Button = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.button';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var ClassName = {
     ACTIVE: 'active',
@@ -543,7 +543,7 @@ var Carousel = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.carousel';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var TRANSITION_DURATION = 600;
   var ARROW_LEFT_KEYCODE = 37; // KeyboardEvent.which value for left arrow key
@@ -1042,7 +1042,7 @@ var Collapse = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.collapse';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var TRANSITION_DURATION = 600;
   var Default = {
@@ -1599,12 +1599,12 @@ function getRoot(node) {
 }
 
 /**
- * Finds the offset parent utils to the two provided nodes
+ * Finds the offset parent swagger to the two provided nodes
  * @method
  * @memberof Popper.Utils
  * @argument {Element} element1
  * @argument {Element} element2
- * @returns {Element} utils offset parent
+ * @returns {Element} swagger offset parent
  */
 function findCommonOffsetParent(element1, element2) {
   // This check is needed to avoid errors in case one of the elements isn't defined for any reason
@@ -1617,7 +1617,7 @@ function findCommonOffsetParent(element1, element2) {
   var start = order ? element1 : element2;
   var end = order ? element2 : element1;
 
-  // Get utils ancestor container
+  // Get swagger ancestor container
   var range = document.createRange();
   range.setStart(start, 0);
   range.setEnd(end, 0);
@@ -3786,7 +3786,7 @@ var Popper = function () {
     /**
      * Collection of utilities useful when writing custom modifiers.
      * Starting from version 1.7, this method is available only if you
-     * include `popper-utils.js` before `popper.js`.
+     * include `popper-swagger.js` before `popper.js`.
      *
      * **DEPRECATION**: This way to access PopperUtils is deprecated
      * and will be removed in v2! Use the PopperUtils module directly instead.
@@ -3846,7 +3846,7 @@ var Dropdown = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.dropdown';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var ESCAPE_KEYCODE = 27; // KeyboardEvent.which value for Escape (Esc) key
 
@@ -4311,7 +4311,7 @@ var Modal = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.modal';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var TRANSITION_DURATION = 300;
   var BACKDROP_TRANSITION_DURATION = 150;
@@ -5745,7 +5745,7 @@ var ScrollSpy = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.scrollspy';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var Default = {
     offset: 10,
@@ -6056,7 +6056,7 @@ var Tab = function ($$$1) {
   var VERSION = '4.0.0';
   var DATA_KEY = 'bs.tab';
   var EVENT_KEY = "." + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
+  var DATA_API_KEY = '.data-views';
   var JQUERY_NO_CONFLICT = $$$1.fn[NAME];
   var TRANSITION_DURATION = 150;
   var Event = {

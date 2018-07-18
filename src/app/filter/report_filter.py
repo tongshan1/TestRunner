@@ -67,9 +67,9 @@ def filter_group_latest_result(group_id):
         result = Report.get_latest_by_group_id(group_id).result
 
     if result is True:
-        return '<span class="fa fa-smile-o fa-lg " style="color: green"></span>'
+        return '<a href="/report/{0}/detail.html"><span class="fa fa-smile-o fa-lg " style="color: green"></span></a>'.format(report.id)
     elif result is False:
-        return '<span class="fa fa-frown-o fa-lg " style="color: red"></span>'
+        return '<a href="/report/{0}/detail.html"><span class="fa fa-frown-o fa-lg " style="color: red"></span></a>'.format(report.id)
     else:
         return '<span class="fa fa-meh-o fa-lg "></span>'
 

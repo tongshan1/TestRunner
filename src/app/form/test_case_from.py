@@ -1,3 +1,4 @@
+import json
 from flask_wtf import Form
 from wtforms import StringField, BooleanField, FieldList, FormField, SelectField
 from wtforms_alchemy.fields import QuerySelectField
@@ -107,7 +108,7 @@ def populate_interface_testcase(interface_testcase_obj):
     testcase_body = interface_testcase_obj.testcase_body
 
     if form.testcase_body_type == "application/json":
-        form.testcase_json.data = testcase_body
+        form.testcase_json.data = json.dumps(testcase_body)
         form.testcase_data.append_entry()
     else:
         for k, v in testcase_body.items():
@@ -182,7 +183,7 @@ def populate_interface(interface_obj):
         json_data = {}
         for body in testcase_body:
             json_data[body.get("name")] = body.get("value")
-        form.testcase_json.data = json_data
+        form.testcase_json.data = json.dumps(json_data)
         form.testcase_data.append_entry()
     else:
         for body in testcase_body:

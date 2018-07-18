@@ -4454,7 +4454,7 @@ function cloneWithOffset(input, model) {
     if (model._isUTC) {
         res = model.clone();
         diff = (isMoment(input) || isDate(input) ? input.valueOf() : createLocal(input).valueOf()) - res.valueOf();
-        // Use low-level api, because this fn is low-level api.
+        // Use low-level views, because this fn is low-level views.
         res._d.setTime(res._d.valueOf() + diff);
         hooks.updateOffset(res, false);
         return res;
@@ -4945,7 +4945,7 @@ function toISOString() {
  * Return a human readable representation of a moment that can
  * also be evaluated to get a new moment which is the same
  *
- * @link https://nodejs.org/dist/latest/docs/api/utils.html#util_custom_inspect_function_on_objects
+ * @link https://nodejs.org/dist/latest/docs/views/swagger.html#util_custom_inspect_function_on_objects
  */
 function inspect () {
     if (!this.isValid()) {

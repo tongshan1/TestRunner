@@ -79,14 +79,13 @@
 
         </div>
         <div class="panel-footer">
-            <btton class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal" data-placement="top"
+            <button class="btn btn-success" id="add_case" data-toggle="modal" data-target="#myModal" data-placement="top"
                    title="Tooltip on top">
-                <span class="fa fa-plus-circle"></span></button>
-            </btton>
-            <button class="btn btn-info ladda-button" id="run_case" data-id="{{ form._obj.id }}" data-style="zoom-in">
+                <span class="fa fa-plus-circle"></span>
+            </button>
+            <button class="btn btn-info ladda-button" id="run_case" data-id="{{ form._obj.id }}" data-toggle="modal"  data-target="#runner_Modal">
                 <span class="fa fa-chevron-circle-right ladda-label"></span>
             </button>
-
         </div>
     </div>
 
@@ -102,7 +101,6 @@
 
                     <form role="form" action="/testcase_testgroup" method="post">
 
-                        <div class="modal-body">
                             <div class="form-inline">
                                 <div class="form-group">
                                     <input type="hidden" value="{{ form._obj.id }}" id="testcase_group_id">
@@ -153,20 +151,38 @@
                             </div>
                             <a href="/test_case_add.html">用例不存在？</a>
 
-                        </div>
-
                     </form>
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="add_testcase_testgroup">添加</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
-                </form>
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="runner_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    运行进度: <span id="runner_state">0%</span>
+                </div>
+                <div class="modal-body" id="runner_modal_body">
+
+                    <div class="progress progress-striped active" >
+                        <div class="progress-bar progress-bar-success" role="progressbar"
+                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                             id="progress_bar">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
 
@@ -210,27 +226,61 @@
 
         });
 
-        // Create a new instance of ladda for the specified button
-        var l = Ladda.create(document.getElementById('run_case'));
+        var runner_modeal = $("#runner_Modal");
+        runner_modeal.modal({backdrop:'static'});
+        runner_modeal.modal('hide');
+
 
         var testcase_group_run = $("#run_case");
 
         testcase_group_run.on("click", function () {
 
-            l.start();
+            $("#runner_modal_footer").remove();
 
             var group_id = testcase_group_run.attr("data-id");
-            $.ajax({
-                "url": "/testgroup/" + group_id + "/run",
-                "method": "POST",
-                "success": function (data) {
 
-                    l.stop();
+            var task = $.post("/testgroup/" + group_id + "/run");
+            task.done(function(data){
+                var task_id = data.task_id;
+                update_progress(task_id)
+            });
+
+        });
+
+        function update_progress(task_id) {
+
+            $.getJSON("/testgroup/" + task_id + "/status", function (data) {
+
+                var state = data.state;
+                var current = data.current;
+                var total = data.total;
+
+                var percent = (Math.round(current / total * 10000) / 100.00 + "%");
+
+                console.log(percent);
+
+                if (state == "PENDING" || state == "PROGRESS") {
+                    setTimeout(function () {
+                        update_progress(task_id);
+                    }, 1000)
+                }
+                $("#runner_state").text(percent);
+                $("#progress_bar").width(percent);
+                console.log(percent);
+                console.log(percent == "100%");
+                if (percent == "100%"){
+                    var report_id = data.report;
+                    $("#runner_modal_body").append(
+                            "<div class=\"modal-footer\" id=\"runner_modal_footer\"> " +
+                            "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">关闭</button>" +
+                            "<a type=\"button\" class=\"btn btn-success\" href=\"/report/"+report_id+"/detail.html\">查看结果</a>"+
+                            "</div>"
+                    );
                 }
 
             })
 
-        });
+        }
 
 
     </script>

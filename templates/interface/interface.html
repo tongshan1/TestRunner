@@ -200,7 +200,11 @@
             mode: 'code',
             ace: ace
         };
-        var data = {{ form.interface_json.data|safe }};
+        var data = {% if form.interface_json.data|safe != None and form.interface_json.data|safe != ''%}
+                    {{ form.interface_json.data|safe }}
+                {% else %}
+                    {}
+                {% endif %};
         var editor = new JSONEditor(container, options, data);
 
         {#    添加字段#}

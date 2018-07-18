@@ -5,6 +5,7 @@ from wtforms.validators import length, data_required
 
 from app.module.SystemSetting import SystemSetting
 from .util import Method, get_all_module
+from app.logger import logger
 
 
 class HeaderForm(Form):

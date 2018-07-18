@@ -830,7 +830,7 @@
 		
 		
 		/**
-		 * Provide a utils method for plug-ins to check the version of DataTables being used, in order
+		 * Provide a swagger method for plug-ins to check the version of DataTables being used, in order
 		 * to ensure compatibility.
 		 *  @param {string} sVersion Version string to check for, in the format "X.Y.Z". Note that the
 		 *    formats "X" and "X.Y" are also acceptable.
@@ -6835,11 +6835,11 @@
 	 * top level object had. For example, these two calls are equivalent:
 	 *
 	 *     // Not chained
-	 *     api.row.add( {...} );
-	 *     api.draw();
+	 *     views.row.add( {...} );
+	 *     views.draw();
 	 *
 	 *     // Chained
-	 *     api.row.add( {...} ).draw();
+	 *     views.row.add( {...} ).draw();
 	 *
 	 * @class DataTable.Api
 	 * @param {array|object|string|jQuery} context DataTable identifier. This is
@@ -6855,15 +6855,15 @@
 	 *
 	 * @example
 	 *   // Direct initialisation during DataTables construction
-	 *   var api = $('#example').DataTable();
+	 *   var views = $('#example').DataTable();
 	 *
 	 * @example
 	 *   // Initialisation using a DataTables jQuery object
-	 *   var api = $('#example').dataTable().api();
+	 *   var views = $('#example').dataTable().views();
 	 *
 	 * @example
 	 *   // Initialisation as a constructor
-	 *   var api = new $.fn.DataTable.Api( 'table.dataTable' );
+	 *   var views = new $.fn.DataTable.Api( 'table.dataTable' );
 	 */
 	_Api = function ( context, data )
 	{
@@ -9073,7 +9073,7 @@
 	
 	
 	/**
-	 * Provide a utils method for plug-ins to check the version of DataTables being
+	 * Provide a swagger method for plug-ins to check the version of DataTables being
 	 * used, in order to ensure compatibility.
 	 *
 	 *  @param {string} version Version string to check for, in the format "X.Y.Z".
@@ -9980,7 +9980,7 @@
 		 * --------
 		 *
 		 * As an object, the parameters in the object are passed to
-		 * [jQuery.ajax](http://api.jquery.com/jQuery.ajax/) allowing fine control
+		 * [jQuery.ajax](http://views.jquery.com/jQuery.ajax/) allowing fine control
 		 * of the Ajax request. DataTables has a number of default parameters which
 		 * you can override using this option. Please refer to the jQuery
 		 * documentation for a full description of the options available, although
@@ -11839,7 +11839,7 @@
 		/**
 		 * Search delay option. This will throttle full table searches that use the
 		 * DataTables provided search input element (it does not effect calls to
-		 * `dt-api search()`, providing a delay before the search is made.
+		 * `dt-views search()`, providing a delay before the search is made.
 		 *  @type integer
 		 *  @default 0
 		 *
@@ -14101,7 +14101,7 @@
 		 *    // Ordering using `input` node values
 		 *    $.fn.dataTable.ext.order['dom-text'] = function  ( settings, col )
 		 *    {
-		 *      return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+		 *      return this.views().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
 		 *        return $('input', td).val();
 		 *      } );
 		 *    }

@@ -232,7 +232,11 @@
             mode: 'code',
             ace: ace
         };
-        var data = {{ form.testcase_json.data|safe }};
+       var data = {% if form.testcase_json.data != None and form.testcase_json.data|safe != ''%}
+                    {{ form.testcase_json.data|safe }}
+                {% else %}
+                    {}
+                {% endif %};
         var editor = new JSONEditor(container, options, data);
 
         $('#module').on('change', function () {
@@ -262,12 +266,12 @@
         });
 
         var l = Ladda.create(document.getElementById('test_test_case'));
-        // request api
+        // request views
         $("#test_test_case").on("click", function () {
             $.api_request(editor, l);
         });
 
-        // add api
+        // add views
         $("#add_test_case").on("click", function(){
             $.api_save(editor);
         })
