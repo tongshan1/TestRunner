@@ -1,5 +1,4 @@
 from .util import set_variable
-from requests import Response
 
 
 class DictObj(dict):
